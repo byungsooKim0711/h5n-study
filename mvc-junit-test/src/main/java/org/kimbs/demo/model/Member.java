@@ -1,6 +1,6 @@
 package org.kimbs.demo.model;
 
-import lombok.Data;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
@@ -13,7 +13,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Data
+@ToString
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Member {
 
     @Id
