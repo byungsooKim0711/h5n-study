@@ -24,48 +24,28 @@ public class MemberRepositoryTests {
     @Autowired
     private TestEntityManager entityManager;
 
-    @BeforeAll
-    public static void setUp() {
-        // TODO: 제일 처음 초기화 되어야 하는 내용 작성 ( 최초 1번 실행 )
-    }
-
-    @BeforeEach
-    public void init() {
-        // TODO: 테스트 메서드가 시작될 때 마다 초기화 해야하는 내용 작성 ( @Test 갯수만큼 실행 )
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // TODO: 테스트 메서드가 종료될 때 마다 해제되어야 하는 내용 작성 ( @Test 갯수만큼 실행 )
-    }
-
-    @AfterAll
-    public static void cleanUp() {
-        // TODO: 모든 테스트 메서드가 종료되고 난 후에 자원 해제 ( 마지막 1번 실행 )
-    }
-
     @Test
     @DisplayName("멤버 레파지토리에 아무 데이터가 없을 경우 테스트")
     public void testRepositoryIsEmpty() {
-        /* arrange = given */
+        /* arrange */
 
-        /* act = when */
+        /* act */
         List<Member> members = repository.findAll();
 
-        /* assert = then*/
+        /* assert */
         assertEquals(0, members.size());
     }
 
     @Test
     @DisplayName("멤버 레파지토리에 멤버 한 명 추가할 경우 테스트")
     public void testStoreAMember() {
-        /* arrange = given */
+        /* arrange */
         Member member = new Member();
         member.setScore(100);
         member.setName("김병수");
         member.setEmail("kbs0711@humuson.com");
 
-        /* act = when */
+        /* act */
         Member actual = repository.saveAndFlush(member);
 
         /* assert = then*/
@@ -79,7 +59,7 @@ public class MemberRepositoryTests {
     @Test
     @DisplayName("멤버 레파지토리에서 모든 멤버 조회할 경우 테스트")
     public void testFindAllMembers() {
-        /* arrange = given */
+        /* arrange */
         Member member1 = new Member();
         member1.setScore(100);
         member1.setName("김병수");
@@ -93,10 +73,10 @@ public class MemberRepositoryTests {
         entityManager.persist(member1);
         entityManager.persist(member2);
 
-        /* act = when */
+        /* act */
         List<Member> actual = repository.findAll();
 
-        /* assert = then */
+        /* assert */
         assertAll("members",
                 () -> assertEquals(2, actual.size()),
                 () -> assertEquals(member1, actual.get(0)),

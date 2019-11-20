@@ -24,25 +24,9 @@ public class MemberServiceTests {
     @InjectMocks
     private MemberService service;
 
-    @BeforeAll
-    public static void setUp() {
-        // TODO: 제일 처음 초기화 되어야 하는 내용 작성 ( 최초 1번 실행 )
-    }
-
     @BeforeEach
     public void init() {
-        // TODO: 테스트 메서드가 시작될 때 마다 초기화 해야하는 내용 작성 ( @Test 갯수만큼 실행 )
         MockitoAnnotations.initMocks(this);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // TODO: 테스트 메서드가 종료될 때 마다 해제되어야 하는 내용 작성 ( @Test 갯수만큼 실행 )
-    }
-
-    @AfterAll
-    public static void cleanUp() {
-        // TODO: 모든 테스트 메서드가 종료되고 난 후에 자원 해제 ( 마지막 1번 실행 )
     }
 
     @Test
