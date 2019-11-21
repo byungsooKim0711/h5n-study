@@ -1,5 +1,7 @@
 package org.kimbs.demo;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,10 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,6 +32,18 @@ class DemoApplicationTests {
     @LocalServerPort
     private int port;
 
+    private StringBuilder defaultUrl = new StringBuilder();
+
+    @BeforeEach
+    public void init() {
+        defaultUrl.append("http://localhost:").append(port).append("/api/member");
+    }
+
+    @AfterEach
+    public void tearDown() {
+        defaultUrl.setLength(0);
+    }
+
     @Test
     @DisplayName("통합테스트 FindAll()")
     public void testFindAll() {
@@ -36,7 +51,7 @@ class DemoApplicationTests {
 
         /* act */
         ResponseEntity<List<Member>> members = this.restTemplate.exchange(
-                "http://localhost:" + this.port + "/api/member"
+                defaultUrl.toString()
                 , HttpMethod.GET
                 , null
                 , new ParameterizedTypeReference<List<Member>>() {}
@@ -58,7 +73,7 @@ class DemoApplicationTests {
 
         /* act */
         ResponseEntity<Member> responseEntity = this.restTemplate.postForEntity(
-                "http://localhost:" + this.port + "/api/member"
+                defaultUrl.toString()
                 , member
                 , Member.class
         );
@@ -71,5 +86,24 @@ class DemoApplicationTests {
                 () -> assertEquals(member.getScore(), responseEntity.getBody().getScore()),
                 () -> assertEquals(member.getEmail(), responseEntity.getBody().getEmail())
         );
+    }
+
+    @Test
+    @DisplayName("통합테스트 NotFound")
+    public void testNotFound() {
+        /* arrange */
+
+        /* act */
+
+        /* assert */
+        ResponseEntity<Void> deleteResponse = this.restTemplate.exchange (
+                defaultUrl.append("/123456789").toString()
+                , HttpMethod.DELETE
+                , null
+                , Void.class
+        );
+
+        /* assert */
+        assertEquals(HttpStatus.NOT_FOUND, deleteResponse.getStatusCode());
     }
 }
