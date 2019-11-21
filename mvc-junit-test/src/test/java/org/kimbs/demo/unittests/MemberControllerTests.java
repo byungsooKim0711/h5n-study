@@ -54,7 +54,7 @@ public class MemberControllerTests {
         member.setName("kbs");
         member.setEmail("kbs0711@humuson.com");
 
-        when(service.create(member)).thenReturn(member);
+        when(service.create(any(Member.class))).thenReturn(member);
         String jsonString = mapper.writeValueAsString(member);
 
         /* act & assert */
@@ -62,11 +62,11 @@ public class MemberControllerTests {
                 MockMvcRequestBuilders.post("/api/member")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonString))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("location", Matchers.containsString("http://localhost/api/member/" + member.getId())))
                 .andExpect(MockMvcResultMatchers.content().string(jsonString));
 
-        verify(service, times(1)).create(member);
+        verify(service, times(1)).create(any(Member.class));
     }
 
     @Test
