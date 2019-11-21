@@ -62,7 +62,7 @@ public class MemberControllerTests {
                 MockMvcRequestBuilders.post("/api/member")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonString))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.header().string("location", Matchers.containsString("http://localhost/api/member/" + member.getId())))
                 .andExpect(MockMvcResultMatchers.content().string(jsonString));
 
