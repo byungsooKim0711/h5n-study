@@ -1,4 +1,4 @@
-package org.kimbs.demo.controller;
+package org.kimbs.demo.controller.v1;
 
 import org.kimbs.demo.model.Member;
 import org.kimbs.demo.service.MemberService;
@@ -10,8 +10,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(value = "/api")
+@RestController(value = "memberControllerV1")
+@RequestMapping(value = "/api", headers = "ORG-KIMBS-VERSION=v1")
 public class MemberController {
 
     private final MemberService memberService;
