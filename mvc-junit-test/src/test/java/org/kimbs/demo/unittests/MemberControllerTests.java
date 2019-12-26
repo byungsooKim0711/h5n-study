@@ -1,6 +1,7 @@
 package org.kimbs.demo.unittests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +66,8 @@ public class MemberControllerTests {
                 .content(jsonString)
                 .header("ORG-KIMBS-VERSION", "v1"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location", Matchers.containsString("http://localhost/api/member/" + member.getId())))
+//                .andExpect(header().string("location", Matchers.containsString("http://localhost/api/member/" + member.getId())))
+                .andExpect(redirectedUrlPattern("http://*/api/member/" + member.getId()))
                 .andExpect(content().string(jsonString));
 
         verify(service, times(1)).create(any(Member.class));
