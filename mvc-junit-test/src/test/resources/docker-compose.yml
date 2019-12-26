@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  member-db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: member
+      POSTGRES_USER: member
+      POSTGRES_DB: member

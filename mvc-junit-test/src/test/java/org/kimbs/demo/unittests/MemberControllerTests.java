@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.kimbs.demo.controller.MemberController;
+import org.kimbs.demo.controller.v1.MemberController;
 import org.kimbs.demo.exception.MemberNotFoundException;
 import org.kimbs.demo.model.Member;
 import org.kimbs.demo.service.MemberService;
@@ -15,11 +15,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class MemberControllerTests {
 
@@ -59,14 +60,17 @@ public class MemberControllerTests {
 
         /* act & assert */
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/member")
+                post("/api/member")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonString))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.header().string("location", Matchers.containsString("http://localhost/api/member/" + member.getId())))
-                .andExpect(MockMvcResultMatchers.content().string(jsonString));
+                .content(jsonString)
+                .header("ORG-KIMBS-VERSION", "v1"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", Matchers.containsString("http://localhost/api/member/" + member.getId())))
+                .andExpect(content().string(jsonString));
 
         verify(service, times(1)).create(any(Member.class));
+        verify(service, times(1)).create(notNull());
+        verify(service, times(1)).create(isNotNull());
     }
 
     @Test
@@ -83,10 +87,33 @@ public class MemberControllerTests {
 
         /* act & assert */
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/member/{memberId}", member.getId())
+                get("/api/member/{memberId}", member.getId())
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("ORG-KIMBS-VERSION", "v1")
                 .content(mapper.writeValueAsString(member)))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(status().isNotFound());
+
+        verify(service, times(1)).findById(member.getId());
+    }
+
+    @Test
+    public void test() throws Exception {
+        /* arrange */
+        Member member = new Member();
+        member.setId(Long.MAX_VALUE);
+        member.setScore(100);
+        member.setName("kbs");
+        member.setEmail("kbs0711@humuson.com");
+
+        when(service.findById(member.getId())).thenReturn(member);
+
+        /* act & assert*/
+        mockMvc.perform(
+                get("/api/member/{memberId}", member.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("ORG-KIMBS-VERSION", "v1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(member)));
 
         verify(service, times(1)).findById(member.getId());
     }

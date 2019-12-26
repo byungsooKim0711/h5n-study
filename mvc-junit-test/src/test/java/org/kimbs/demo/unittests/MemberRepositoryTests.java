@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -82,5 +83,32 @@ public class MemberRepositoryTests {
                 () -> assertEquals(member1, actual.get(0)),
                 () -> assertEquals(member2, actual.get(1))
         );
+    }
+
+    @Test
+    public void testFindByName() {
+        /* arrange */
+        Member member1 = new Member();
+        member1.setScore(100);
+        member1.setName("kim");
+        member1.setEmail("kbs0711@humuson.com");
+
+        Member member2 = new Member();
+        member2.setScore(77);
+        member2.setName("lee");
+        member2.setEmail("hong@hong.hong");
+
+        Member member3 = new Member();
+        member3.setScore(77);
+        member3.setName("kim");
+        member3.setEmail("hong@hong.hong");
+
+        repository.saveAndFlush(member1);
+        repository.saveAndFlush(member2);
+        repository.saveAndFlush(member3);
+
+        List<Member> actual = repository.findByName("kim");
+
+        assertThat(actual).hasSize(2).contains(member1, member3);
     }
 }
