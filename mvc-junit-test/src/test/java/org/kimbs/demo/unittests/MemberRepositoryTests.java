@@ -107,7 +107,7 @@ public class MemberRepositoryTests {
         repository.saveAndFlush(member2);
         repository.saveAndFlush(member3);
 
-        List<Member> actual = repository.findByName("kim");
+        List<Member> actual = repository.findMemberByName("kim");
 
         assertThat(actual).hasSize(2).contains(member1, member3);
     }

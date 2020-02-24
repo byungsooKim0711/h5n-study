@@ -101,10 +101,9 @@ public class MemberQueryDslTests {
     }
 
     @Test
-    public void test() throws Exception {
+    public void testQueryDslExample() throws Exception {
         /* arrange */
         QMember qMember = QMember.member;
-        qMember.name.like("%수");
 
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(qMember.name.like("%수%"));
@@ -136,5 +135,38 @@ public class MemberQueryDslTests {
                 .collect(Collectors.toList());
 
         Assertions.assertIterableEquals(expectedSortedList, actualMemberList);
+    }
+
+    @Test
+    public void testMemberCustomRepositoryFindMemberByEmail() throws Exception {
+        // arrange
+
+        // act
+        List<Member> actual = repository.findMemberByEmail("kbs0711@humuson.com");
+
+        // assert
+        assertThat(actual).hasSize(1).contains(db.get(0));
+    }
+
+    @Test
+    public void testMemberCustomRepositoryFindMemberByName() throws Exception {
+        // arrange
+
+        // act
+        List<Member> actual = repository.findMemberByName("김병수");
+
+        // assert
+        assertThat(actual).hasSize(2).contains(db.get(0), db.get(3));
+    }
+
+    @Test
+    public void testMemberCustomRepositoryFindMemberByScoreGreaterThanEqual() throws Exception {
+        // arrange
+
+        // act
+        List<Member> actual = repository.findMemberByScoreGreaterThanEqual(50);
+
+        // assert
+        assertThat(actual).hasSize(5).contains(db.get(0), db.get(1), db.get(4), db.get(7), db.get(9));
     }
 }
