@@ -11,3 +11,8 @@
 
 ---
 - QueryDsl 연습
+> https://docs.spring.io/spring-data/jpa/docs/2.2.1.RELEASE/reference/html/#repositories.custom-implementations
+> The most important part of the class name that corresponds to the fragment interface is the Impl postfix.
+>
+- 문서대로 네이밍 규칙을 지켜서 사용.
+- 복잡한 쿼리들을 MemberCustomRepositoryImpl 애 구현하고 MemberRepository 주입해서 사용.
