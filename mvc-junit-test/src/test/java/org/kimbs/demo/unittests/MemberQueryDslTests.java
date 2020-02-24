@@ -3,6 +3,7 @@ package org.kimbs.demo.unittests;
 import com.querydsl.core.BooleanBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kimbs.demo.model.Member;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -168,5 +170,35 @@ public class MemberQueryDslTests {
 
         // assert
         assertThat(actual).hasSize(5).contains(db.get(0), db.get(1), db.get(4), db.get(7), db.get(9));
+    }
+
+    @Test
+    public void testMemberCustomRepositoryFindMemberById() throws Exception {
+        // arrange
+
+        // act
+        Optional<Member> actual = repository.findMemberById(db.get(0).getId());
+
+        // assert
+        Assertions.assertEquals(db.get(0), actual.get());
+    }
+
+    @Test
+    @DisplayName("이름에 수가 들어가는 인원들을 이름으로 오름처순 정렬, 같은 이름에 대해서는 점수로 내림차순 정렬")
+    public void testContainingAndOrderBy() throws Exception {
+        // arrange
+
+        // act
+        List<Member> actualMemberList = repository.findMemberByNameContainingOrderByNameAscAndOrderByScoreDesc("수");
+
+        // assert
+
+        List<Member> expectedSortedList = db.stream()
+                .filter(m -> m.getName().contains("수"))
+                .sorted(Comparator.comparing(Member::getName)
+                        .thenComparing(Member::getScore, Comparator.reverseOrder()))
+                .collect(Collectors.toList());
+
+        Assertions.assertIterableEquals(expectedSortedList, actualMemberList);
     }
 }
