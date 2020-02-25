@@ -69,13 +69,49 @@ public class MemberValidationParameterizedTests {
     }
 
     static Stream<Arguments> abnormalMembers() {
+        Member m1 = new Member();
+        m1.setId(1L);
+        m1.setName("Kim");
+        m1.setEmail("Kim");
+        m1.setScore(111111);
+
+        Member m2 = new Member();
+        m2.setId(2L);
+        m2.setName("Lee");
+        m2.setEmail("Lee@test.test");
+        m2.setScore(9999);
+
+        Member m3 = new Member();
+        m3.setId(3L);
+        m3.setName("Park");
+        m3.setEmail("Park");
+        m3.setScore(111111);
+
+        Member m4 = new Member();
+        m4.setId(4L);
+        m4.setName("Choi");
+        m4.setEmail("Choi@test.test");
+        m4.setScore(1234567890);
+
+        Member m5 = new Member();
+        m5.setId(5L);
+        m5.setName("Yang");
+        m5.setEmail("YangTest.est");
+        m5.setScore(1234567890);
+
+        Member m6 = new Member();
+        m6.setId(6L);
+        m6.setName("Test");
+        m6.setEmail("Test@test,est");
+        m6.setScore(777777777);
+
         return Stream.of(
-                Arguments.of(new Member(1L, "Kim", "Kim", 111111)),
-                Arguments.of(new Member(2L, "Lee", "Lee@test.test", -9999)),
-                Arguments.of(new Member(3L, "Park", "Park", 9999)),
-                Arguments.of(new Member(4L, "Choi", "Choi@test.test", 1234567890)),
-                Arguments.of(new Member(5L, "Yang", "YangTest.est", -1234567890)),
-                Arguments.of(new Member(6L, "Test", "Test@test,est", 777777777))
+                Arguments.of(m1),
+                Arguments.of(m2),
+                Arguments.of(m3),
+                Arguments.of(m4),
+                Arguments.of(m5),
+                Arguments.of(m6)
         );
     }
 
@@ -97,9 +133,20 @@ public class MemberValidationParameterizedTests {
     }
 
     static Stream<Arguments> wrongEmailFormatMembers() {
+        Member m1 = new Member();
+        m1.setId(1L);
+        m1.setName("Kim");
+        m1.setEmail("Kim");
+        m1.setScore(100);
+
+        Member m2 = new Member();
+        m2.setId(2L);
+        m2.setName("Lee");
+        m2.setEmail("Lee@test,test");
+        m2.setScore(100);
         return Stream.of(
-                Arguments.of(new Member(1L, "Kim", "Kim", 100)),
-                Arguments.of(new Member(2L, "Lee", "Lee@test,test", 100))
+                Arguments.of(m1),
+                Arguments.of(m2)
         );
     }
 }

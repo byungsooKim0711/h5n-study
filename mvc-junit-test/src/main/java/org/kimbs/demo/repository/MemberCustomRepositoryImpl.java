@@ -57,7 +57,6 @@ class MemberCustomRepositoryImpl extends QuerydslRepositorySupport implements Me
         return from(qMember)
             .where(qMember.name.contains(name))
             .orderBy(qMember.name.asc(), qMember.score.desc())
-            .limit(10)
             .fetch();
     }
 }
