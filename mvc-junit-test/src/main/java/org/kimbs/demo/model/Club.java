@@ -5,6 +5,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @ToString
@@ -15,7 +17,7 @@ import javax.validation.constraints.NotEmpty;
 public class Club {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "NAME")
@@ -30,4 +32,8 @@ public class Club {
     @Length(max = 20, message = "Should be telephoneNumber field length less than 20")
     @Column(name = "TELEPHONE_NUMBER")
     private String telephoneNumber;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "club")
+    private List<Member> members = new ArrayList<>();
+
 }

@@ -18,7 +18,7 @@ import javax.validation.constraints.NotEmpty;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "NAME")
@@ -37,10 +37,15 @@ public class Member {
 
     // 동아리 그룹 ID
     @Column(name = "CLUB_ID")
-    private long clubId;
+    private Long clubId;
 
 
-//    @OneToMany
-//    @JoinColumn(name = "groupId", foreignKey = @ForeignKey(name = "fk_member_group"))
-//    private Club club;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "CLUB_ID",
+            referencedColumnName ="id",
+            updatable = false,
+            insertable = false,
+            foreignKey = @ForeignKey(name = "fk_member_club"))
+    private Club club;
 }
