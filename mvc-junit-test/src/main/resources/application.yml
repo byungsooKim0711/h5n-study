@@ -1,3 +1,18 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
+    hikari:
+#      jdbc-url: jdbc:h2:mem://localhost/~/acquire;MODE=MYSQL
+      jdbc-url: jdbc:h2:mem://localhost/~/acquire;MODE=Oracle
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+
+  jpa:
+    show-sql: true
+    ddl-auto: 'create-drop'
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
