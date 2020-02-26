@@ -1,6 +1,7 @@
 package org.kimbs.demo.repository;
 
 import org.kimbs.demo.model.Member;
+import org.kimbs.demo.model.QClub;
 import org.kimbs.demo.model.QMember;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -57,6 +58,27 @@ class MemberCustomRepositoryImpl extends QuerydslRepositorySupport implements Me
         return from(qMember)
             .where(qMember.name.contains(name))
             .orderBy(qMember.name.asc(), qMember.score.desc())
+            .fetch();
+    }
+
+    @Override
+    public List<Member> findAllMemberInnerJoinClub() {
+        QMember qMember = QMember.member;
+        return from(qMember)
+            .innerJoin(QClub.club)
+            .on(qMember.clubId.eq(QClub.club.id))
+            .fetch();
+    }
+
+    @Override
+    public List<Member> findMemberByClubNameInnerJoinClub(String clubName) {
+        QMember qMember = QMember.member;
+        QClub qClub = QClub.club;
+
+        return from(qMember)
+            .innerJoin(qClub)
+            .on(qMember.clubId.eq(qClub.id))
+            .where(qClub.name.eq(clubName))
             .fetch();
     }
 }

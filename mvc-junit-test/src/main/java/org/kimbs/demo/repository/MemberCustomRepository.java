@@ -15,4 +15,8 @@ public interface MemberCustomRepository {
     Optional<Member> findMemberById(long id);
 
     List<Member> findMemberByNameContainingOrderByNameAscAndOrderByScoreDesc(String name);
+
+    List<Member> findAllMemberInnerJoinClub();
+
+    List<Member> findMemberByClubNameInnerJoinClub(String clubName);
 }
