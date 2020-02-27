@@ -40,7 +40,7 @@ public class Member {
     private Long clubId;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "CLUB_ID",
             referencedColumnName ="id",

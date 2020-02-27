@@ -8,6 +8,5 @@ import java.util.Optional;
 public interface ClubCustomRepository {
     public Optional<Club> findAllByMemberId(long memberId);
 
-    public List<Club> findAllClubLeftOuterJoinMember();
-
+    public List<Club> dynamicQuery(String name, String office, String telephoneNumber);
 }

@@ -1,10 +1,12 @@
 package org.kimbs.demo.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import org.kimbs.demo.model.Club;
 import org.kimbs.demo.model.QClub;
 import org.kimbs.demo.model.QMember;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,14 +33,22 @@ public class ClubCustomRepositoryImpl extends QuerydslRepositorySupport implemen
         );
     }
 
-    @Override
-    public List<Club> findAllClubLeftOuterJoinMember() {
-        QMember qMember = QMember.member;
+    public List<Club> dynamicQuery(String name, String office, String telephoneNumber) {
         QClub qClub = QClub.club;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        if (!StringUtils.isEmpty(name)) {
+            booleanBuilder.and(qClub.name.eq(name));
+        }
+        if (!StringUtils.isEmpty(office)) {
+            booleanBuilder.and(qClub.office.eq(office));
+        }
+        if (!StringUtils.isEmpty(telephoneNumber)) {
+            booleanBuilder.and(qClub.telephoneNumber.eq(telephoneNumber));
+        }
 
         return from(qClub)
-                .leftJoin(qMember)
-                .on(qMember.clubId.eq(qClub.id))
+                .where(booleanBuilder)
                 .fetch();
     }
 }

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -69,15 +70,13 @@ public class ClubQueryDslTests {
     }
 
     @Test
-    public void test() throws Exception {
+    public void testDynamicQueryWithName() throws Exception {
         // arrange
 
         // act
-        List<Club> a = clubRepository.findAll();
-        for(Club c : a) {
-            System.out.println(c);
-        }
+        List<Club> actual = clubRepository.dynamicQuery("탁구", "", null);
 
         // assert
+        assertThat(actual).hasSize(1);
     }
 }

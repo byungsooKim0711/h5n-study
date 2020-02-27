@@ -33,7 +33,7 @@ public class Club {
     @Column(name = "TELEPHONE_NUMBER")
     private String telephoneNumber;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "club")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "club")
     private List<Member> members = new ArrayList<>();
 
 }
