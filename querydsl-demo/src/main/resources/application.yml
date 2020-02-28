@@ -1,15 +1,18 @@
 
 spring:
   datasource:
-    hikari:
-      jdbc-url: jdbc:h2:mem://localhost/~/acquire;MODE=MYSQL
-      username: sa
-      password:
-      driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/querydsl?autoReconnect=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 1234
 
   jpa:
+    database: mysql
     show-sql: true
-    ddl-auto: 'create-drop'
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: 'create-drop'
+    generate-ddl: true
 
 logging:
   level:
