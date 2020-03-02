@@ -14,7 +14,6 @@ import javax.persistence.*;
  */
 @Entity(name = "STUDENT")
 @Getter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Student {
 
@@ -46,5 +45,4 @@ public class Student {
     public void setDepartment(Department department) {
         this.department = department;
     }
-
 }

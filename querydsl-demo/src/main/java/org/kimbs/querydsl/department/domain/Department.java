@@ -14,7 +14,6 @@ import java.util.List;
  */
 @Entity(name = "DEPARTMENT")
 @Getter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Department {
 

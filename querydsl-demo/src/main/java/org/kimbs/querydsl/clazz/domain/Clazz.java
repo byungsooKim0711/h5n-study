@@ -1,8 +1,10 @@
 package org.kimbs.querydsl.clazz.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.kimbs.querydsl.professor.domain.Professor;
 
 import javax.persistence.*;
 
@@ -16,9 +18,9 @@ import javax.persistence.*;
  * professorId: 담당 교수 아이디
  * courseId: 개설강좌 아이디
  */
-@Entity
+@Entity(name = "CLAZZ")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Clazz {
 
     @Id
@@ -50,7 +52,19 @@ public class Clazz {
         this.enroll = enroll;
     }
 
-    private Long professorId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROFESSOR_ID", foreignKey = @ForeignKey(name = "FK_CLASS_PROFESSOR"))
+    private Professor professor;
 
-    private Long courseId;
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COURSE_ID", foreignKey = @ForeignKey(name = "FK_CLAZZ_COURSE"))
+    private Course course;
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }

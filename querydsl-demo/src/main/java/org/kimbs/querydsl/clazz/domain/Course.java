@@ -1,5 +1,6 @@
 package org.kimbs.querydsl.clazz.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,9 @@ import javax.persistence.*;
  * title: 강좌 제목
  * credit: 강좌 학점
  */
-@Entity
+@Entity(name = "COURSE")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Course {
 
     @Id
