@@ -40,7 +40,7 @@ public class Student {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DEPARTMENT_ID", foreignKey = @ForeignKey(name = "FK_STUDENT_MEMBER"))
+    @JoinColumn(name = "DEPARTMENT_ID", foreignKey = @ForeignKey(name = "FK_STUDENT_DEPARTMENT"))
     private Department department;
 
     public void setDepartment(Department department) {
