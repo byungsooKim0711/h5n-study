@@ -35,7 +35,7 @@ public class Department {
         this.office = office;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Department.class)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "department")
     private List<Student> students = new ArrayList<>();
 
     public void addStudents(List<Student> students) {
