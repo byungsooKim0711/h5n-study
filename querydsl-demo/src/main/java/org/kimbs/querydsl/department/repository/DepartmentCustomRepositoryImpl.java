@@ -1,11 +1,13 @@
 package org.kimbs.querydsl.department.repository;
 
+import com.querydsl.core.dml.InsertClause;
 import org.kimbs.querydsl.department.domain.Department;
-import org.kimbs.querydsl.department.domain.QDepartment;
-import org.kimbs.querydsl.student.domain.QStudent;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
+
+import static org.kimbs.querydsl.department.domain.QDepartment.department;
+import static org.kimbs.querydsl.student.domain.QStudent.student;
 
 public class DepartmentCustomRepositoryImpl extends QuerydslRepositorySupport implements DepartmentCustomRepository {
 
@@ -15,14 +17,14 @@ public class DepartmentCustomRepositoryImpl extends QuerydslRepositorySupport im
 
     @Override
     public List<Department> findDepartmentFetchJoinStudent() {
-        QDepartment department = QDepartment.department;
-        QStudent student = QStudent.student;
 
-        // fetch join 이라는 것을 이렇게 쓰는 것인가..?
-        // 중복 데이터 노출은 어떻게 해결하는 것인가..?
+        /*
+            TODO: fetch join 을 했을 경우 중복으로 노출되는 데이터는 어쩔 수 없는 것인가?
+         */
         return from(department)
                 .leftJoin(department.students, student)
                 .fetchJoin()
+                .distinct()
                 .fetch();
     }
 }
