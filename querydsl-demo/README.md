@@ -14,6 +14,7 @@
 
 - 기타
   > JPAQueryFactory를 꼭 이용해야 하는가? QueryDslRepositorySupport랑은 무슨 연관관계가?
+  > 애그리거트 공부
 ```
 
 ---
@@ -34,18 +35,26 @@
 ---
 **설정**
 ```yaml
-jpa:
-  database: mysql
-  show-sql: true
-  # DBMS 방언 설정
-  database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-  # 운영에서는 ddl-auto 옵션을 none으로
-  hibernate:
-    ddl-auto: 'create-drop'
-  generate-ddl: true
-  # Hibernate: 쿼리를 보기좋게 보여줌
-  properties:
-    hibernate.format_sql: true
+spring:
+  datasource:
+    # mysql version >= 6.x.x driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/querydsl?autoReconnect=true&useSSL=false&serverTimezone=UTC
+    username: 
+    password: 
+
+  jpa:
+    database: mysql
+    show-sql: true
+    # mysql 8 버전 방언에 맞추고 innodb 사용
+    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
+    # 운영시에는 ddl-auto 옵션을 none
+    hibernate:
+      ddl-auto: 'create-drop'
+    generate-ddl: true
+    # Hibernate: 쿼리를 보기좋게 보여줌
+    properties:
+      hibernate.format_sql: true
 
 # hibernate logging level을 trace로 설정하면 바인딩(binding) 되는 값과 추출(extracted)되는 값을 볼 수 있음.
 logging:
@@ -53,4 +62,5 @@ logging:
     org:
       hibernate:
         type: trace
+
 ```
