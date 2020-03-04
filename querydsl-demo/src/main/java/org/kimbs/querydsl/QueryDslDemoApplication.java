@@ -148,18 +148,18 @@ public class QueryDslDemoApplication {
 		 * grade >= 60 D
 		 * grade < 60 F
 		 */
-		Takes t1 = Takes.builder().id(new TakesId(s1.getId(), clazz1.getId())).grade("87").build();
-		Takes t2 = Takes.builder().id(new TakesId(s1.getId(), clazz3.getId())).grade("99").build();
-		Takes t3 = Takes.builder().id(new TakesId(s1.getId(), clazz7.getId())).grade("90").build();
-		Takes t4 = Takes.builder().id(new TakesId(s2.getId(), clazz2.getId())).grade("90").build();
-		Takes t5 = Takes.builder().id(new TakesId(s2.getId(), clazz3.getId())).grade("88").build();
-		Takes t6 = Takes.builder().id(new TakesId(s2.getId(), clazz9.getId())).grade("76").build();
-		Takes t7 = Takes.builder().id(new TakesId(s3.getId(), clazz4.getId())).grade("83").build();
-		Takes t8 = Takes.builder().id(new TakesId(s3.getId(), clazz6.getId())).grade("99").build();
-		Takes t9 = Takes.builder().id(new TakesId(s4.getId(), clazz2.getId())).grade("76").build();
-		Takes t10 = Takes.builder().id(new TakesId(s5.getId(), clazz2.getId())).grade("70").build();
-		Takes t11 = Takes.builder().id(new TakesId(s5.getId(), clazz4.getId())).grade("89").build();
-		Takes t12 = Takes.builder().id(new TakesId(s5.getId(), clazz5.getId())).grade("12").build();
+		Takes t1 = Takes.builder().id(new TakesId(s1.getId(), clazz1.getId())).grade(87).build();
+		Takes t2 = Takes.builder().id(new TakesId(s1.getId(), clazz3.getId())).grade(99).build();
+		Takes t3 = Takes.builder().id(new TakesId(s1.getId(), clazz7.getId())).grade(90).build();
+		Takes t4 = Takes.builder().id(new TakesId(s2.getId(), clazz2.getId())).grade(90).build();
+		Takes t5 = Takes.builder().id(new TakesId(s2.getId(), clazz3.getId())).grade(88).build();
+		Takes t6 = Takes.builder().id(new TakesId(s2.getId(), clazz9.getId())).grade(76).build();
+		Takes t7 = Takes.builder().id(new TakesId(s3.getId(), clazz4.getId())).grade(83).build();
+		Takes t8 = Takes.builder().id(new TakesId(s3.getId(), clazz6.getId())).grade(99).build();
+		Takes t9 = Takes.builder().id(new TakesId(s4.getId(), clazz2.getId())).grade(76).build();
+		Takes t10 = Takes.builder().id(new TakesId(s5.getId(), clazz2.getId())).grade(70).build();
+		Takes t11 = Takes.builder().id(new TakesId(s5.getId(), clazz4.getId())).grade(89).build();
+		Takes t12 = Takes.builder().id(new TakesId(s5.getId(), clazz5.getId())).grade(12).build();
 
 		takesRepository.saveAll(Arrays.asList(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12));
 	}

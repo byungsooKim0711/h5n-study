@@ -22,10 +22,10 @@ public class Takes {
     private TakesId id;
 
     @Column(name = "GRADE", length = 2)
-    private String grade;
+    private int grade;
 
     @Builder
-    public Takes(TakesId id, String grade) {
+    public Takes(TakesId id, int grade) {
         this.id = id;
         this.grade = grade;
     }
