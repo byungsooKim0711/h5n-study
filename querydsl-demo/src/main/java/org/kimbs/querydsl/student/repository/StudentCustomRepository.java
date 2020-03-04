@@ -7,4 +7,6 @@ import java.util.List;
 public interface StudentCustomRepository {
 
     List<Student> findStudentNameAndAddressAndYearDynamicQuery(String name, String address, Integer year);
+
+    List<Student> findStudentByUnassignedDepartment();
 }

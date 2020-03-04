@@ -1,5 +1,7 @@
 package org.kimbs.querydsl.student.repository;
 
+import org.assertj.core.groups.Tuple;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kimbs.querydsl.student.domain.Student;
@@ -20,6 +22,7 @@ public class StudentRepositoryTests {
     StudentRepository studentRepository;
 
     @Test
+    @DisplayName("이름이 김현정인 학생들 찾기")
     void test() throws Exception {
         // arrange
 
@@ -31,6 +34,7 @@ public class StudentRepositoryTests {
     }
 
     @Test
+    @DisplayName("이름이 김현정이고 대구사는 학생들 찾기")
     void test1() throws Exception {
         // arrange
 
@@ -46,6 +50,7 @@ public class StudentRepositoryTests {
     }
 
     @Test
+    @DisplayName("4학년인 학생들 찾기")
     void test2() throws Exception {
         // arrange
 
@@ -53,6 +58,20 @@ public class StudentRepositoryTests {
         List<Student> actual = studentRepository.findStudentNameAndAddressAndYearDynamicQuery(null, null, 4);
 
         // assert
-        assertEquals(2, actual.size());
+        assertEquals(3, actual.size());
+    }
+
+    @Test
+    @DisplayName("학과가 아직 정해지지 않은 학생들 찾기")
+    void test3() throws Exception {
+        // arrange
+
+        // act
+        List<Student> actual = studentRepository.findStudentByUnassignedDepartment();
+
+        // assert
+        assertThat(actual).hasSize(1)
+                .extracting("name", "address", "year", "department")
+                .contains(Tuple.tuple("김병수", "인천", 4, null));
     }
 }

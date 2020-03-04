@@ -33,4 +33,11 @@ public class StudentCustomRepositoryImpl extends QuerydslRepositorySupport imple
                 .where(booleanBuilder)
                 .fetch();
     }
+
+    @Override
+    public List<Student> findStudentByUnassignedDepartment() {
+        return from(student)
+                .where(student.department.id.isNull())
+                .fetch();
+    }
 }

@@ -68,6 +68,7 @@ public class QueryDslDemoApplication {
 		Student s6 = Student.builder().name("김우주").address("부산").year(4).build();
 		Student s7 = Student.builder().name("박철수").address("대전").year(3).build();
 		Student s8 = Student.builder().name("백태성").address("서울").year(3).build();
+		Student s9 = Student.builder().name("김병수").address("인천").year(4).build();
 
 		d1.addStudents(Arrays.asList(s1, s2, s3));
 		d2.addStudents(Arrays.asList(s4, s5, s6));
@@ -83,7 +84,7 @@ public class QueryDslDemoApplication {
 		s8.setDepartment(d3);
 
 		departmentRepository.saveAll(Arrays.asList(d1, d2, d3, d4));
-		studentRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6, s7, s8));
+		studentRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6, s7, s8, s9));
 
 		Professor p1 = Professor.builder().name("이태규").position("교수").yearEmp(1997).build();
 		Professor p2 = Professor.builder().name("고희석").position("부교수").yearEmp(2003).build();

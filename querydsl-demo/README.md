@@ -9,6 +9,7 @@
 - JPA
   > 관계 옵션들 자세히 공부
   > EntityManager와 PersistenceContext 자세히 공부
+  > Paging 쿼리 공부
   > ...
 
 - 기타
