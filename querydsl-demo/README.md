@@ -10,6 +10,9 @@
   > 관계 옵션들 자세히 공부
   > EntityManager와 PersistenceContext 자세히 공부
   > ...
+
+- 기타
+  > JPAQueryFactory를 꼭 이용해야 하는가? QueryDslRepositorySupport랑은 무슨 연관관계가?
 ```
 
 ---
