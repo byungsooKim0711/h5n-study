@@ -123,6 +123,7 @@ public class QueryDslDemoApplication {
 		Clazz clazz8 = Clazz.builder().year(2020).semester(2).division("A").classRoom("209호").enroll(45).build();
 		Clazz clazz9 = Clazz.builder().year(2020).semester(2).division("A").classRoom("209호").enroll(30).build();
 		Clazz clazz10 = Clazz.builder().year(2020).semester(2).division("B").classRoom("103호").enroll(26).build();
+		Clazz clazz11 = Clazz.builder().year(2019).semester(1).division("K").classRoom("407호").enroll(60).build();
 
 		clazz1.setCourse(course1);  clazz1.setProfessor(p3);
 		clazz2.setCourse(course2);  clazz2.setProfessor(p1);
@@ -134,8 +135,9 @@ public class QueryDslDemoApplication {
 		clazz8.setCourse(course8);  clazz8.setProfessor(p5);
 		clazz9.setCourse(course6);  clazz9.setProfessor(p1);
 		clazz10.setCourse(course6); clazz10.setProfessor(p3);
+		clazz11.setCourse(course1); clazz11.setProfessor(p1);
 
-		clazzRepository.saveAll(Arrays.asList(clazz1, clazz2, clazz3, clazz4, clazz5, clazz6, clazz7, clazz8, clazz9, clazz10));
+		clazzRepository.saveAll(Arrays.asList(clazz1, clazz2, clazz3, clazz4, clazz5, clazz6, clazz7, clazz8, clazz9, clazz10, clazz11));
 
 		/*
 		 * grade >= 95 A+
@@ -160,8 +162,9 @@ public class QueryDslDemoApplication {
 		Takes t10 = Takes.builder().id(new TakesId(s5.getId(), clazz2.getId())).grade(70).build();
 		Takes t11 = Takes.builder().id(new TakesId(s5.getId(), clazz4.getId())).grade(89).build();
 		Takes t12 = Takes.builder().id(new TakesId(s5.getId(), clazz5.getId())).grade(12).build();
+		Takes t13 = Takes.builder().id(new TakesId(s1.getId(), clazz11.getId())).grade(99).build();
 
-		takesRepository.saveAll(Arrays.asList(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12));
+		takesRepository.saveAll(Arrays.asList(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13));
 	}
 
 	@EventListener
