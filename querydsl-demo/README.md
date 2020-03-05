@@ -5,6 +5,7 @@
 ```
 - QueryDsl
   > 복잡한 쿼리 연습
+  > delete, update ...
   > ...
 - JPA
   > 관계 옵션들 자세히 공부
@@ -15,6 +16,7 @@
 - 기타
   > JPAQueryFactory를 꼭 이용해야 하는가? QueryDslRepositorySupport랑은 무슨 연관관계가?
   > 애그리거트 공부
+  > Query Hint 사용해보기
 ```
 
 ---
@@ -31,6 +33,7 @@
 ```
 - customRepository 인터페이스 를 만들고, customRepositoryImpl 에서 customRepository 를 구현하여 사용 (규칙)
 - QueryDsl을 사용하다 보니, DBMS의 Optimizer 실행 순서와 상관없이 작성해도 동작함....(?)
+- QDomain 생성은 maven compile하면 지정한 위치에 생김
 ```
 ---
 **설정**

@@ -6,6 +6,10 @@ spring:
     username: root
     password: 1234
 
+  output:
+    ansi:
+      enabled: ALWAYS
+
   jpa:
     database: mysql
     show-sql: true
@@ -18,6 +22,5 @@ spring:
 
 logging:
   level:
-    org:
-      hibernate:
-        type: trace
+    com.querydsl.sql: trace
+    org.hibernate.type: trace
