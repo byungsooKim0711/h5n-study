@@ -1,12 +1,11 @@
 package org.kimbs.querydsl.student.repository;
 
-import com.querydsl.core.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kimbs.querydsl.student.domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -16,8 +15,7 @@ import static org.assertj.core.groups.Tuple.tuple;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
-//@DataJpaTest
+@DataJpaTest
 public class StudentRepositoryTests {
 
     @Autowired
@@ -75,11 +73,5 @@ public class StudentRepositoryTests {
         assertThat(actual).hasSize(1)
                 .extracting("name", "address", "year", "department")
                 .contains(tuple("김병수", "인천", 4, null));
-    }
-
-    @Test
-    void t() throws Exception {
-        List<Tuple> a = studentRepository.fromClauseSubQueryExample();
-        a.stream().forEach(System.out::println);
     }
 }

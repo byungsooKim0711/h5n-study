@@ -67,3 +67,59 @@ logging:
         type: trace
 
 ```
+
+---
+```java
+/*********************************************************************************************************/
+    /* Configuration */
+    @Bean
+    public com.querydsl.sql.Configuration configuration() {
+        SQLTemplates templates = MySQLTemplates.builder().build();
+        com.querydsl.sql.Configuration configuration = new com.querydsl.sql.Configuration(templates);
+        configuration.setExceptionTranslator(new SpringExceptionTranslator());
+        return configuration;
+    }
+
+    @Bean
+    public SQLQueryFactory queryFactory(DataSource dataSource) {
+        Provider<Connection> provider = new SpringConnectionProvider(dataSource);
+        return new SQLQueryFactory(configuration(), provider);
+    }
+
+    /* query example */
+    @Transactional
+    @Override
+    public List<Tuple> fromClauseSubQueryExampleWithJoin() {
+        StringExpression query1 = Expressions.stringPath("dname");
+        StringExpression query2 = Expressions.stringPath("sname");
+
+        return sqlQueryFactory.select(query1, query2)
+                .from(
+                        SQLExpressions
+                        .select(department.name.as("dname"), student.name.as("sname"))
+                        .from(department)
+                        .innerJoin(student)
+                        .on(department.id.eq(student.department.id))
+                        .orderBy(student.name.desc()).as("dual")
+                )
+                .fetch();
+    }
+
+    @Transactional
+    @Override
+    public List<Tuple> fromClauseSubQueryExample() {
+        StringExpression sName = Expressions.stringPath("STUDENT_NAME");
+        StringExpression sAddress = Expressions.stringPath("STUDENT_ADDRESS");
+
+        return sqlQueryFactory.select(sName, sAddress)
+                .from(
+                        SQLExpressions
+                        .select(student.name.as("STUDENT_NAME"), student.address.as("STUDENT_ADDRESS"))
+                        .from(student)
+                        .orderBy(student.name.desc()).as("dual")
+                )
+                .fetch();
+    }
+
+/*********************************************************************************************************/
+```
