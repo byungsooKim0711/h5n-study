@@ -26,7 +26,7 @@ public class TakesCustomRepositoryImpl extends QuerydslRepositorySupport impleme
     public List<StudentGradesByYear> getStudentGradesByYearAndConvertTakesGrade(int year) {
         return from(takes)
                 .select(
-                        Projections.bean(StudentGradesByYear.class,
+                        Projections.fields(StudentGradesByYear.class,
                                 takes.student.name.as("studentName"),
                                 takes.clazz.course.title.as("courseTitle"),
                                 takes.clazz.year.as("classOpenYear"),
@@ -65,7 +65,7 @@ public class TakesCustomRepositoryImpl extends QuerydslRepositorySupport impleme
 //                .fetch();
         return from(takes)
                 .select(
-                        Projections.bean(AverageGradeByStudent.class,
+                        Projections.fields(AverageGradeByStudent.class,
                                 ExpressionUtils.as(student.id, "studentId"),
                                 ExpressionUtils.as(student.name, "studentName"),
                                 ExpressionUtils.as(takes.grade.avg(), "averageGrade")
