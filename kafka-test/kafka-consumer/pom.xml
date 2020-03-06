@@ -11,8 +11,8 @@
 	<groupId>org.kimbs</groupId>
 	<artifactId>kafka-consumer</artifactId>
 	<version>0.0.1</version>
-	<name>demo</name>
-	<description>Kafka consumer</description>
+	<name>kafka-consumer</name>
+	<description>Kafka consumer demo</description>
 
 	<properties>
 		<java.version>1.8</java.version>

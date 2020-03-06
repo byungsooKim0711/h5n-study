@@ -11,8 +11,8 @@
 	<groupId>org.kimbs</groupId>
 	<artifactId>kafka-producer</artifactId>
 	<version>0.0.1</version>
-	<name>demo</name>
-	<description>Kafka producer</description>
+	<name>Kafka-producer</name>
+	<description>Kafka producer demo</description>
 
 	<properties>
 		<java.version>1.8</java.version>
