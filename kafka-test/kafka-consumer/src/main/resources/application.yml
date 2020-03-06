@@ -13,6 +13,7 @@ spring:
       concurrency: 5
       ack-mode: manual-immediate
       poll-timeout: 3000
+      batch: true
 
 server:
   port: 8081

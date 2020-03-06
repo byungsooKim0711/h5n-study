@@ -2,6 +2,7 @@ package org.kimbs.kafka.consumer.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.kimbs.kafka.consumer.config.handler.KafkaBatchErrorHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,9 @@ public class KafkaConfig {
 
     private final KafkaProperties kafkaProperties;
     private final KafkaBatchErrorHandler kafkaBatchErrorHandler;
+
+    @Value("${spring.kafka.listener.batch}")
+    private boolean isBatchListener;
 
     public KafkaConfig(KafkaProperties kafkaProperties, KafkaBatchErrorHandler kafkaBatchErrorHandler) {
         this.kafkaProperties = kafkaProperties;
@@ -48,8 +52,9 @@ public class KafkaConfig {
     @Bean
     ConcurrentKafkaListenerContainerFactory<Object, Object> kafkaListenerContainerFactory(ConcurrentKafkaListenerContainerFactoryConfigurer configurer) {
         ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        //
-        factory.setBatchListener(true);
+
+        factory.getContainerProperties().setAckOnError(false);
+        factory.setBatchListener(isBatchListener);
         factory.setBatchErrorHandler(kafkaBatchErrorHandler);
         configurer.configure(factory, consumerFactory());
         return factory;

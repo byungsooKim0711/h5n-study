@@ -10,7 +10,7 @@ spring:
       buffer-memory: 33554432
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      linger-ms: 2000
+      linger-ms: 500
 
 server:
   port: 8080
