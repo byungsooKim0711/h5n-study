@@ -102,12 +102,6 @@
 						</configuration>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>mysql</groupId>
-						<artifactId>mysql-connector-java</artifactId>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

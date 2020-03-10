@@ -1,6 +1,5 @@
 package org.kimbs.querydsl.department.repository;
 
-import com.querydsl.core.dml.InsertClause;
 import org.kimbs.querydsl.department.domain.Department;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
