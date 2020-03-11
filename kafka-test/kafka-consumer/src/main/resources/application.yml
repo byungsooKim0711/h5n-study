@@ -10,10 +10,10 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     listener:
-      concurrency: 5
+      concurrency: 1
       ack-mode: manual-immediate
       poll-timeout: 3000
       batch: true
 
 server:
-  port: 8081
+  port: 8082
