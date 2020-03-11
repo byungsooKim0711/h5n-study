@@ -17,6 +17,7 @@
 - Topic option들 이해
     - partition 
     - ...
+- KafkaManager 설치해보기
 ```
 ## :notebook_with_decorative_cover: complete!
 ```text
