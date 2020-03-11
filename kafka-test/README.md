@@ -1,17 +1,30 @@
 # SpringBoot, Kafka ...
-## [:book: Todo List]
+## :book: Todo List
 ```text
-- 파티셔닝은 KEY 기준으로 하는 것인가?
+- Concurrency
+    - 단순히 Listener의 쓰레드로 생각해도 되는가?
+    - 4개의 partition이 있는 topic을 concurrency가 3인 컨슈머 어플리케이션을 하나만 띄웠을 경우 성능적인 이슈가 있는가?
+        - 즉 topic의 partition의 갯수만큼 concurrency가 있어야 하거나
+        - 총 concurrency의 배수가 topic의 partition의 갯수와 일치해야 하거나..
+        - concurrency의 수 >= partition의 수 이여야 하거나... 그런게 있을까..?
 - Message Header 는 보통 어디에 활용하는가?
+- Message Key 값의 활용 용도는?
 - Custom-Header 사용 시 무조건 spring_json_header_types 는 자동으로 딸려오는 것인가?
 - Kafka 보안 공부
     - JAAS, 
     - SASL
-- Concurrency 가 2 이상일 경우 데이터 받는 순서가 깨진다? 
 - Message Header의 변환된 값 -> byte[]
 - Topic option들 이해
     - partition 
     - ...
+```
+## :notebook_with_decorative_cover: complete!
+```text
+- partition=3 인 topic에 message 전송
+    - Key 값이 null일 경우
+        > 여러개의 리스너가 소비함
+    - Key 값이 동일할 경우
+        > 하나의 리스너가 소비함 
 ```
 ## Producer
 - **application.yml**

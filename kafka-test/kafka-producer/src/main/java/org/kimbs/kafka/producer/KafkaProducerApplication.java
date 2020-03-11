@@ -31,17 +31,14 @@ public class KafkaProducerApplication {
 	@GetMapping("/send")
 	public void sendMessage() {
 		for (int i=0; i<1000; i++) {
-			// 파티셔닝을 key 기준으로 하는 것 같다..?
 			Message<String> message = MessageBuilder
-					.withPayload("" + i) // value
+					.withPayload(""+i) // value
 					.setHeader(KafkaHeaders.TOPIC, "kbs") // topic
-					.setHeader(KafkaHeaders.MESSAGE_KEY, ""+i) // key
+//					.setHeader(KafkaHeaders.MESSAGE_KEY, ""+i) // key 값이 동일하면 여러개의 컨슈머가 있어도 한쪽에서만 컨슘함..? 다르거나, null이면 여러 컨슈머가 컨슘함
 					.setHeader("X-Custom-Header", "WC1DdXN0b20tSGVhZGVy") // custom header -> spring_json_header_types 는 자동으로 딸려오는 것인가?
 					.build();
 
 			ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(message);
-//			ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send("kbs", ""+i, ""+i);
-
 			future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 				@Override
 				public void onFailure(Throwable throwable) {
