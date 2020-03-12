@@ -16,6 +16,10 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 @SpringBootApplication
 @Slf4j
 @RestController
@@ -28,13 +32,13 @@ public class KafkaProducerApplication {
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;
 
-	@GetMapping("/send")
-	public void sendMessage() {
+	@GetMapping("/send/async")
+	public void asyncSend() {
 		for (int i=0; i<1000; i++) {
 			Message<String> message = MessageBuilder
 					.withPayload(""+i) // value
 					.setHeader(KafkaHeaders.TOPIC, "kbs") // topic
-//					.setHeader(KafkaHeaders.MESSAGE_KEY, ""+i) // key 값이 동일하면 여러개의 컨슈머가 있어도 한쪽에서만 컨슘함..? 다르거나, null이면 여러 컨슈머가 컨슘함
+//					.setHeader(KafkaHeaders.MESSAGE_KEY, ""+i) // key 값이 null이면 topic의 partition에 RoundRobin 형태로 전송, null이 아니면 key값을 해싱해서 partition에 매칭되는 것에 전송
 					.setHeader("X-Custom-Header", "WC1DdXN0b20tSGVhZGVy") // custom header -> spring_json_header_types 는 자동으로 딸려오는 것인가?
 					.build();
 
@@ -52,6 +56,29 @@ public class KafkaProducerApplication {
 					log.info("[Send Message Info] Offset: {}, Topic: {}, Key: {}, Value: {}", metaData.offset(), record.topic(), record.key(), record.value());
 				}
 			});
+		}
+	}
+
+	@GetMapping("/send/sync")
+	public void syncSend() {
+		for (int i=0; i<10; i++) {
+			Message<String> message = MessageBuilder
+					.withPayload("" + i) // value
+					.setHeader(KafkaHeaders.TOPIC, "kbs")
+					.setHeader("X-Custom-Header", "WC1DdXN0b20tSGVhZGVy") // custom header -> spring_json_header_types 는 자동으로 딸려오는 것인가?
+					.build();
+
+			try {
+				// future에서 get을 호출하는 순간 blocking
+				SendResult<String, String> sendResult = kafkaTemplate.send(message).get(10, TimeUnit.SECONDS);
+				ProducerRecord<String, String> record = sendResult.getProducerRecord();
+				RecordMetadata metaData = sendResult.getRecordMetadata();
+				log.info("[Send Message Info] Offset: {}, Topic: {}, Key: {}, Value: {}", metaData.offset(), record.topic(), record.key(), record.value());
+			} catch (ExecutionException e) {
+				log.error("[ExecutionException] ", e.getCause());
+			} catch (TimeoutException | InterruptedException e) {
+				log.error("[TimeoutException | InterruptedException] ", e.getCause());
+			}
 		}
 	}
 

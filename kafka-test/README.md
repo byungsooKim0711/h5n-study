@@ -15,11 +15,18 @@
     - partition 
     - ...
 - KafkaManager 설치해보기
-- Replica 설정
-    -ISR(In Sync Replica)
+- Replica 설정 해보기
+
 ```
 ## :notebook_with_decorative_cover: complete!
 ```text
+- Producer - Kafka - Consumer
+    - Producer -> Kafka [Push 방식]
+    - Consumer <- Kafka [Poll 방식]
+- Zookeeper
+    - 메타데이터 관리
+    - 클러스터의 노드 관리
+
 - partition=3 인 topic에 message 전송
     - Key 값이 null일 경우
         > 여러개의 리스너가 소비함
@@ -42,6 +49,20 @@
     - 메시지의 시간적 순서는 토픽에 대해서는 보장되지 않는다.
     - 단, partition 안에서는 항상 보장된다.
     - 만약 순서가 중요하다면, partition을 1개로 두자?
+
+- Replica 설정
+    - Shrinking ISR(In Sync Replica)
+    - Replication의 구성원은 Leader와 Follower로 구분
+    - Leader : 읽고 쓰기
+    - Follower : Leader를 주기적으로 동기화 
+    - Replica 설정을 하다보면 데이터의 정합성 - 서비스의 영속성을 선택햐아 한다.
+        - Replica set이 전부 죽었을 경우, 가장 나중에 Leader 였던 Broker가 먼저 살아나면 데이터 손실 x
+        - 그 반대의 경우 데이터의 손실이 있을 수 있다.
+
+- Consumer 에서 Lag 란?
+    - Producer → [N개의 메시지] → Kafka → [N개의 메시지] → Consumer => LAG = 0
+    - Producer → [N개의 메시지] → Kafka → [N-M개의 메시지] → Consumer => LAG = M 
+    - 결국 LAG 이라는 지표는 Consumer가 얼마나 밀리지 않고 소비하고 있는지에 대한 지표가 된다. [LAG 모니터링이 필수]
 ```
 ## Producer
 - **application.yml**
@@ -65,13 +86,13 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       # 지정한 milliseconds 데이터 모음, batch-size 를 넘길경우 즉시 전송 
       linger-ms: 500
-      # -1, 0, 1, all(대소문자 구분)
+      # 0, 1, all(대소문자 구분)
       ## 0  : 매우 빠르지만, 파티션의 리더가 받았는지 알 수 없음
       ## 1  : 메시지 전송도 빠른편, 파티션의 리더가 받았는지 확인 가능 (강추)
-      ## all: 전송속도 가증 느림, 손실 없는 메시지 전송 가능
+      ## all: 전송속도 가증 느림, 손실 없는 메시지 전송 가능 (Follower 까지 메시지를 받았는지 확인)
       acks: all
 ```
-- **Message Send**
+- **Message Send [Asynchronous, 비동기]**
 ```java
 @SpringBootApplication
 @Slf4j
@@ -93,8 +114,6 @@ public class KafkaProducerApplication {
 
             // 비동기 전송
             ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(message);
-//            ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send("kbs", ""+i, ""+i);
-
             future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
                 @Override
                 public void onFailure(Throwable throwable) {
@@ -106,6 +125,38 @@ public class KafkaProducerApplication {
                     log.info("Send message : {}", stringStringSendResult.toString());
                 }
             });
+        }
+    }
+}
+```
+- **MessageSend [Synchronous, 동기]**
+```java
+@SpringBootApplication
+@Slf4j
+@RestController
+public class KafkaProducerApplication {
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+    public void syncSend() {
+        for (int i=0; i<10; i++) {
+            Message<String> message = MessageBuilder
+                .withPayload("" + i)
+                .setHeader(KafkaHeaders.TOPIC, "kbs")
+                .setHeader("X-Custom-Header", "WC1DdXN0b20tSGVhZGVy")
+                .build();
+
+            try {
+                // future에서 get을 호출하는 순간 blocking
+                SendResult<String, String> sendResult = kafkaTemplate.send(message).get(10, TimeUnit.SECONDS);
+                ProducerRecord<String, String> record = sendResult.getProducerRecord();
+                RecordMetadata metaData = sendResult.getRecordMetadata();
+                log.info("[Send Message Info] Offset: {}, Topic: {}, Key: {}, Value: {}", metaData.offset(), record.topic(), record.key(), record.value());
+            } catch (ExecutionException e) {
+                log.error("[ExecutionException] ", e.getCause());
+            } catch (TimeoutException | InterruptedException e) {
+                log.error("[TimeoutException | InterruptedException] ", e.getCause());
+            }
         }
     }
 }
