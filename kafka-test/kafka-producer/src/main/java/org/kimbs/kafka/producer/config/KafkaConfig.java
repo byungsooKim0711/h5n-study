@@ -42,6 +42,7 @@ public class KafkaConfig {
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, kafkaProperties.getProducer().getBufferMemory().toBytes());
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, kafkaProperties.getProducer().getKeySerializer());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, kafkaProperties.getProducer().getValueSerializer());
+        props.put(ProducerConfig.ACKS_CONFIG, kafkaProperties.getProducer().getAcks());
 
         props.put(ProducerConfig.LINGER_MS_CONFIG, lingerMs);
 

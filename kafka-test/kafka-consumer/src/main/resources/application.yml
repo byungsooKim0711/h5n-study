@@ -1,19 +1,38 @@
 
 spring:
   kafka:
+    # 카프카 설치 서버
     bootstrap-servers:
       - 127.0.0.1:9092
     consumer:
+      # 컨슈머 그룹 아이디
       group-id: kimbs
+      # 자동 커밋 설정
       enable-auto-commit: false
+      # enable-auto-commit이 true 일 경우 설정 가능
+#      auto-commit-interval:
+      # 한번에 최대로 읽을 수 있는 양
       max-poll-records: 500
+      # Key, Value Serializer
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      auto-offset-reset:
+#      client-id:
+#      fetch-max-wait:
+#      heartbeat-interval:
+      # Kafka Transaction 격리 수준
+      isolation-level: READ_COMMITTED
+
+
     listener:
+      # @KafkaListener 를 실행시키는 쓰레드의 갯수(?)
       concurrency: 1
+      # ack mode (manual-immediate, manual, batch, count, count_time, record, time)
       ack-mode: manual-immediate
       poll-timeout: 3000
+      # KafkaProperties 에는 없음 - Kafka config 에서 사용 중
       batch: true
+
 
 server:
   port: 8082
