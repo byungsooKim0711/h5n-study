@@ -218,3 +218,10 @@ public class ReportConsumer {
  - KL: @KafkaListener 개수 (0 부터 시작)
  - C : @KafkaListener 안에서 concurrency 개수 (0 부터 시작) 
 ```
+---
+- **Windows 기준 Zookeeper, Broker 실행방법**
+```renderscript
+1. [CHANGE Directory] cd C:\Users\USER\Desktop\kimbs\tools\kafka
+2. [RUN Zookeeper   ] .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+3. [RUN Broker      ] .\bin\windows\kafka-server-start.bat .\config\server.properties
+```
