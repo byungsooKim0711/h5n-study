@@ -1,5 +1,9 @@
 
 spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
   kafka:
     # 카프카 설치 서버
     bootstrap-servers:
@@ -14,8 +18,8 @@ spring:
       # 한번에 최대로 읽을 수 있는 양
       max-poll-records: 500
       # Key, Value Serializer
-      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
-      value-deserializer: org.apache.kafka.common.serialization.StringSerializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       # Consumer가 값을 읽어올 Partition에 대한 유요한 offset이 없을 때 사용된다.
       # lastest, earliest, none
 #      auto-offset-reset:
@@ -34,6 +38,9 @@ spring:
       poll-timeout: 3000
       # KafkaProperties 에는 없음 - Kafka config 에서 사용 중
       batch: true
+
+      # ListenerFactory 에서 .setBatchListener(true); 한거랑 차이점이 있을까?
+      type: BATCH
 
 
 server:

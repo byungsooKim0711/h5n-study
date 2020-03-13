@@ -14,6 +14,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.ExecutionException;
@@ -32,9 +33,9 @@ public class KafkaProducerApplication {
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;
 
-	@GetMapping("/send/async")
-	public void asyncSend() {
-		for (int i=0; i<1000; i++) {
+	@GetMapping("/send/async/{count}")
+	public void asyncSend(@PathVariable("count") int count) {
+		for (int i=0; i<count; i++) {
 			Message<String> message = MessageBuilder
 					.withPayload(""+i) // value
 					.setHeader(KafkaHeaders.TOPIC, "kbs") // topic
@@ -59,9 +60,9 @@ public class KafkaProducerApplication {
 		}
 	}
 
-	@GetMapping("/send/sync")
-	public void syncSend() {
-		for (int i=0; i<10; i++) {
+	@GetMapping("/send/sync/{count}")
+	public void syncSend(@PathVariable("count") int count) {
+		for (int i=0; i<count; i++) {
 			Message<String> message = MessageBuilder
 					.withPayload("" + i) // value
 					.setHeader(KafkaHeaders.TOPIC, "kbs")

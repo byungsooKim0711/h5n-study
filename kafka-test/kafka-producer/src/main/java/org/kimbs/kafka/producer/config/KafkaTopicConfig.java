@@ -12,7 +12,7 @@ public class KafkaTopicConfig {
     public NewTopic newTopic() {
         return TopicBuilder
                 .name("kbs")
-                .partitions(2)
+                .partitions(3)
                 // TODO: 옵션값들 이해하기...
 //                .assignReplicas()
 //                .compact()

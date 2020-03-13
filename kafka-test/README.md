@@ -64,6 +64,7 @@
     - Producer → [N개의 메시지] → Kafka → [N-M개의 메시지] → Consumer => LAG = M 
     - 결국 LAG 이라는 지표는 Consumer가 얼마나 밀리지 않고 소비하고 있는지에 대한 지표가 된다. [LAG 모니터링이 필수]
 ```
+---
 ## Producer
 - **application.yml**
 ```yaml
@@ -161,6 +162,7 @@ public class KafkaProducerApplication {
     }
 }
 ```
+---
 ## Consumer
 - **application.yml**
 ```yaml
@@ -206,4 +208,13 @@ public class ReportConsumer {
         acknowledgment.acknowledge();
     }
 }
+```
+---
+- **LOG**
+```
+[맞나?]
+1994-07-11 10:06:48.605  INFO 14552 --- [ntainer#0-1-C-1] o.s.k.l.KafkaMessageListenerContainer    : kimbs: partitions assigned: [kbs-0]
+ - [ntainer#0{:KL}-1{:C}-C-1]
+ - KL: @KafkaListener 개수 (0 부터 시작)
+ - C : @KafkaListener 안에서 concurrency 개수 (0 부터 시작) 
 ```
