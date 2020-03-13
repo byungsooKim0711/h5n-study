@@ -1,4 +1,11 @@
 # SpringBoot, Kafka ...
+---
+## 목차
+[1. Todo List](#:book:-todo-list)
+[2. Complete](#:notebook_with_decorative_cover:-complete)
+[3. Producer](#producer)
+[4. Consumer](#consumer)
+---
 ## :book: Todo List
 ```text
 - ack-mode 종류에 따른 동작 방식
@@ -219,8 +226,24 @@ public class ReportConsumer {
  - C : @KafkaListener 안에서 concurrency 개수 (0 부터 시작) 
 ```
 ---
+- **Kafka 보안**
+```text
+1. Authentication
+    - Kerberos 인증 지원
+2. Authorization
+    - Topic에 대해서 어떤 권한을 가졌는지, ACL 지원
+3. Write encryption
+    - CLIENT(Producer, Consumer) ↔ BROKER 간 SSL 지원 / BROKER간 통신도 SSL 지원
+    - Producer [→SSL→] Broker [→SSL→] Consumer
+4. Encryption at rest
+    -
+5. Audition
+    -
+```
+
+---
 - **Windows 기준 Zookeeper, Broker 실행방법**
-```renderscript
+```
 1. [CHANGE Directory] cd C:\Users\USER\Desktop\kimbs\tools\kafka
 2. [RUN Zookeeper   ] .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
 3. [RUN Broker      ] .\bin\windows\kafka-server-start.bat .\config\server.properties
