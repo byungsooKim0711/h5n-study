@@ -1,6 +1,7 @@
 package org.kimbs.querydsl.department.domain;
 
 import lombok.*;
+import org.kimbs.querydsl.config.BaseTimeEntity;
 import org.kimbs.querydsl.student.domain.Student;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity(name = "DEPARTMENT")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Department {
+public class Department extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

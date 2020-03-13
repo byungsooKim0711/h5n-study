@@ -22,9 +22,11 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.Arrays;
 
+@EnableJpaAuditing
 @SpringBootApplication
 public class QueryDslDemoApplication {
 

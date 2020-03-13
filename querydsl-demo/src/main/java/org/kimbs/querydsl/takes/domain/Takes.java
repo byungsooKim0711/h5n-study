@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.kimbs.querydsl.clazz.domain.Clazz;
+import org.kimbs.querydsl.config.BaseTimeEntity;
 import org.kimbs.querydsl.student.domain.Student;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @Entity(name = "TAKES")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Takes {
+public class Takes extends BaseTimeEntity {
 
     @EmbeddedId
     private TakesId id;

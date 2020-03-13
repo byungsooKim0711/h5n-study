@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.kimbs.querydsl.config.BaseTimeEntity;
 import org.kimbs.querydsl.department.domain.Department;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ import javax.persistence.*;
 @Entity(name = "PROFESSOR")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Professor {
+public class Professor extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
