@@ -1,18 +1,17 @@
 package org.kimbs.querydsl.professor.repository;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.kimbs.querydsl.professor.domain.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
-@ExtendWith(SpringExtension.class)
 @DataJpaTest
 public class ProfessorRepositoryTests {
 
@@ -20,6 +19,7 @@ public class ProfessorRepositoryTests {
     ProfessorRepository professorRepository;
 
     @Test
+    @DisplayName("특정 학과에 속한 교수들 찾기 (교수배정이 1명 이상 되어있는 경우)")
     void test() throws Exception {
         // arrange
 
@@ -36,6 +36,7 @@ public class ProfessorRepositoryTests {
     }
 
     @Test
+    @DisplayName("특정 학과에 속한 교수들 찾기 (신설학과여서 교수배정이 안되었을 경우)")
     void test1() throws Exception {
         // arrange
 
