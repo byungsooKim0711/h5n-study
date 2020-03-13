@@ -11,13 +11,12 @@ import org.springframework.stereotype.Service;
 public class ReportConsumer {
 
     @KafkaListener(topics = "kbs", containerFactory = "kafkaListenerContainerFactory")
-    public void consume(ConsumerRecords<String, String> list, Acknowledgment acknowledgment) throws Exception {
+    public void consume(ConsumerRecords<String, String> records, Acknowledgment acknowledgment) throws Exception {
 
-        list.forEach(record -> {
+        records.forEach(record -> {
             log.info("[Consumed Message Info] Header: {}, Partition: {}, Offset: {}, Topic: {},  Key: {}, Value: {}", record.headers(), record.partition(), record.offset(), record.topic(), record.key(), record.value());
         });
-        log.info("Consumed message size: {}", list.count());
-
+        log.info("Consumed message size: {}", records.count());
         acknowledgment.acknowledge();
     }
 }

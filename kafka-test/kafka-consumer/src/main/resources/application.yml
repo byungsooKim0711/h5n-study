@@ -29,6 +29,16 @@ spring:
       # Kafka Transaction 격리 수준
       isolation-level: READ_COMMITTED
 
+      # 여긴 좀 공부하고 추가
+#      ssl:
+#        key-password:
+#        key-store-location:
+#        key-store-password:
+#        key-store-type:
+#        protocol:
+#        trust-store-location:
+#        trust-store-password:
+#        trust-store-type:
 
     listener:
       # @KafkaListener 를 실행시키는 쓰레드의 갯수(?)

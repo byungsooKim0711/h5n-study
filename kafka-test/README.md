@@ -1,11 +1,4 @@
 # SpringBoot, Kafka ...
----
-## 목차
-[1. Todo List](#:book:-todo-list)
-[2. Complete](#:notebook_with_decorative_cover:-complete)
-[3. Producer](#producer)
-[4. Consumer](#consumer)
----
 ## :book: Todo List
 ```text
 - ack-mode 종류에 따른 동작 방식

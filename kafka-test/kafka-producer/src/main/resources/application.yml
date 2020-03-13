@@ -8,8 +8,6 @@ spring:
     bootstrap-servers:
       - 127.0.0.1:9092
     producer:
-      # 메시지 전송이 실패하면 Producer가 '예외를 발생시키기 전에' 메시지의 전송을 다시 시도하는 횟수.
-      retries: 0
       # 배치 크기
       batch-size: 1000
       # 메시지 압축 타입: none(사용안함), gzip, lz4, snappy, zstd(version >= 2.1.0 추가)
@@ -21,15 +19,31 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       # 지정한 milliseconds 동안 데이터 모음, batch-size 를 넘길경우 즉시 전송
-      linger-ms: 500
+      linger-ms: 200
+      # ??? #
+      max.in.flight.requests.per.connection: 1
+
       # qos랑 비슷한 느낌
       # 0, 1, all(대소문자 구분)
       ## 0  : 매우 빠르지만, 파티션의 리더가 받았는지 알 수 없음
       ## 1  : 메시지 전송도 빠른편, 파티션의 리더가 받았는지 확인 가능 (강추)
       ## all: 전송속도 가증 느림, 손실 없는 메시지 전송 가능
       acks: all
-#      transaction-id-prefix:
+      # 메시지 전송이 실패하면 Producer가 '예외를 발생시키기 전에' 메시지의 전송을 다시 시도하는 횟수.
+      retries: 1
+      transaction-id-prefix: KBS
 #      client-id:
+
+      # 여긴 좀 공부하고 추가
+#      ssl:
+#        key-password:
+#        key-store-location:
+#        key-store-password:
+#        key-store-type:
+#        protocol:
+#        trust-store-location:
+#        trust-store-password:
+#        trust-store-type:
 
 server:
   port: 8080
