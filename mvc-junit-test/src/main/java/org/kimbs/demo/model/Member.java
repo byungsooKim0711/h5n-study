@@ -34,18 +34,4 @@ public class Member {
     @Min(value = 0, message = "Should be score field value more than 0")
     @Max(value = 100, message = "Should be score field value less than 100")
     private int score;
-
-    // 동아리 그룹 ID
-    @Column(name = "CLUB_ID")
-    private Long clubId;
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(
-            name = "CLUB_ID",
-            referencedColumnName ="id",
-            updatable = false,
-            insertable = false,
-            foreignKey = @ForeignKey(name = "fk_member_club"))
-    private Club club;
 }

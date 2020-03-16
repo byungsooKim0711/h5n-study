@@ -42,8 +42,4 @@ public class MemberService {
         Member deleted = this.findById(id);
         memberRepository.deleteById(deleted.getId());
     }
-
-    public List<Member> findByName(String name) {
-        return memberRepository.findMemberByName(name);
-    }
 }
