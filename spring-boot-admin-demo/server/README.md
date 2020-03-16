@@ -32,12 +32,12 @@ spring:
       notify:
         mail:
           enabled: true
-            from: {example@example.com}
+          from: {example@example.com}
           to:
             - {example@example.com}
 
   mail:
-      host: {smtp.example.com}
+    host: {smtp.example.com}
     username: {smtp_username}
     password: {smtp_password}
 
