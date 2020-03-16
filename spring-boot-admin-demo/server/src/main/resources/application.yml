@@ -1,0 +1,36 @@
+################################################################################################################
+# SPRING BOOT ADMIN SERVER TEST
+################################################################################################################
+
+# Boot Admin Port#
+server:
+  port: 49000
+
+# Logging ¼³Á¤
+logging:
+  config: file:${user.dir}/logback-spring.xml
+
+
+spring:
+  boot:
+    admin:
+      ui:
+        brand: Kim-Byung-Soo
+        title: Kim-Byung-Soo
+        remember-me-enabled: true
+      notify:
+        mail:
+          enabled: true
+            from: example@example.com
+          to:
+            - example@example.com
+
+  mail:
+      host: smtp.example.com
+    username: smtp_username
+    password: smtp_password
+
+  security:
+    user:
+      name: admin
+      password: admin
