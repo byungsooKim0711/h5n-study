@@ -1,7 +1,7 @@
 # SpringBoot, JPA, QueryDSL
 
 ---
-**Todo List**
+:book: **Todo List**
 ```
 - QueryDsl
   > 복잡한 쿼리 연습
@@ -20,13 +20,31 @@
 ```
 
 ---
-**JPA**
-```
-- FetchType은 전부 LAZY로 설정
-- 1 + N 쿼리 문제는 fetch join으로 해결
-- 양방향 관계 설정을 헀을 경우 옵션 설정
--
-```
+> **JPA**
+>```
+> - FetchType은 전부 LAZY로 설정
+> - 1 + N 쿼리 문제는 fetch join으로 해결
+> - 양방향 관계 설정을 헀을 경우 옵션 설정
+> -
+> ```
+>**JPA Audition**
+>```java
+> @EnableJpaAuditing
+>
+> ///
+> @MappedSuperclass
+> @EntityListeners(AuditingEntityListener.class)
+> @Getter
+> @Setter
+> public abstract class BaseTimeEntity {
+>  
+>     @CreatedDate
+>     private LocalDateTime createdDate;
+>  
+>     @LastModifiedDate
+>     private LocalDateTime modifiedDate;
+> }
+>```
 
 ---
 **QueryDSL**
