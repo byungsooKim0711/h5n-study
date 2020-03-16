@@ -1,4 +1,4 @@
-# Spring Boot Admin Server
+# Spring Boot Admin Client-2
 
 - Enable Spring boot admin client
 
@@ -20,4 +20,13 @@ spring:
         password: admin
         instance:
           name: CLIENT-2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: when_authorized
 ```

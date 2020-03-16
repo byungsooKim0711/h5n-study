@@ -14,3 +14,12 @@ spring:
         password: admin
         instance:
           name: CLIENT-1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: when_authorized
