@@ -6,7 +6,7 @@
 server:
   port: 49000
 
-# Logging ¼³Á¤
+# Logging ì„¤ì •
 logging:
   config: file:${user.dir}/logback-spring.xml
 
