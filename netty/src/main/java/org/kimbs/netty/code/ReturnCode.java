@@ -23,13 +23,13 @@ public enum ReturnCode {
 
     private String code;
 
-    private ReturnCode(String code) {
+    ReturnCode(String code) {
         this.code = code;
     }
 
     private static Map<String, ReturnCode> map = Arrays.stream(values()).collect(Collectors.toMap(ReturnCode::getCode, Function.identity()));
 
     public static ReturnCode fromValue(String code) {
-        return Optional.ofNullable(map.get(code)).orElseThrow(() -> new IllegalArgumentException("Not exists departmentId : " + code));
+        return Optional.ofNullable(map.get(code)).orElseThrow(() -> new IllegalArgumentException("Not exists ReturnCode : " + code));
     }
 }

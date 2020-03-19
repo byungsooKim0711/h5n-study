@@ -30,13 +30,13 @@ public enum Command {
 
     private int code;
 
-    private Command(int code) {
+    Command(int code) {
         this.code = code;
     }
 
     private static Map<Integer, Command> map = Arrays.stream(values()).collect(Collectors.toMap(Command::getCode, Function.identity()));
 
     public static Command fromValue(int code) {
-        return Optional.ofNullable(map.get(code)).orElseThrow(() -> new IllegalArgumentException("Not exists departmentId : " + code));
+        return Optional.ofNullable(map.get(code)).orElseThrow(() -> new IllegalArgumentException("Not exists Command : " + code));
     }
 }
