@@ -1,6 +1,6 @@
 package org.kimbs.netty;
 
-import org.kimbs.netty.client.MessageClient;
+import org.kimbs.netty.client.auth.AuthClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,12 +15,11 @@ public class NettyDemoApplication {
 	}
 
 	@Autowired
-	private MessageClient messageClient;
+	private AuthClient authClient;
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void init() throws Exception {
-		messageClient.connect("127.0.0.1", 9000);
-//		messageClient.disconnect();
+		authClient.connect("119.207.76.90", 32000);
 	}
 
 }
