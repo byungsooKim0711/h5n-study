@@ -28,16 +28,15 @@ public class MessageClient extends AbstractClient {
 
     private final MessageInitializer messageInitializer;
     private final ClientConfig clientConfig;
+    private EventLoopGroup group = new NioEventLoopGroup(1);
 
     @EventListener
-    private void onAuthSuccessEvent(AuthSuccessEvent event) throws Exception {
+    public void onAuthSuccessEvent(AuthSuccessEvent event) throws Exception {
         this.connect(clientConfig.getImcAsAuthRes().getRsList().get(0).getRsHost(), clientConfig.getImcAsAuthRes().getRsList().get(0).getRsSendPort());
     }
 
     @Override
     protected void connect(String host, int port) throws Exception {
-        EventLoopGroup group = new NioEventLoopGroup();
-
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
@@ -47,9 +46,12 @@ public class MessageClient extends AbstractClient {
             log.info("[MESSAGE SERVER] Connection Host: {}, Port: {}", host, port);
 
             ChannelFuture future = b.connect(host, port).await();
-            this.setChannelFuture(future);
             if (future.isSuccess()) {
+                this.setChannelFuture(future);
                 this.authRequest();
+            } else {
+                log.info("[MESSAGE CLIENT] Connection Fail, Retry[Host: {}, Port: {}]", host, port);
+                this.connect(host, port);
             }
         } catch (Exception e) {
             // TODO: ERROR Handling

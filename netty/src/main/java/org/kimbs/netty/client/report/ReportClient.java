@@ -23,16 +23,15 @@ public class ReportClient extends AbstractClient {
 
     private final ReportInitializer reportInitializer;
     private final ClientConfig clientConfig;
+    private final EventLoopGroup group = new NioEventLoopGroup(1);
 
     @EventListener
-    private void onAuthSuccessEvent(AuthSuccessEvent event) throws Exception {
+    public void onAuthSuccessEvent(AuthSuccessEvent event) throws Exception {
         this.connect(clientConfig.getImcAsAuthRes().getRsList().get(0).getRsHost(), clientConfig.getImcAsAuthRes().getRsList().get(0).getRsReportPort());
     }
 
     @Override
     protected void connect(String host, int port) throws Exception {
-        EventLoopGroup group = new NioEventLoopGroup();
-
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
@@ -45,6 +44,9 @@ public class ReportClient extends AbstractClient {
             this.setChannelFuture(future);
             if (future.isSuccess()) {
                 this.authRequest();
+            } else {
+                log.info("[REPORT CLIENT] Connection Fail, Retry[Host: {}, Port: {}]", host, port);
+                this.connect(host, port);
             }
 
         } catch (Exception e) {

@@ -19,10 +19,9 @@ import org.springframework.stereotype.Component;
 public class AuthClient extends AbstractClient {
 
     private final AuthInitializer authInitializer;
+    private EventLoopGroup group = new NioEventLoopGroup(1);
 
     public void connect(String host, int port) throws Exception {
-        EventLoopGroup group = new NioEventLoopGroup();
-
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
@@ -32,9 +31,12 @@ public class AuthClient extends AbstractClient {
             log.info("[AUTH SERVER] Connection Host: {}, Port: {}", host, port);
 
             ChannelFuture future = b.connect(host, port).await();
-            this.setChannelFuture(future);
             if (future.isSuccess()) {
+                this.setChannelFuture(future);
                 this.authRequest();
+            } else {
+                log.info("[AUTH SERVER] Connection Fail, Retry[Host: {}, Port: {}]", host, port);
+                this.connect(host, port);
             }
         } catch (Exception e) {
             // TODO: ERROR Handling
