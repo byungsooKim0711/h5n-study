@@ -13,7 +13,7 @@ server:
 channel:
   client:
     auth-server:
-      host: 119.207.76.9099
+      host: 119.207.76.90
       port: 32000
     id: devimc
     password: pwdevimc
