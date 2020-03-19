@@ -2,6 +2,7 @@ package org.kimbs.netty.client.auth;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -26,6 +27,7 @@ public class AuthClient extends AbstractClient {
             Bootstrap b = new Bootstrap();
             b.group(group)
                     .channel(NioSocketChannel.class)
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, clientConfig.getTimeoutMs())
                     .handler(authInitializer);
 
             log.info("[AUTH SERVER] Connection Host: {}, Port: {}", host, port);
@@ -47,8 +49,8 @@ public class AuthClient extends AbstractClient {
     @Override
     protected void authRequest() throws Exception {
         ImcAsAuthReq option = ImcAsAuthReq.builder()
-                .clientId("devimc")
-                .clientPassword("pwdevimc")
+                .clientId(clientConfig.getId())
+                .clientPassword(clientConfig.getPassword())
                 .build();
 
         Packet<ImcAsAuthReq> packet = Packet.<ImcAsAuthReq>builder()

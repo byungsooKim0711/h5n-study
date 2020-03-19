@@ -1,0 +1,20 @@
+################################################################################
+# IMC NETTY CLIENT DEMO APPLICATION ver.0.1
+################################################################################
+
+spring:
+  application:
+    name: "IMC-NETTY-CLIENT-DEMO"
+
+server:
+  port: 8080
+
+# Client Option
+channel:
+  client:
+    auth-server:
+      host: 119.207.76.9099
+      port: 32000
+    id: devimc
+    password: pwdevimc
+    timeout-ms: 3000

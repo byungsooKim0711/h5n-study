@@ -15,7 +15,7 @@ public enum PacketStructure {
 
     private ByteBuf byteBuf;
 
-    private PacketStructure(ByteBuf byteBuf) {
+    PacketStructure(ByteBuf byteBuf) {
         this.byteBuf = byteBuf;
     }
 }

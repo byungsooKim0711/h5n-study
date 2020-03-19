@@ -1,7 +1,6 @@
 package org.kimbs.netty.client.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +11,12 @@ import org.kimbs.netty.packet.Packet;
 import org.kimbs.netty.packet.options.rs.ImcRsAuthRes;
 import org.springframework.stereotype.Component;
 
+import static io.netty.channel.ChannelHandler.Sharable;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@ChannelHandler.Sharable
+@Sharable
 public class MessageHandler extends SimpleChannelInboundHandler<Packet> {
 
     private final ObjectMapper mapper;

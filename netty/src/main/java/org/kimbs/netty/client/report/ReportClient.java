@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.client.AbstractClient;
 import org.kimbs.netty.client.auth.AuthSuccessEvent;
-import org.kimbs.netty.client.config.ClientConfig;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
 import org.kimbs.netty.packet.options.rs.ImcRsAuthReq;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Component;
 public class ReportClient extends AbstractClient {
 
     private final ReportInitializer reportInitializer;
-    private final ClientConfig clientConfig;
     private final EventLoopGroup group = new NioEventLoopGroup(1);
 
     @EventListener
@@ -58,7 +56,7 @@ public class ReportClient extends AbstractClient {
     @Override
     protected void authRequest() throws Exception {
         ImcRsAuthReq option = ImcRsAuthReq.builder()
-                .clientId("devimc")
+                .clientId(clientConfig.getId())
                 .authKey(clientConfig.getImcAsAuthRes().getAuthKey())
                 .build();
 

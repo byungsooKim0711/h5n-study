@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.client.AbstractClient;
 import org.kimbs.netty.client.auth.AuthSuccessEvent;
-import org.kimbs.netty.client.config.ClientConfig;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
 import org.kimbs.netty.packet.options.rs.ImcRsAtPushOption;
@@ -27,7 +26,6 @@ import java.util.UUID;
 public class MessageClient extends AbstractClient {
 
     private final MessageInitializer messageInitializer;
-    private final ClientConfig clientConfig;
     private EventLoopGroup group = new NioEventLoopGroup(1);
 
     @EventListener
@@ -62,7 +60,7 @@ public class MessageClient extends AbstractClient {
     @Override
     protected void authRequest() throws Exception {
         ImcRsAuthReq option = ImcRsAuthReq.builder()
-                .clientId("devimc")
+                .clientId(clientConfig.getId())
                 .authKey(clientConfig.getImcAsAuthRes().getAuthKey())
                 .build();
 

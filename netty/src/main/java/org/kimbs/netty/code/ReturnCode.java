@@ -1,7 +1,6 @@
 package org.kimbs.netty.code;
 
 import lombok.Getter;
-import org.kimbs.netty.packet.Command;
 
 import java.util.Arrays;
 import java.util.Map;

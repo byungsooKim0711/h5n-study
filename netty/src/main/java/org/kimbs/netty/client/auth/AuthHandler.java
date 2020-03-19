@@ -1,7 +1,6 @@
 package org.kimbs.netty.client.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +12,12 @@ import org.kimbs.netty.packet.options.as.ImcAsAuthRes;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+import static io.netty.channel.ChannelHandler.Sharable;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@ChannelHandler.Sharable
+@Sharable
 public class AuthHandler extends SimpleChannelInboundHandler<Packet> {
 
     private final ObjectMapper mapper;
@@ -34,6 +35,7 @@ public class AuthHandler extends SimpleChannelInboundHandler<Packet> {
                 clientConfig.setImcAsAuthRes(response);
 
                 // Auth Server 인증 성공시 Event 발생시켜 MessageClient, ReportClient 도 인증작업 시작시킨다.
+                // TODO: SUCCESS 코드 떨어지면 실행하도록.
                 log.info("[AUTH EVENT] SUCCESS!!");
                 AuthSuccessEvent event = new AuthSuccessEvent(this);
                 applicationEventPublisher.publishEvent(event);
