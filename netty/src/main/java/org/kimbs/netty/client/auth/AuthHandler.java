@@ -1,6 +1,7 @@
 package org.kimbs.netty.client.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.RequiredArgsConstructor;
@@ -8,16 +9,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.client.config.ClientConfig;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
-import org.kimbs.netty.packet.options.ImcAsAuthRes;
+import org.kimbs.netty.packet.options.as.ImcAsAuthRes;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@ChannelHandler.Sharable
 public class AuthHandler extends SimpleChannelInboundHandler<Packet> {
 
     private final ObjectMapper mapper;
     private final ClientConfig clientConfig;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Packet packet) throws Exception {
@@ -28,15 +32,15 @@ public class AuthHandler extends SimpleChannelInboundHandler<Packet> {
             case IMC_AS_AUTH_RES:
                 ImcAsAuthRes response = mapper.readValue(packet.getOptions().toString(), ImcAsAuthRes.class);
                 clientConfig.setImcAsAuthRes(response);
+
+                // Auth Server 인증 성공시 Event 발생시켜 MessageClient, ReportClient 도 인증작업 시작시킨다.
+                log.info("[AUTH EVENT] SUCCESS!!");
+                AuthSuccessEvent event = new AuthSuccessEvent(this);
+                applicationEventPublisher.publishEvent(event);
                 break;
             default:
                 throw new Exception("UnKnown Command Exception: " + command);
         }
-    }
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.kimbs.netty.packet.options;
+package org.kimbs.netty.packet.options.as;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

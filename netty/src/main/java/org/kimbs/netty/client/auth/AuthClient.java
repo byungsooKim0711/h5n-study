@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.client.AbstractClient;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
-import org.kimbs.netty.packet.options.ImcAsAuthReq;
+import org.kimbs.netty.packet.options.as.ImcAsAuthReq;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -37,11 +37,13 @@ public class AuthClient extends AbstractClient {
                 this.authRequest();
             }
         } catch (Exception e) {
+            // TODO: ERROR Handling
             e.printStackTrace();
         }
     }
 
-    private void authRequest() throws Exception {
+    @Override
+    protected void authRequest() throws Exception {
         ImcAsAuthReq option = ImcAsAuthReq.builder()
                 .clientId("devimc")
                 .clientPassword("pwdevimc")
@@ -53,6 +55,11 @@ public class AuthClient extends AbstractClient {
                 .build();
 
         getChannelFuture().channel().writeAndFlush(packet).sync();
+    }
+
+    @Override
+    protected void sendMessage(String contents) throws Exception {
+
     }
 
 }

@@ -22,7 +22,7 @@ public class MessageEncoder extends MessageToByteEncoder<Packet> {
         ByteBuf options = ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(mapper.writeValueAsString(msg.getOptions())), CharsetUtil.UTF_8);
 
         out.writeBytes(PacketStructure.STX.getByteBuf().copy());
-        out.writeInt(msg.getCommand().getCode());
+        out.writeInt(command.getCode());
         out.writeBytes(options);
         out.writeBytes(PacketStructure.ETX.getByteBuf().copy());
 

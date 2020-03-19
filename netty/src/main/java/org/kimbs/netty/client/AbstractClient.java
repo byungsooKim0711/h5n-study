@@ -6,17 +6,19 @@ public abstract class AbstractClient {
 
     private ChannelFuture channelFuture;
 
-    public abstract void connect(String host, int port) throws Exception;
-
-    public void disconnect() throws Exception {
+    protected abstract void connect(String host, int port) throws Exception;
+    protected void disconnect() throws Exception {
         this.channelFuture.channel().closeFuture().sync();
     };
 
-    public void setChannelFuture(ChannelFuture channelFuture) {
+    protected abstract void authRequest() throws Exception;
+
+    protected void setChannelFuture(ChannelFuture channelFuture) {
         this.channelFuture = channelFuture;
     }
-
-    public ChannelFuture getChannelFuture() {
+    protected ChannelFuture getChannelFuture() {
         return this.channelFuture;
     }
+
+    protected abstract void sendMessage(String contents) throws Exception;
 }
