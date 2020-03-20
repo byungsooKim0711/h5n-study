@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.client.AbstractClient;
-import org.kimbs.netty.client.auth.AuthSuccessEvent;
+import org.kimbs.netty.client.auth.event.AuthSuccessEvent;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
 import org.kimbs.netty.packet.options.rs.ImcRsAuthReq;
@@ -56,7 +56,7 @@ public class ReportClient extends AbstractClient {
     @Override
     protected void authRequest() throws Exception {
         ImcRsAuthReq option = ImcRsAuthReq.builder()
-                .clientId(clientConfig.getId())
+                .clientId(clientConfig.getAuthServer().getId())
                 .authKey(clientConfig.getImcAsAuthRes().getAuthKey())
                 .build();
 
@@ -66,10 +66,5 @@ public class ReportClient extends AbstractClient {
                 .build();
 
         getChannelFuture().channel().writeAndFlush(packet).sync();
-    }
-
-    @Override
-    protected void sendMessage(String contents) throws Exception {
-        // TODO:
     }
 }

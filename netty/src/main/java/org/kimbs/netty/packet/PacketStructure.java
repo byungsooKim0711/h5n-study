@@ -18,4 +18,9 @@ public enum PacketStructure {
     PacketStructure(ByteBuf byteBuf) {
         this.byteBuf = byteBuf;
     }
+
+    // EX) PacketStructure.STX.getPackLength;
+    public int getPacketLength() {
+        return this.byteBuf.readableBytes();
+    }
 }

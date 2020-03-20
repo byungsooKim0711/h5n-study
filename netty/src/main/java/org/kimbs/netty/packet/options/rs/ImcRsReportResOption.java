@@ -1,11 +1,12 @@
 package org.kimbs.netty.packet.options.rs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.io.Serializable;
 
-@Data
+@Getter
 public class ImcRsReportResOption implements Serializable {
 
     private static final long serialVersionUID = 3267544419908148323L;
@@ -18,4 +19,11 @@ public class ImcRsReportResOption implements Serializable {
 
     @JsonProperty("RETURN_CODE")
     private String returnCode;
+
+    @Builder
+    public ImcRsReportResOption(String msgUid, String reportType, String returnCode) {
+        this.msgUid = msgUid;
+        this.reportType = reportType;
+        this.returnCode = returnCode;
+    }
 }

@@ -26,7 +26,6 @@ public class MessageEncoder extends MessageToByteEncoder<Packet> {
         out.writeBytes(options);
         out.writeBytes(PacketStructure.ETX.getByteBuf().copy());
 
-        System.out.println(out.toString(CharsetUtil.UTF_8));
         options.release();
     }
 }

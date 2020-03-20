@@ -1,13 +1,14 @@
 package org.kimbs.netty.packet.options.rs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
 public class ImcRsAtPushReq implements Serializable {
 
     private static final long serialVersionUID = -1411390204349667800L;
@@ -17,6 +18,12 @@ public class ImcRsAtPushReq implements Serializable {
 
     @JsonProperty("SENDER_KEY")
     private String senderKey;
+
+    @Builder
+    public ImcRsAtPushReq(String reqUid, String senderKey) {
+        this.reqUid = reqUid;
+        this.senderKey = senderKey;
+    }
 
     @JsonProperty("AT_REQ_LIST")
     private List<ImcRsAtPushOption> atReqList = new ArrayList<>();

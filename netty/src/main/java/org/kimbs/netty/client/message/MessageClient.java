@@ -8,12 +8,10 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.client.AbstractClient;
-import org.kimbs.netty.client.auth.AuthSuccessEvent;
+import org.kimbs.netty.client.auth.event.AuthSuccessEvent;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
-import org.kimbs.netty.packet.options.rs.ImcRsAtPushOption;
-import org.kimbs.netty.packet.options.rs.ImcRsAtPushReq;
-import org.kimbs.netty.packet.options.rs.ImcRsAuthReq;
+import org.kimbs.netty.packet.options.rs.*;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -60,7 +58,7 @@ public class MessageClient extends AbstractClient {
     @Override
     protected void authRequest() throws Exception {
         ImcRsAuthReq option = ImcRsAuthReq.builder()
-                .clientId(clientConfig.getId())
+                .clientId(clientConfig.getAuthServer().getId())
                 .authKey(clientConfig.getImcAsAuthRes().getAuthKey())
                 .build();
 
@@ -74,10 +72,10 @@ public class MessageClient extends AbstractClient {
 
     @Override
     public void sendMessage(String contents) throws Exception {
-
-        ImcRsAtPushReq request = new ImcRsAtPushReq();
-        request.setReqUid(UUID.randomUUID().toString());
-        request.setSenderKey("289ec651a6f90359068ed3a9c0a03dd0e607b0a4");
+        ImcRsAtPushReq request = ImcRsAtPushReq.builder()
+                .reqUid(UUID.randomUUID().toString())
+                .senderKey("289ec651a6f90359068ed3a9c0a03dd0e607b0a4")
+                .build();
 
         ImcRsAtPushOption option1 = new ImcRsAtPushOption();
         option1.setMsgUid(UUID.randomUUID().toString().substring(0, 10));
@@ -91,6 +89,28 @@ public class MessageClient extends AbstractClient {
 
         Packet<ImcRsAtPushReq> packet = Packet.<ImcRsAtPushReq>builder()
                 .command(Command.IMC_RS_AT_PUSH_REQ)
+                .options(request)
+                .build();
+
+        ChannelFuture future = getChannelFuture().channel().writeAndFlush(packet).sync();
+    }
+
+    public void ftSendMessage() throws Exception {
+        ImcRsFtPushReq request = ImcRsFtPushReq.builder()
+                .reqUid(UUID.randomUUID().toString())
+                .senderKey("289ec651a6f90359068ed3a9c0a03dd0e607b0a4")
+                .build();
+
+        ImcRsFtPushOption option1 = new ImcRsFtPushOption();
+        option1.setMsgUid(UUID.randomUUID().toString().substring(0, 10));
+        option1.setPhoneNumber("821049492891");
+        option1.setContents("친구톡 테스트입니다.");
+
+        List<ImcRsFtPushOption> options = request.getFtReqList();
+        options.add(option1);
+
+        Packet<ImcRsFtPushReq> packet = Packet.<ImcRsFtPushReq>builder()
+                .command(Command.IMC_RS_FT_PUSH_REQ)
                 .options(request)
                 .build();
 

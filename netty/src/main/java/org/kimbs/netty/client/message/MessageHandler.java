@@ -10,6 +10,7 @@ import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
 import org.kimbs.netty.packet.options.rs.ImcRsAtPushRes;
 import org.kimbs.netty.packet.options.rs.ImcRsAuthRes;
+import org.kimbs.netty.packet.options.rs.ImcRsFtPushRes;
 import org.springframework.stereotype.Component;
 
 import static io.netty.channel.ChannelHandler.Sharable;
@@ -24,7 +25,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Packet> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Packet packet) throws Exception {
-        log.info("[CHANNEL READ0] CTX: {}, PACKET: {}", ctx, packet);
+        log.info("[MESSAGE CHANNEL READ0] CTX: {}, PACKET: {}", ctx, packet);
 
         Command command = packet.getCommand();
         switch (command) {
@@ -38,13 +39,22 @@ public class MessageHandler extends SimpleChannelInboundHandler<Packet> {
                 }
                 break;
             case IMC_RS_AT_PUSH_RES:
-                ImcRsAtPushRes pushRes = mapper.readValue(packet.getOptions().toString(), ImcRsAtPushRes.class);
-                if (pushRes.getReturnCode().equals(ReturnCode.SUCCESS.getCode())) {
-                    log.info("MESSAGE SEND SUCCESS: {}", pushRes.getReturnCode());
+                ImcRsAtPushRes atPushRes = mapper.readValue(packet.getOptions().toString(), ImcRsAtPushRes.class);
+                if (atPushRes.getReturnCode().equals(ReturnCode.SUCCESS.getCode())) {
+                    log.info("[AT MESSAGE SEND] SUCCESS: {}", atPushRes.getReturnCode());
                 } else {
-                    log.info("MESSAGE SEND FAIL: {}", pushRes.getReturnCode());
+                    log.info("[AT MESSAGE SEND] FAIL: {}", atPushRes.getReturnCode());
                 }
                 break;
+            case IMC_RS_FT_PUSH_RES:
+                ImcRsFtPushRes ftPushRes = mapper.readValue(packet.getOptions().toString(), ImcRsFtPushRes.class);
+                if (ReturnCode.SUCCESS.getCode().equals(ftPushRes.getReturnCode())) {
+                    log.info("[FT MESSAGE SEND] SUCCESS: {}", ftPushRes.getReturnCode());
+                } else {
+                    log.info("[FT MESSAGE SEND] FAIL: {}", ftPushRes.getReturnCode());
+                }
+                break;
+
             default:
                 throw new Exception("UnKnown Command Exception: " + command);
         }

@@ -25,5 +25,7 @@ public abstract class AbstractClient {
         return this.channelFuture;
     }
 
-    protected abstract void sendMessage(String contents) throws Exception;
+    protected void sendMessage(String contents) throws Exception {
+        // 필요하면 override 해서 사용
+    };
 }

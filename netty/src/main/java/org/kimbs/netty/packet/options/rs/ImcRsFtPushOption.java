@@ -11,7 +11,7 @@ public class ImcRsFtPushOption implements Serializable {
 
     private static final long serialVersionUID = 6904025999637954226L;
 
-    @JsonProperty("MEG_UID")
+    @JsonProperty("MSG_UID")
     private String msgUid;
 
     @JsonProperty("PHONE_NUMBER")
@@ -39,10 +39,10 @@ public class ImcRsFtPushOption implements Serializable {
     private String imgLink;
 
     @JsonProperty("AD_FLAG")
-    private String adFlag;
+    private String adFlag = "N";
 
     @JsonProperty("WIDE")
-    private String wide;
+    private String wide = "N";
 
     @JsonProperty("ATTACHMENT")
     private String attachment; // TODO: Attachment Object로 바꾸기

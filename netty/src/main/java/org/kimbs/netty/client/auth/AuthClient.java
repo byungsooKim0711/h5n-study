@@ -49,8 +49,8 @@ public class AuthClient extends AbstractClient {
     @Override
     protected void authRequest() throws Exception {
         ImcAsAuthReq option = ImcAsAuthReq.builder()
-                .clientId(clientConfig.getId())
-                .clientPassword(clientConfig.getPassword())
+                .clientId(clientConfig.getAuthServer().getId())
+                .clientPassword(clientConfig.getAuthServer().getPassword())
                 .build();
 
         Packet<ImcAsAuthReq> packet = Packet.<ImcAsAuthReq>builder()
@@ -60,10 +60,4 @@ public class AuthClient extends AbstractClient {
 
         getChannelFuture().channel().writeAndFlush(packet).sync();
     }
-
-    @Override
-    protected void sendMessage(String contents) throws Exception {
-
-    }
-
 }

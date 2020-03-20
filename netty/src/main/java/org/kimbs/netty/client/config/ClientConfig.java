@@ -21,19 +21,11 @@ public class ClientConfig {
         this.imcAsAuthRes = imcAsAuthRes;
     }
 
-    @NotBlank(message = "CLIENT_ID 를 입력해주세요.")
-    private String id;
-
-    @NotBlank(message = "CLIENT_PASSWORD 를 입력해주세요.")
-    private String password;
-
     private int timeoutMs = 5000;
 
     private AuthServer authServer;
 
     public ClientConfig(String id, String password, int timeoutMs, AuthServer authServer) {
-        this.id = id;
-        this.password = password;
         this.timeoutMs = timeoutMs;
         this.authServer = authServer;
     }
@@ -44,11 +36,20 @@ public class ClientConfig {
     public static class AuthServer {
         @Pattern(regexp = "\\b(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\\b", message = "HOST IP 정보를 다시 확인해주세요.")
         private String host;
+
         private int port;
 
-        public AuthServer(String host, int port) {
+        @NotBlank(message = "CLIENT_ID 를 입력해주세요.")
+        private String id;
+
+        @NotBlank(message = "CLIENT_PASSWORD 를 입력해주세요.")
+        private String password;
+
+        public AuthServer(String host, int port, String id, String password) {
             this.host = host;
             this.port = port;
+            this.id = id;
+            this.password = password;
         }
     }
 

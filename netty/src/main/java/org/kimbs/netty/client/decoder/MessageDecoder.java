@@ -6,6 +6,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.util.CharsetUtil;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
+import org.kimbs.netty.packet.PacketStructure;
 
 import java.util.List;
 
@@ -19,12 +20,20 @@ public class MessageDecoder extends MessageToMessageDecoder<ByteBuf> {
             return;
         }
 
-        msg.readSlice(3);
-        int command = msg.readInt();
-        ByteBuf options = msg.readSlice(length - (3 + 4 + 3));
-        msg.readSlice(3);
+        int stxLength = PacketStructure.STX.getPacketLength();
+        int commandLength = 4;
+        int etxLength = PacketStructure.ETX.getPacketLength();
 
-        Packet<Object> packet = Packet.builder().command(Command.fromValue(command)).options(options.toString(CharsetUtil.UTF_8)).build();
+        msg.readSlice(stxLength);
+        int command = msg.readInt();
+
+        ByteBuf options = msg.readSlice(length - (stxLength + commandLength + etxLength));
+        msg.readSlice(etxLength);
+
+        Packet<Object> packet = Packet.builder()
+                .command(Command.fromValue(command))
+                .options(options.toString(CharsetUtil.UTF_8))
+                .build();
 
         out.add(packet);
     }
