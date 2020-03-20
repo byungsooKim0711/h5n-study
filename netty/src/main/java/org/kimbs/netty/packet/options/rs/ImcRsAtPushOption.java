@@ -2,6 +2,7 @@ package org.kimbs.netty.packet.options.rs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.kimbs.netty.packet.options.Attachment;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class ImcRsAtPushOption implements Serializable {
     private String buttonUrl;
 
     @JsonProperty("ATTACHMENT")
-    private String attachment; //TODO: Attachment Object 만들것.
+    private Attachment attachment;
 
     @JsonProperty("RESEND_TYPE")
     private String resendType;
