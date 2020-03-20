@@ -8,6 +8,8 @@ import java.io.Serializable;
 @Data
 public class ImcRsReportResOption implements Serializable {
 
+    private static final long serialVersionUID = 3267544419908148323L;
+
     @JsonProperty("MSG_UID")
     private String msgUid;
 

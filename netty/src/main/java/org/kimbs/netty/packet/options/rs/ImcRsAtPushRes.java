@@ -9,6 +9,8 @@ import java.io.Serializable;
 @Data
 public class ImcRsAtPushRes implements Serializable {
 
+    private static final long serialVersionUID = 6468315910183170111L;
+
     @JsonProperty("REQ_UID")
     private String reqUid;
 

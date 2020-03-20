@@ -9,6 +9,8 @@ import java.io.Serializable;
 @Getter
 public class ImcRsAuthReq implements Serializable {
 
+    private static final long serialVersionUID = 204555769236705890L;
+
     @JsonProperty("CLIENT_ID")
     private String clientId;
 

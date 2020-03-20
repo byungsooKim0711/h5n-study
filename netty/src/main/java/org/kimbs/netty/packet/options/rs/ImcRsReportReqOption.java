@@ -9,6 +9,8 @@ import java.util.Map;
 @Data
 public class ImcRsReportReqOption implements Serializable {
 
+    private static final long serialVersionUID = -9217066300414678981L;
+
     @JsonProperty("MSG_UID")
     private String msgUid;
 

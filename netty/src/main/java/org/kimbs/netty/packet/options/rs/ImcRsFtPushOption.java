@@ -9,6 +9,8 @@ import java.util.Map;
 @Data
 public class ImcRsFtPushOption implements Serializable {
 
+    private static final long serialVersionUID = 6904025999637954226L;
+
     @JsonProperty("MEG_UID")
     private String msgUid;
 

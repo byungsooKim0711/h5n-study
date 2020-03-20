@@ -9,6 +9,8 @@ import java.util.Map;
 @Data
 public class ImcRsAtPushOption implements Serializable {
 
+    private static final long serialVersionUID = -8763534623906657747L;
+
     @JsonProperty("MSG_UID")
     private String msgUid;
 
