@@ -6,6 +6,13 @@ spring:
   application:
     name: "IMC-NETTY-CLIENT-DEMO"
 
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  main:
+    web-application-type: SERVLET
+
 server:
   port: 8080
 
