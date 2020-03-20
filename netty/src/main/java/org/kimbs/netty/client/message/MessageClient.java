@@ -80,16 +80,20 @@ public class MessageClient extends AbstractClient {
         request.setSenderKey("289ec651a6f90359068ed3a9c0a03dd0e607b0a4");
 
         ImcRsAtPushOption option1 = new ImcRsAtPushOption();
-        option1.setMsgUid("2");
+        option1.setMsgUid(UUID.randomUUID().toString().substring(0, 10));
         option1.setTemplateCode("A_HO_019_02_14613");
         option1.setPhoneNumber("821049492891");
-        option1.setContents(contents);
+        option1.setContents("안녕하세요 휴머스온 매장입니다. 일시적으로 주문이 급증하여 배달이 지연되고 있습니다. 최대한 빠른 시간 내에 주문하신 제품이 도착할 수 있도록 준비하겠습니다. 불편함을 드려 죄송합니다. 감사합니다.");
         option1.setResendType("NO");
 
         List<ImcRsAtPushOption> options = request.getAtReqList();
         options.add(option1);
 
-        // TODO: 전송 실패하는 이유좀 알려주라 제발 ㅜㅜㅜ
-        ChannelFuture future = getChannelFuture().channel().writeAndFlush(request).sync();
+        Packet<ImcRsAtPushReq> packet = Packet.<ImcRsAtPushReq>builder()
+                .command(Command.IMC_RS_AT_PUSH_REQ)
+                .options(request)
+                .build();
+
+        ChannelFuture future = getChannelFuture().channel().writeAndFlush(packet).sync();
     }
 }

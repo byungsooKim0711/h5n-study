@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.code.ReturnCode;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
+import org.kimbs.netty.packet.options.rs.ImcRsAtPushRes;
 import org.kimbs.netty.packet.options.rs.ImcRsAuthRes;
 import org.springframework.stereotype.Component;
 
@@ -28,12 +29,20 @@ public class MessageHandler extends SimpleChannelInboundHandler<Packet> {
         Command command = packet.getCommand();
         switch (command) {
             case IMC_RS_AUTH_RES:
-                ImcRsAuthRes response = mapper.readValue(packet.getOptions().toString(), ImcRsAuthRes.class);
+                ImcRsAuthRes authRes = mapper.readValue(packet.getOptions().toString(), ImcRsAuthRes.class);
 
-                if (response.getReturnCode().equals(ReturnCode.SUCCESS.getCode())) {
-                    log.info("[Connection Success - MESSAGE] RETURN_CODE: {} ", response.getReturnCode());
+                if (authRes.getReturnCode().equals(ReturnCode.SUCCESS.getCode())) {
+                    log.info("[Connection Success - MESSAGE] RETURN_CODE: {} ", authRes.getReturnCode());
                 } else {
-                    log.info("[Connection Fail - MESSAGE] RETURN_CODE: {}", response.getReturnCode());
+                    log.info("[Connection Fail - MESSAGE] RETURN_CODE: {}", authRes.getReturnCode());
+                }
+                break;
+            case IMC_RS_AT_PUSH_RES:
+                ImcRsAtPushRes pushRes = mapper.readValue(packet.getOptions().toString(), ImcRsAtPushRes.class);
+                if (pushRes.getReturnCode().equals(ReturnCode.SUCCESS.getCode())) {
+                    log.info("MESSAGE SEND SUCCESS: {}", pushRes.getReturnCode());
+                } else {
+                    log.info("MESSAGE SEND FAIL: {}", pushRes.getReturnCode());
                 }
                 break;
             default:
