@@ -12,7 +12,7 @@ import org.kimbs.netty.packet.PacketStructure;
 
 import java.nio.CharBuffer;
 
-public class MessageEncoder extends MessageToByteEncoder<Packet> {
+public class MessageEncoder extends MessageToByteEncoder<Packet<?>> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Packet msg, ByteBuf out) throws Exception {
