@@ -10,6 +10,7 @@ import org.kimbs.netty.client.auth.event.AuthSuccessEvent;
 import org.kimbs.netty.client.config.ClientConfig;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
+import org.kimbs.netty.packet.exception.UnknownCommandException;
 import org.kimbs.netty.packet.options.as.ImcAsAuthRes;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ import static io.netty.channel.ChannelHandler.Sharable;
 @Component
 @RequiredArgsConstructor
 @Sharable
-public class AuthHandler extends SimpleChannelInboundHandler<Packet> {
+public class AuthHandler extends SimpleChannelInboundHandler<Packet<?>> {
 
     private final ObjectMapper mapper;
     private final ClientConfig clientConfig;
@@ -34,22 +35,21 @@ public class AuthHandler extends SimpleChannelInboundHandler<Packet> {
         switch (command) {
             case IMC_AS_AUTH_RES:
                 ImcAsAuthRes response = mapper.readValue(packet.getOptions().toString(), ImcAsAuthRes.class);
-                clientConfig.setImcAsAuthRes(response);
 
                 if (response.getReturnCode() == 1000) {
                     // Auth Server 인증 성공시 Event 발생시켜 MessageClient, ReportClient 도 인증작업 시작시킨다.
-                    log.info("[AUTH EVENT] SUCCESS!!");
-                    AuthSuccessEvent event = new AuthSuccessEvent(response.getReturnCode());
+                    log.info("[SUCCESS AUTHENTICATING]");
+                    AuthSuccessEvent event = new AuthSuccessEvent(response);
                     applicationEventPublisher.publishEvent(event);
                 } else {
                     // Auth Server 인증 실패시 fail event 발생시켜 application 종료시킬 예정..
-                    log.info("[FAILURE AUTHENTICATING] with CLIENT_ID: {}, CLIENT_PASSWORD: {}", clientConfig.getAuthServer().getId(), clientConfig.getAuthServer().getPassword());
+                    log.info("[FAILURE AUTHENTICATING] WITH [CLIENT_ID: {}, CLIENT_PASSWORD: {}]", clientConfig.getAuthServer().getId(), clientConfig.getAuthServer().getPassword());
                     AuthFailureEvent event = new AuthFailureEvent(response.getReturnCode());
                     applicationEventPublisher.publishEvent(event);
                 }
                 break;
             default:
-                throw new Exception("UnKnown Command Exception: " + command);
+                throw new UnknownCommandException("UnKnown Command Exception With: " + command);
         }
     }
 

@@ -3,6 +3,7 @@ package org.kimbs.netty.controller;
 import lombok.RequiredArgsConstructor;
 import org.kimbs.netty.client.message.MessageClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,11 +16,11 @@ public class MessageController {
 
     @GetMapping("/message/at")
     public void sendAtMessage() throws Exception {
-        messageClient.sendMessage("");
+        messageClient.atSendMessage("");
     }
 
-    @GetMapping("/message/ft")
-    public void sendFtMessage() throws Exception {
-        messageClient.ftSendMessage();
+    @GetMapping("/message/ft/{message}")
+    public void sendFtMessage(@PathVariable("message") String message) throws Exception {
+        messageClient.ftSendMessage(message);
     }
 }

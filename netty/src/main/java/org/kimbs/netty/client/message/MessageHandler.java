@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.code.ReturnCode;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
+import org.kimbs.netty.packet.exception.UnknownCommandException;
 import org.kimbs.netty.packet.options.rs.ImcRsAtPushRes;
 import org.kimbs.netty.packet.options.rs.ImcRsAuthRes;
 import org.kimbs.netty.packet.options.rs.ImcRsFtPushRes;
@@ -19,7 +20,7 @@ import static io.netty.channel.ChannelHandler.Sharable;
 @RequiredArgsConstructor
 @Slf4j
 @Sharable
-public class MessageHandler extends SimpleChannelInboundHandler<Packet> {
+public class MessageHandler extends SimpleChannelInboundHandler<Packet<?>> {
 
     private final ObjectMapper mapper;
 
@@ -56,7 +57,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Packet> {
                 break;
 
             default:
-                throw new Exception("UnKnown Command Exception: " + command);
+                throw new UnknownCommandException("UnKnown Command Exception With: " + command);
         }
     }
 

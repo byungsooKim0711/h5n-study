@@ -1,17 +1,13 @@
 package org.kimbs.netty.client.message;
 
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.client.AbstractClient;
 import org.kimbs.netty.client.auth.event.AuthSuccessEvent;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
+import org.kimbs.netty.packet.options.as.ImcAsAuthRes;
 import org.kimbs.netty.packet.options.rs.*;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -19,47 +15,24 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-@Slf4j
 @RequiredArgsConstructor
 public class MessageClient extends AbstractClient {
 
     private final MessageInitializer messageInitializer;
-    private EventLoopGroup group = new NioEventLoopGroup(1);
+    private ImcAsAuthRes authRes;
 
-    @EventListener
-    public void onAuthSuccessEvent(AuthSuccessEvent event) throws Exception {
-        this.connect(clientConfig.getImcAsAuthRes().getRsList().get(0).getRsHost(), clientConfig.getImcAsAuthRes().getRsList().get(0).getRsSendPort());
+    @Override
+    @EventListener(AuthSuccessEvent.class)
+    public void onEventListener(ApplicationEvent event) throws Exception {
+        this.authRes = (ImcAsAuthRes) event.getSource();
+        super.connect(authRes.getRsList().get(0).getRsHost(), authRes.getRsList().get(0).getRsSendPort(), messageInitializer);
     }
 
     @Override
-    protected void connect(String host, int port) throws Exception {
-        try {
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-                    .channel(NioSocketChannel.class)
-                    .handler(this.messageInitializer);
-
-            log.info("[MESSAGE SERVER] Connection Host: {}, Port: {}", host, port);
-
-            ChannelFuture future = b.connect(host, port).await();
-            if (future.isSuccess()) {
-                this.setChannelFuture(future);
-                this.authRequest();
-            } else {
-                log.info("[MESSAGE CLIENT] Connection Fail, Retry[Host: {}, Port: {}]", host, port);
-                this.connect(host, port);
-            }
-        } catch (Exception e) {
-            // TODO: ERROR Handling
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void authRequest() throws Exception {
+    protected void authRequestHook() throws Exception {
         ImcRsAuthReq option = ImcRsAuthReq.builder()
                 .clientId(clientConfig.getAuthServer().getId())
-                .authKey(clientConfig.getImcAsAuthRes().getAuthKey())
+                .authKey(this.authRes.getAuthKey())
                 .build();
 
         Packet<ImcRsAuthReq> packet = Packet.<ImcRsAuthReq>builder()
@@ -67,11 +40,11 @@ public class MessageClient extends AbstractClient {
                 .options(option)
                 .build();
 
-        getChannelFuture().channel().writeAndFlush(packet).sync();
+        this.sendPacket(packet).sync();
     }
 
-    @Override
-    public void sendMessage(String contents) throws Exception {
+
+    public void atSendMessage(String contents) throws Exception {
         ImcRsAtPushReq request = ImcRsAtPushReq.builder()
                 .reqUid(UUID.randomUUID().toString())
                 .senderKey("289ec651a6f90359068ed3a9c0a03dd0e607b0a4")
@@ -92,10 +65,10 @@ public class MessageClient extends AbstractClient {
                 .options(request)
                 .build();
 
-        ChannelFuture future = getChannelFuture().channel().writeAndFlush(packet).sync();
+        super.sendPacket(packet).sync();
     }
 
-    public void ftSendMessage() throws Exception {
+    public void ftSendMessage(String message) throws Exception {
         ImcRsFtPushReq request = ImcRsFtPushReq.builder()
                 .reqUid(UUID.randomUUID().toString())
                 .senderKey("289ec651a6f90359068ed3a9c0a03dd0e607b0a4")
@@ -104,7 +77,7 @@ public class MessageClient extends AbstractClient {
         ImcRsFtPushOption option1 = new ImcRsFtPushOption();
         option1.setMsgUid(UUID.randomUUID().toString().substring(0, 10));
         option1.setPhoneNumber("821049492891");
-        option1.setContents("친구톡 테스트입니다.");
+        option1.setContents(message);
 
         List<ImcRsFtPushOption> options = request.getFtReqList();
         options.add(option1);
@@ -114,6 +87,6 @@ public class MessageClient extends AbstractClient {
                 .options(request)
                 .build();
 
-        ChannelFuture future = getChannelFuture().channel().writeAndFlush(packet).sync();
+        super.sendPacket(packet).sync();
     }
 }

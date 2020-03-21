@@ -1,7 +1,6 @@
 package org.kimbs.netty.client.config;
 
 import lombok.Getter;
-import org.kimbs.netty.packet.options.as.ImcAsAuthRes;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.validation.annotation.Validated;
@@ -13,12 +12,6 @@ import javax.validation.constraints.*;
 @ConstructorBinding
 @ConfigurationProperties(prefix = "channel.client")
 public class ClientConfig {
-
-    private ImcAsAuthRes imcAsAuthRes;
-
-    public void setImcAsAuthRes(ImcAsAuthRes imcAsAuthRes) {
-        this.imcAsAuthRes = imcAsAuthRes;
-    }
 
     private int timeoutMs = 5000;
 

@@ -1,53 +1,29 @@
 package org.kimbs.netty.client.auth;
 
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.kimbs.netty.client.AbstractClient;
 import org.kimbs.netty.packet.Command;
 import org.kimbs.netty.packet.Packet;
 import org.kimbs.netty.packet.options.as.ImcAsAuthReq;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class AuthClient extends AbstractClient {
 
     private final AuthInitializer authInitializer;
-    private EventLoopGroup group = new NioEventLoopGroup(1);
 
-    public void connect(String host, int port) throws Exception {
-        try {
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-                    .channel(NioSocketChannel.class)
-                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, clientConfig.getTimeoutMs())
-                    .handler(authInitializer);
-
-            log.info("[AUTH SERVER] Connection Host: {}, Port: {}", host, port);
-
-            ChannelFuture future = b.connect(host, port).await();
-            if (future.isSuccess()) {
-                this.setChannelFuture(future);
-                this.authRequest();
-            } else {
-                log.info("[AUTH SERVER] Connection Fail, Retry[Host: {}, Port: {}]", host, port);
-                this.connect(host, port);
-            }
-        } catch (Exception e) {
-            // TODO: ERROR Handling
-            e.printStackTrace();
-        }
+    @Override
+    @EventListener(ApplicationReadyEvent.class)
+    public void onEventListener(ApplicationEvent event) throws Exception {
+        super.connect(clientConfig.getAuthServer().getHost(), clientConfig.getAuthServer().getPort(), authInitializer);
     }
 
     @Override
-    protected void authRequest() throws Exception {
+    protected void authRequestHook() throws Exception {
         ImcAsAuthReq option = ImcAsAuthReq.builder()
                 .clientId(clientConfig.getAuthServer().getId())
                 .clientPassword(clientConfig.getAuthServer().getPassword())
@@ -58,6 +34,6 @@ public class AuthClient extends AbstractClient {
                 .options(option)
                 .build();
 
-        getChannelFuture().channel().writeAndFlush(packet).sync();
+        super.sendPacket(packet).sync();
     }
 }
