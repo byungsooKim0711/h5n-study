@@ -1,0 +1,17 @@
+################################################################################
+# SPRING BOOT, BATCH DEMO EXAMPLE
+################################################################################
+
+spring:
+  application:
+    name: "SPRING-BATCH-EXAMPLE"
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  main:
+    web-application-type: SERVLET
+
+server:
+  port: 9000
