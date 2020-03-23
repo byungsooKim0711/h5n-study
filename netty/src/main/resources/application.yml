@@ -29,3 +29,6 @@ channel:
       id: devimc
       password: pwdevimc
     timeout-ms: 3000
+    # SECONDS
+    heartbeat-interval-ms: 3000
+

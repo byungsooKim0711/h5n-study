@@ -13,12 +13,17 @@ import javax.validation.constraints.*;
 @ConfigurationProperties(prefix = "channel.client")
 public class ClientConfig {
 
-    private int timeoutMs = 5000;
+    @Min(value = 1000, message = "timeout-ms는 1000ms(1초) 보다 커야 합니다.")
+    private int timeoutMs = 5 * 1000;
+
+    @Min(value = 1000, message = "heartbeat-interval-ms는 1000ms(1초) 보다 커야 합니다.")
+    private int heartbeatIntervalMs = 3 * 1000;
 
     private AuthServer authServer;
 
-    public ClientConfig(int timeoutMs, AuthServer authServer) {
+    public ClientConfig(int timeoutMs, int heartbeatIntervalMs, AuthServer authServer) {
         this.timeoutMs = timeoutMs;
+        this.heartbeatIntervalMs = heartbeatIntervalMs;
         this.authServer = authServer;
     }
 
