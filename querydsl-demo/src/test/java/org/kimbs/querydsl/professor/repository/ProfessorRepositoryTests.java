@@ -46,4 +46,19 @@ public class ProfessorRepositoryTests {
         // assert
         Assertions.assertEquals(0, actual.size());
     }
+
+
+    // case when then 을 사용해도, 조건에 만족하는 부분은 변경되고, 조건에 만족하지 않는 부분은 기존의 값으로 그대로 업데이트...
+    // 그래서 실제로 변경되는 값은 1이지만, 컴퓨터공학과 교수를 대상으로 업데이트를 하다보니, 컴퓨터공학과 2명에대한 업데이트 값 2가 반환이 된다.
+    @Test
+    @DisplayName("2000년도(포함) 이전에 임용된 컴퓨터공학과 교수들은 주교수로 변경, 아니라면 그대로 냅둔다.")
+    void test2() throws Exception {
+        // arrange
+
+        // act
+        long actual = professorRepository.updateProfessorPositionByYear(1999, "컴퓨터공학과", "주교수");
+
+        // assert
+        Assertions.assertEquals(2, actual);
+    }
 }
