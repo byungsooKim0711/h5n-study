@@ -54,6 +54,33 @@
 - QDomain 생성은 maven compile하면 지정한 위치에 생김
 ```
 ---
+**QDomain**
+```xml
+<build>
+    <plugins>
+	    <!-- 생략 -->
+        <!-- QDomain plugin configuration... -->
+        <plugin>
+            <groupId>com.mysema.maven</groupId>
+            <artifactId>apt-maven-plugin</artifactId>
+            <version>1.1.3</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>process</goal>
+                    </goals>
+                    <configuration>
+                        <!-- Maven Compile성공 시 target/generated-sources/java 하위에 QDomain 생김 -->                        
+                        <outputDirectory>target/generated-sources/java</outputDirectory>
+                        <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+---
 **설정**
 ```yaml
 spring:

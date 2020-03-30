@@ -16,15 +16,6 @@ spring:
   main:
     web-application-type: SERVLET
 
-  batch:
-#    table-prefix:
-#    schema:
-    job:
-#      names: job1,job2
-      # 스프링 배치 작업을 자동으로 실행시키지 않으려면 false, 기본은 true
-      enabled: false
-#    initialize-schema: always
-
 
 logging:
   level:
@@ -52,6 +43,16 @@ spring:
     properties:
       hibernate.format_sql: true
 
+  batch:
+    #    table-prefix:
+    #    schema:
+    job:
+      #      names: job1,job2
+      # 스프링 배치 작업을 자동으로 실행시키지 않으려면 false, 기본은 true
+      enabled: false
+    initialize-schema: EMBEDDED
+
+
 ---
 spring:
   profiles: prod
@@ -61,7 +62,7 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
       password: 1234
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/querydsl?autoReconnect=true&useSSL=false&serverTimezone=UTC
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/springbatch?autoReconnect=true&useSSL=false&serverTimezone=UTC
   jpa:
     database: mysql
     show-sql: true
@@ -71,4 +72,9 @@ spring:
       ddl-auto: 'create-drop'
     properties:
       hibernate.format_sql: true
-
+  batch:
+    #    table-prefix:
+    #    schema:
+    job:
+      enabled: false
+    initialize-schema: ALWAYS # 임시로 always 사용..
