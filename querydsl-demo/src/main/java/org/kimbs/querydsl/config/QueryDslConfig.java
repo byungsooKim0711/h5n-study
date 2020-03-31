@@ -5,15 +5,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Configuration
 public class QueryDslConfig {
 
-    private final EntityManager em;
-
-    public QueryDslConfig(EntityManager em) {
-        this.em = em;
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Bean
     public JPAQueryFactory jpaQueryFactory() {
