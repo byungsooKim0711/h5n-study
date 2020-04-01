@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class TopicCreator {
+public class KafkaTopicCreator {
 
     private final KafkaTopicConfigurations topicConfig;
     private final GenericApplicationContext context;
