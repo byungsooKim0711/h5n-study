@@ -11,17 +11,17 @@ import java.util.Optional;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "kafka")
-public class TopicConfig {
+@ConfigurationProperties(prefix = "imc.kafka")
+public class KafkaTopicConfigurations {
 
-    private List<TopicConfiguration> topics;
+    private List<KafkaTopicConfig> topics;
 
-    public Optional<List<TopicConfiguration>> getTopics() {
+    public Optional<List<KafkaTopicConfig>> getTopics() {
         return Optional.ofNullable(this.topics);
     }
 
     @Data
-    public static class TopicConfiguration {
+    public static class KafkaTopicConfig {
         private String name;
 
         // application.yml 에 입력 안하면 기본 설정 1
