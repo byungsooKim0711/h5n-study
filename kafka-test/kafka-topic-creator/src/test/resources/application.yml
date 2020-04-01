@@ -1,0 +1,17 @@
+spring:
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
+
+imc:
+  kafka:
+    topics:
+      -
+        name: example1
+        partition: 2
+        replication-factor: 1
+      -
+        name: example2
+        partition: 10
+        replication-factor: 1
+      -
+        name: example3
