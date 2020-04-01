@@ -1,0 +1,16 @@
+
+spring:
+  kafka:
+    bootstrap-servers:
+      - 127.0.0.1:9092
+
+kafka:
+  topics:
+    -
+      name: example1
+      partition: 1
+      replication-factor: 1
+    -
+      name: example2
+      partition: 10
+      replication-factor: 1
