@@ -44,7 +44,7 @@ public class MessageClient extends AbstractClient {
     }
 
 
-    public void atSendMessage(String contents) throws Exception {
+    public void atSendMessage() throws Exception {
         ImcRsAtPushReq request = ImcRsAtPushReq.builder()
                 .reqUid(UUID.randomUUID().toString())
                 .senderKey("1234567890-")

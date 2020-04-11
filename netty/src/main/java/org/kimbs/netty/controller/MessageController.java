@@ -16,7 +16,7 @@ public class MessageController {
 
     @GetMapping("/message/at")
     public void sendAtMessage() throws Exception {
-        messageClient.atSendMessage("");
+        messageClient.atSendMessage();
     }
 
     @GetMapping("/message/ft/{message}")
