@@ -15,6 +15,9 @@ public class ImcMember extends BaseTimeEntity {
     private Long id;
 
     @Column
+    private String name;
+
+    @Column
     @Enumerated(EnumType.STRING)
     private ImcMemberStatus status;
 
