@@ -47,14 +47,14 @@ public class MessageClient extends AbstractClient {
     public void atSendMessage(String contents) throws Exception {
         ImcRsAtPushReq request = ImcRsAtPushReq.builder()
                 .reqUid(UUID.randomUUID().toString())
-                .senderKey("289ec651a6f90359068ed3a9c0a03dd0e607b0a4")
+                .senderKey("1234567890-")
                 .build();
 
         ImcRsAtPushOption option1 = new ImcRsAtPushOption();
         option1.setMsgUid(UUID.randomUUID().toString().substring(0, 10));
-        option1.setTemplateCode("A_HO_019_02_14613");
+        option1.setTemplateCode("TEST_!@#$");
         option1.setPhoneNumber("821049492891");
-        option1.setContents("안녕하세요 휴머스온 매장입니다. 일시적으로 주문이 급증하여 배달이 지연되고 있습니다. 최대한 빠른 시간 내에 주문하신 제품이 도착할 수 있도록 준비하겠습니다. 불편함을 드려 죄송합니다. 감사합니다.");
+        option1.setContents("안녕하세요.");
         option1.setResendType("NO");
 
         List<ImcRsAtPushOption> options = request.getAtReqList();
@@ -71,7 +71,7 @@ public class MessageClient extends AbstractClient {
     public void ftSendMessage(String message) throws Exception {
         ImcRsFtPushReq request = ImcRsFtPushReq.builder()
                 .reqUid(UUID.randomUUID().toString())
-                .senderKey("289ec651a6f90359068ed3a9c0a03dd0e607b0a4")
+                .senderKey("1234567890-")
                 .build();
 
         ImcRsFtPushOption option1 = new ImcRsFtPushOption();

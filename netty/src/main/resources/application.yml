@@ -24,10 +24,10 @@ server:
 channel:
   client:
     auth-server:
-      host: 119.207.76.90
-      port: 32000
-      id: devimc
-      password: pwdevimc
+      host: 127.0.0.1
+      port: 54321
+      id: kimbs
+      password: pwkimbs
     timeout-ms: 3000
     # SECONDS
     heartbeat-interval-ms: 3000
