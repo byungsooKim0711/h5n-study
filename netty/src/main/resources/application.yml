@@ -5,7 +5,7 @@
 spring:
   # 아래 경로에 pid 기록
   pid:
-    file: ./application.pid
+    file: ./IMC-NETTY-CLIENT-DEMO.pid
 
   application:
     name: "IMC-NETTY-CLIENT-DEMO"
@@ -18,16 +18,16 @@ spring:
     web-application-type: SERVLET
 
 server:
-  port: 8080
+  port: 50000
 
 # Client Option
 channel:
   client:
     auth-server:
-      host: 119.207.76.90
-      port: 32000
-      id: devimc
-      password: pwdevimc
+      host: 127.0.0.1
+      port: 54321
+      id: kimbs
+      password: pwkimbs
     timeout-ms: 3000
     # SECONDS
     heartbeat-interval-ms: 3000
