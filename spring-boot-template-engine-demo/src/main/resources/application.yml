@@ -1,0 +1,30 @@
+
+server:
+  port: 9999
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://#{url:port}/#{database_name}?autoReconnect=true&useSSL=false&serverTimezone=UTC
+    username: #{username}
+    password: #{password}
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: false
+    properties:
+      hibernate.format_sql: true
+
+  devtools:
+    livereload:
+      enabled: true
+
+logging:
+  level:
+    com.querydsl: trace
+    org.hibernate.type: trace
