@@ -1,4 +1,4 @@
-package com.humuson.demo.domain;
+package com.humuson.demo.domain.send;
 
 import lombok.Data;
 
@@ -22,8 +22,9 @@ public class SendHist {
     @Column(name = "AGENT_ID")
     private String agentId;
 
-    @Column(name = "PROFILE_ID")
-    private long profileId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROFILE_ID")
+    private SendProfile sendProfile;
 
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
