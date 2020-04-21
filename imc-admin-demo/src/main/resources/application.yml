@@ -9,6 +9,27 @@ server:
     uri-encoding: UTF-8
 
 spring:
+  mvc:
+    view:
+      prefix: /resource/static/
+      suffix: .html
+    locale: ko_KR
+
+  http:
+    encoding:
+      charset: UTF-8
+
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 20MB
+      max-file-size: 20MB
+
+  resources:
+    chain:
+      compressed: true
+      cache: true
+
   datasource:
     #    hikari:
     url: jdbc:mariadb://localhost:3306/imc_admin?characterEncoding=UTF-8&serverTimezone=UTC
