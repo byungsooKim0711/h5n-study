@@ -44,7 +44,7 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../../src/main/resources/static'),
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: 'assets',
     assetsPublicPath: '/',
 
     /**
