@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Data
 @Component
@@ -13,6 +14,7 @@ public class SeleniumWebDriverConfig {
 
     private String key;
     private String value;
+    private List<String> options;
 
     @PostConstruct
     public void init() {
