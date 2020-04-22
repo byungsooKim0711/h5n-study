@@ -1,0 +1,12 @@
+
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
+imc:
+  crawler:
+    web-driver:
+      key: 'webdriver.chrome.driver'
+      value: 'C:\Users\USER\Downloads\chromedriver_80.0.3987.106\chromedriver.exe'
+#      value: 'chromedriver'
