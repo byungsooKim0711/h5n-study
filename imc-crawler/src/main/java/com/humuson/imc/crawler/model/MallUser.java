@@ -15,7 +15,7 @@ public class MallUser {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "LOGIN_ID")
+    @Column(name = "LOGIN_ID", nullable = false)
     private String loginId;
 
     @Column(name = "REGISTERED_DATE")
@@ -27,6 +27,11 @@ public class MallUser {
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
 
-    @Column(name = "WELCOME_FLAG")
-    private boolean welcomeFlag = false;
+    @Column(name = "WELCOME_FLAG", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
+    private String welcomeFlag = "N";
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MALL_ADMIN_ID", foreignKey = @ForeignKey(name = "FK_MALL_USER_MALL_ADMIN"))
+    private MallAdmin mallAdmin;
+
 }

@@ -13,7 +13,7 @@ import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public abstract class BaseScheduler {
+public abstract class CrawlerBaseScheduler {
 
     private boolean ready = false;
     private ChromeDriver driver;

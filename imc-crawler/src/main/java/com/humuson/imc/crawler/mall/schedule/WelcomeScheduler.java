@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class WelcomeScheduler extends BaseScheduler {
+public class WelcomeScheduler extends CrawlerBaseScheduler {
 
     private final MtMsgService mtMsgService;
     private final ConcurrentHashMap<String, Boolean> welcomeMap;
