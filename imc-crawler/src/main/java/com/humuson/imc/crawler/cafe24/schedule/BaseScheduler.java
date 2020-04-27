@@ -34,10 +34,6 @@ public abstract class BaseScheduler {
         return this.driverConfig;
     }
 
-    void setChromeDriver(ChromeDriver driver) {
-        this.driver = driver;
-    }
-
     ChromeDriver getChromeDriver() {
         if (this.driver != null) {
             return this.driver;
@@ -59,9 +55,10 @@ public abstract class BaseScheduler {
         driver.findElement(By.id("userpasswd")).sendKeys("asdf!");
         driver.findElement(By.linkText("로그인")).click();
 
-        List<WebElement> exists = driver.findElements(By.id("iptBtnEm"));
-        if (!exists.isEmpty()) {
-            exists.get(0).click();
+        // 로그인 이후 비밀번호 변경 페이지가 나왔을 때
+        List<WebElement> changePassword = driver.findElements(By.id("iptBtnEm"));
+        if (!changePassword.isEmpty()) {
+            changePassword.get(0).click();
         }
 
         List<WebElement> gnb = driver.findElements(By.id("ec-influencer-gnb-mode-pro"));
@@ -71,7 +68,7 @@ public abstract class BaseScheduler {
         return this.driver;
     }
 
-    public void onException() {
+    protected void onException() {
         this.driver = null;
     }
 
