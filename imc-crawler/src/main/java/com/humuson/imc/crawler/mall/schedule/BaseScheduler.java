@@ -1,4 +1,4 @@
-package com.humuson.imc.crawler.cafe24.schedule;
+package com.humuson.imc.crawler.mall.schedule;
 
 import com.humuson.imc.crawler.config.SeleniumWebDriverConfig;
 import org.openqa.selenium.By;
