@@ -1,5 +1,6 @@
 package com.humuson.imc.crawler.mall.memory;
 
+import com.humuson.imc.crawler.model.MallAdmin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,12 +14,8 @@ public class MemoryConfig {
         return new ConcurrentHashMap<>();
     }
 
-    @Bean(name = "testMap")
-    public ConcurrentHashMap<String, Boolean> testMap() {
-        ConcurrentHashMap<String, Boolean> map = new ConcurrentHashMap<>();
-        map.put("test1", true);
-        map.put("test2", true);
-        map.put("test3", true);
-        return map;
+    @Bean(name = "mallAdminMap")
+    public ConcurrentHashMap<Long, MallAdmin> mallAdminMap() {
+        return new ConcurrentHashMap<>();
     }
 }

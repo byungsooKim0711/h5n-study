@@ -1,6 +1,7 @@
 package com.humuson.imc.crawler.mall.schedule;
 
 import com.humuson.imc.crawler.model.ImcMtMsg;
+import com.humuson.imc.crawler.model.MallAdmin;
 import com.humuson.imc.crawler.service.MtMsgService;
 import com.humuson.imc.crawler.template.TemplateUtils;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,15 +25,8 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
 
     private final MtMsgService mtMsgService;
     private final ConcurrentHashMap<String, Boolean> welcomeMap;
-    private final ConcurrentHashMap<String, Boolean> testMap;
+    private final ConcurrentHashMap<Long, MallAdmin> mallAdminMap;
 
-    @PostConstruct
-    public void init() {
-        System.out.println("== [welcome map]");
-        welcomeMap.entrySet().forEach(System.out::println);
-        System.out.println("== [test map]");
-        testMap.entrySet().forEach(System.out::println);
-    }
 
     @Scheduled(cron = "*/1 * * * * *")
     public void schedule() {
@@ -44,6 +37,8 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
             return;
         }
 
+        // TODO: 계정마다 Driver 생성, 작업 후 quit();
+        // TODO: 쓰레드 사용 확인해봐야 한다.
         ChromeDriver driver = super.getChromeDriver();
 
         log.info("실행 중");
