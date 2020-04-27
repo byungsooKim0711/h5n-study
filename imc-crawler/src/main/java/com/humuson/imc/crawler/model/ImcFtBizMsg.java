@@ -2,8 +2,7 @@ package com.humuson.imc.crawler.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -11,7 +10,9 @@ import javax.persistence.Table;
 public class ImcFtBizMsg {
 	
 	// 메시지 ID
-	private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	// 친구톡 상품 타입
 	private String ftType = "T";

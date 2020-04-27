@@ -2,8 +2,7 @@ package com.humuson.imc.crawler.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -11,7 +10,9 @@ import javax.persistence.Table;
 public class ImcAtBizMsg {
 
     // 메시지 ID
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     // 메시지 상태 (1-발송대기, 2-발송후결과대기, 3-결과완료)
     private String status = "1";
