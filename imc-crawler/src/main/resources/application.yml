@@ -44,3 +44,8 @@ imc:
 #        - '--no-sandbox'
 #        - '--disable-dev-shm-usage'
 #      value: 'chromedriver'
+    scheduled:
+      welcome: '*/5 * * * * *'
+      deposit-guide: '*/5 * * * * *'
+      load-mall-admin: '10 20 0/1 * * *'
+#      load-mall-user: ''

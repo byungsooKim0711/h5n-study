@@ -30,19 +30,16 @@ public abstract class CrawlerBaseScheduler {
         return this.ready;
     }
 
-    SeleniumWebDriverConfig getSeleniumWebDriverConfig() {
-        return this.driverConfig;
-    }
+    protected abstract void schedule();
 
     ChromeDriver getChromeDriver() {
         if (this.driver != null) {
             return this.driver;
         }
-        ChromeOptions options = new ChromeOptions();
-        SeleniumWebDriverConfig config = this.getSeleniumWebDriverConfig();
-        config.getOptions().forEach(options::addArguments);
-        driver = new ChromeDriver(options);
 
+        ChromeOptions options = new ChromeOptions();
+        this.driverConfig.getOptions().forEach(options::addArguments);
+        driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
 
@@ -68,7 +65,9 @@ public abstract class CrawlerBaseScheduler {
         return this.driver;
     }
 
+    // 에러발생 시 기존 driver를 버린다.
     protected void onException() {
+        this.driver.quit();
         this.driver = null;
     }
 

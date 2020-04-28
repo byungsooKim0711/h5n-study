@@ -28,12 +28,13 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
     private final ConcurrentHashMap<Long, MallAdmin> mallAdminMap;
 
 
-    @Scheduled(cron = "*/1 * * * * *")
+    @Scheduled(cron = "${imc.crawler.scheduled.welcome}")
+    @Override
     public void schedule() {
-        log.info("실행 전");
 
         // 어플리케이션 초기화 전에 스케줄러가 동작 방지
         if (!super.isReady()) {
+            log.info("[UNREADY WELCOME SCHEDULER...]");
             return;
         }
 
@@ -41,19 +42,20 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
         // TODO: 쓰레드 사용 확인해봐야 한다.
         ChromeDriver driver = super.getChromeDriver();
 
-        log.info("실행 중");
+        log.info("[TRY WELCOME SCHEDULER...]");
 
 
         synchronized (driver) {
             // 상점관리 메뉴
             driver.findElement(By.id("QA_Gnb_store")).click();
+            // 기본정보관리 메뉴
             driver.findElement(By.id("QA_Lnb_Menu10")).click();
+            // 내쇼핑몰 정보 메뉴
             driver.findElement(By.id("QA_Lnb_Menu11")).click();
 
             String template = TemplateUtils.WELCOME_TEMPLATE;
 
             // 쇼핑몰 이름
-
             template = TemplateUtils.replaceTemplateVariable(template, "\\$\\{쇼핑몰이름}", driver.findElement(By.name("mall_name")).getAttribute("value"));
             // 대표 휴대전화
             template = TemplateUtils.replaceTemplateVariable(template, "\\$\\{쇼핑몰번호}", driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[5]/td/input")).getAttribute("value"));
@@ -66,7 +68,7 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
 
             driver.findElement(By.id("QA_Lnb_Menu90")).click();
 
-            // N개씩 보기 선택
+            // N개씩 보기 선택 (Headless에서는 왜 선택이 안될까요..)
 //            driver.findElement(By.id("rows")).click();
 //            new Select(driver.findElement(By.id("rows"))).selectByVisibleText("10개씩보기");
             driver.findElement(By.xpath("//div[@id='QA_profile1']/div/div[4]/a/span")).click();
@@ -113,9 +115,9 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
                         msg.setMtType("LM");
 
                         messages.add(msg);
-                        log.info("Finished Template: {}\n", contents);
+                        log.info("FINISHED TEMPLATE: {}\n", contents);
                     } else {
-                        log.warn("Unfinished template: {}\n", contents);
+                        log.warn("UNFINISHED TEMPLATE: {}\n", contents);
                     }
                 }
             }

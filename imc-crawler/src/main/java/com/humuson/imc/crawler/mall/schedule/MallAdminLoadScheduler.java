@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,9 +25,11 @@ public class MallAdminLoadScheduler {
         this.schedule();
     }
 
-    @Scheduled(cron = "10 * 0/1 * * *")
+
+    @Scheduled(cron = "${imc.crawler.scheduled.load-mall-admin}")
     public void schedule() {
         List<MallAdmin> adminList = mallAdminService.findAll();
+        log.info("[LOAD-MALL-ADMIN] TOTAL: {}, TIME: {}", adminList.size(), LocalDateTime.now());
 
         adminList.forEach(admin -> {
             mallAdminMap.put(admin.getId(), admin);
