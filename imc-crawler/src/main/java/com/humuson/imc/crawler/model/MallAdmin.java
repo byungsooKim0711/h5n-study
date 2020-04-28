@@ -31,6 +31,9 @@ public class MallAdmin {
     @Column(name = "MALL_NAME")
     private String mallName;
 
+    @Column(name = "USE_YN", nullable = false)
+    private String useYn;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "mallAdmin")
     private List<MallUser> mallUsers = new ArrayList<>();
 
