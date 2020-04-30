@@ -4,6 +4,8 @@ import com.humuson.imc.crawler.model.ImcMtMsg;
 import com.humuson.imc.crawler.model.MallAdmin;
 import com.humuson.imc.crawler.service.MtMsgService;
 import com.humuson.imc.crawler.template.TemplateUtils;
+import com.humuson.imc.crawler.template.code.Mall;
+import com.humuson.imc.crawler.template.code.Welcome;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -56,12 +58,12 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
             String template = TemplateUtils.WELCOME_TEMPLATE;
 
             // 쇼핑몰 이름
-            template = TemplateUtils.replaceTemplateVariable(template, "\\$\\{쇼핑몰이름}", driver.findElement(By.name("mall_name")).getAttribute("value"));
+            template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_NAME.getRegex(), driver.findElement(By.name("mall_name")).getAttribute("value"));
             // 대표 휴대전화
-            template = TemplateUtils.replaceTemplateVariable(template, "\\$\\{쇼핑몰번호}", driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[5]/td/input")).getAttribute("value"));
+            template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_TEL_NUMBER.getRegex(), driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[5]/td/input")).getAttribute("value"));
             // 도메인
             String mallUrl = driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[7]/td")).getText();
-            template = TemplateUtils.replaceTemplateVariable(template, "\\$\\{쇼핑몰URL}", mallUrl);
+            template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_URL.getRegex(), mallUrl);
 
             // 고객관리 메뉴
             driver.findElement(By.xpath("//A[@id='QA_Gnb_member']")).click();
@@ -94,9 +96,9 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
                 for (int i = 1; i <= trs.size(); i++) {
                     String contents = template;
 
-                    contents = TemplateUtils.replaceTemplateVariable(contents, "\\$\\{고객이름}", driver.findElement(By.xpath("//div[@id='QA_profile2']/div[4]/table/tbody/tr[" + i + "]/td[3]")).getText());
+                    contents = TemplateUtils.replaceTemplateVariable(contents, Welcome.CUSTOMER_NAME.getRegex(), driver.findElement(By.xpath("//div[@id='QA_profile2']/div[4]/table/tbody/tr[" + i + "]/td[3]")).getText());
                     String userId = driver.findElement(By.xpath("//div[@id='QA_profile2']/div[4]/table/tbody/tr[" + i + "]/td[4]")).getText();
-                    contents = TemplateUtils.replaceTemplateVariable(contents, "\\$\\{고객ID}", userId);
+                    contents = TemplateUtils.replaceTemplateVariable(contents, Welcome.CUSTOMER_ID.getRegex(), userId);
 
                     // TODO: 중복체크..
                     if (welcomeMap.containsKey(mallUrl + ":" + userId)) {
@@ -115,9 +117,9 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
                         msg.setMtType("LM");
 
                         messages.add(msg);
-                        log.info("FINISHED TEMPLATE: {}\n", contents);
+                        log.info("FINISHED TEMPLATE:\n{}", contents);
                     } else {
-                        log.warn("UNFINISHED TEMPLATE: {}\n", contents);
+                        log.warn("UNFINISHED TEMPLATE:\n{}", contents);
                     }
                 }
             }

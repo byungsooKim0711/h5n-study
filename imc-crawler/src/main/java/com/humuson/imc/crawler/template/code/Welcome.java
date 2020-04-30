@@ -1,4 +1,4 @@
-package com.humuson.imc.crawler.model.code;
+package com.humuson.imc.crawler.template.code;
 
 import lombok.Getter;
 

@@ -4,6 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TemplateUtils {
+
+    private static final String TEMPLATE_VARIABLE = "\\$\\{.+?}";
+
     public static final String WELCOME_TEMPLATE = "[${쇼핑몰이름}]\n"+
             "안녕하세요. ${고객이름}님!\n"+
             "\n"+
@@ -33,7 +36,7 @@ public class TemplateUtils {
 
     // 템플릿의 모든 변수가 처리되었는지 확인
     public static boolean isFinishedTemplate(String template) {
-        Pattern pattern = Pattern.compile("\\$\\{.+?}");
+        Pattern pattern = Pattern.compile(TEMPLATE_VARIABLE);
         Matcher matcher = pattern.matcher(template);
 
         return !matcher.matches();
