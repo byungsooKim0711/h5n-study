@@ -39,11 +39,11 @@ imc:
     web-driver:
       key: 'webdriver.chrome.driver'
       value: src/main/resources/chromedriver.exe
+#      value: 'chromedriver'
       options:
 #        - '--headless'
 #        - '--no-sandbox'
 #        - '--disable-dev-shm-usage'
-#      value: 'chromedriver'
     scheduled:
       welcome: '*/5 * * * * *'
       deposit-guide: '*/5 * * * * *'
