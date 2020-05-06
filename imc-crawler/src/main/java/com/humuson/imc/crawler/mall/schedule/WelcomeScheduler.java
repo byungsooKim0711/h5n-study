@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +47,6 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
 
         log.info("[TRY WELCOME SCHEDULER...]");
 
-
         synchronized (driver) {
             // 상점관리 메뉴
             driver.findElement(By.id("QA_Gnb_store")).click();
@@ -70,28 +70,57 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
 
             driver.findElement(By.id("QA_Lnb_Menu90")).click();
 
-            // N개씩 보기 선택 (Headless에서는 왜 선택이 안될까요..)
-//            driver.findElement(By.id("rows")).click();
-//            new Select(driver.findElement(By.id("rows"))).selectByVisibleText("10개씩보기");
+            // 검색조건: 어제 ~ 오늘
+            // 가입일 선택
+            driver.findElement(By.name("day_type")).click();
+            new Select(driver.findElement(By.name("day_type"))).selectByVisibleText("가입일");
+            driver.findElement(By.name("day_type")).click();
+
+            // 시작일 캘린더 (어제)
+            LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+            driver.findElement(By.id("btnRegistStartDate")).click();
+            driver.findElement(By.xpath("//li[2]/select")).click();
+            new Select(driver.findElement(By.xpath("//li[2]/select"))).selectByVisibleText(yesterday.format(DateTimeFormatter.ofPattern("yyyy")));
+            driver.findElement(By.xpath("//li[2]/select")).click();
+            driver.findElement(By.xpath("//li[2]/select[2]")).click();
+            new Select(driver.findElement(By.xpath("//li[2]/select[2]"))).selectByVisibleText(yesterday.format(DateTimeFormatter.ofPattern("MM")));
+            driver.findElement(By.xpath("//li[2]/select[2]")).click();
+            driver.findElement(By.linkText(yesterday.format(DateTimeFormatter.ofPattern("dd")))).click();
+
+            // 종료일 캘린더 (오늘)
+            LocalDateTime today = LocalDateTime.now();
+            driver.findElement(By.id("btnRegistEndDate")).click();
+            driver.findElement(By.xpath("//li[2]/select")).click();
+            new Select(driver.findElement(By.xpath("//li[2]/select"))).selectByVisibleText(today.format(DateTimeFormatter.ofPattern("yyyy")));
+            driver.findElement(By.xpath("//li[2]/select")).click();
+            driver.findElement(By.xpath("//li[2]/select[2]")).click();
+            new Select(driver.findElement(By.xpath("//li[2]/select[2]"))).selectByVisibleText(today.format(DateTimeFormatter.ofPattern("MM")));
+            driver.findElement(By.xpath("//li[2]/select[2]")).click();
+            driver.findElement(By.linkText(today.format(DateTimeFormatter.ofPattern("dd")))).click();
+
+            // 검색버튼 클릭
             driver.findElement(By.xpath("//div[@id='QA_profile1']/div/div[4]/a/span")).click();
 
-            // tbody tr, td 가져옴
-            WebElement tbody = driver.findElement(By.xpath("//TBODY[@class='center']"));
-            List<WebElement> trs = tbody.findElements(By.tagName("tr"));
-
-
-            List<ImcMtMsg> messages = new ArrayList<>();
 
             WebElement pageElement = driver.findElement(By.xpath("//DIV[@class='mPaginate']/ol"));
             List<WebElement> liTags = pageElement.findElements(By.tagName("li"));
 
+            List<ImcMtMsg> messages = new ArrayList<>();
+
             boolean stop = false;
-            for (WebElement li : liTags) {
+            for (int l=0; l<liTags.size(); l++) {
                 if (stop) {
                     return;
                 }
                 // 페이지 번호 클릭
-                li.click();
+                if (l != 0) {
+                    liTags.get(l).click();
+                }
+
+                // tbody tr, td 가져옴
+                WebElement tbody = driver.findElement(By.xpath("//TBODY[@class='center']"));
+                List<WebElement> trs = tbody.findElements(By.tagName("tr"));
+
                 // tr의 인덱싱이 1부터 시작하나 봅니다.
                 for (int i = 1; i <= trs.size(); i++) {
                     String contents = template;
@@ -109,6 +138,7 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
                     }
 
                     if (TemplateUtils.isFinishedTemplate(contents)) {
+                        // TODO: 발송 방식 정해지면, 문자메시지에서 알림톡으로 전환
                         ImcMtMsg msg = new ImcMtMsg();
                         msg.setReservedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
                         msg.setPhoneNumber(driver.findElement(By.xpath("//div[@id='QA_profile2']/div[4]/table/tbody/tr[" + i + "]/td[7]")).getText().replaceAll("-", ""));
@@ -117,9 +147,9 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
                         msg.setMtType("LM");
 
                         messages.add(msg);
-                        log.info("FINISHED TEMPLATE:\n{}", contents);
+                        log.info("\nFINISHED TEMPLATE:\n{}", contents);
                     } else {
-                        log.warn("UNFINISHED TEMPLATE:\n{}", contents);
+                        log.warn("\nUNFINISHED TEMPLATE:\n{}", contents);
                     }
                 }
             }

@@ -41,11 +41,11 @@ imc:
       value: src/main/resources/chromedriver.exe
 #      value: 'chromedriver'
       options:
-#        - '--headless'
-#        - '--no-sandbox'
-#        - '--disable-dev-shm-usage'
+        - '--headless'
+        - '--no-sandbox'
+        - '--disable-dev-shm-usage'
     scheduled:
       welcome: '*/5 * * * * *'
       deposit-guide: '*/5 * * * * *'
-      load-mall-admin: '10 20 0/1 * * *'
-#      load-mall-user: ''
+      load-mall-admin: '10 20 */1 * * *'
+      load-mall-user: '40 */1 * * * *'

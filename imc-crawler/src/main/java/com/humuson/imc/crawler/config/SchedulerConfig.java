@@ -15,7 +15,7 @@ public class SchedulerConfig implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
-        taskScheduler.setThreadNamePrefix("IMC-");
+        taskScheduler.setThreadNamePrefix("IMC-CRAWLER-");
         taskScheduler.setPoolSize(this.SCHEDULE_MAX_POOL_SIZE);
         taskScheduler.initialize();
 
