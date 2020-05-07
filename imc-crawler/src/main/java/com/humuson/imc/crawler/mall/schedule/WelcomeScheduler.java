@@ -1,7 +1,6 @@
 package com.humuson.imc.crawler.mall.schedule;
 
 import com.humuson.imc.crawler.model.ImcMtMsg;
-import com.humuson.imc.crawler.model.MallAdmin;
 import com.humuson.imc.crawler.service.MtMsgService;
 import com.humuson.imc.crawler.template.TemplateUtils;
 import com.humuson.imc.crawler.template.code.Mall;
@@ -19,7 +18,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
@@ -27,9 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WelcomeScheduler extends CrawlerBaseScheduler {
 
     private final MtMsgService mtMsgService;
-    private final ConcurrentHashMap<String, Boolean> welcomeMap;
-    private final ConcurrentHashMap<Long, MallAdmin> mallAdminMap;
-
 
     @Scheduled(cron = "${imc.crawler.scheduled.welcome}")
     @Override
@@ -101,20 +96,17 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
             // 검색버튼 클릭
             driver.findElement(By.xpath("//div[@id='QA_profile1']/div/div[4]/a/span")).click();
 
-
             WebElement pageElement = driver.findElement(By.xpath("//DIV[@class='mPaginate']/ol"));
             List<WebElement> liTags = pageElement.findElements(By.tagName("li"));
 
             List<ImcMtMsg> messages = new ArrayList<>();
 
-            boolean stop = false;
-            for (int l=0; l<liTags.size(); l++) {
-                if (stop) {
-                    return;
-                }
-                // 페이지 번호 클릭
-                if (l != 0) {
-                    liTags.get(l).click();
+            int l = 0;
+            while (l < liTags.size()) {
+                WebElement pageElement1 = driver.findElement(By.xpath("//DIV[@class='mPaginate']/ol"));
+                List<WebElement> liTags1 = pageElement1.findElements(By.tagName("li"));
+                if (l > 0) {
+                    liTags1.get(l).click();
                 }
 
                 // tbody tr, td 가져옴
@@ -130,12 +122,12 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
                     contents = TemplateUtils.replaceTemplateVariable(contents, Welcome.CUSTOMER_ID.getRegex(), userId);
 
                     // TODO: 중복체크..
-                    if (welcomeMap.containsKey(mallUrl + ":" + userId)) {
-                        stop = true;
-                        break;
-                    } else {
-                        welcomeMap.put(mallUrl + ":" + userId, true);
-                    }
+//                    if (welcomeMap.containsKey(mallUrl + ":" + userId)) {
+//                        stop = true;
+//                        break;
+//                    } else {
+//                        welcomeMap.put(mallUrl + ":" + userId, true);
+//                    }
 
                     if (TemplateUtils.isFinishedTemplate(contents)) {
                         // TODO: 발송 방식 정해지면, 문자메시지에서 알림톡으로 전환
@@ -149,7 +141,17 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
                         messages.add(msg);
                         log.info("\nFINISHED TEMPLATE:\n{}", contents);
                     } else {
-                        log.warn("\nUNFINISHED TEMPLATE:\n{}", contents);
+                        log.error("\nUNFINISHED TEMPLATE:\n{}", contents);
+                    }
+                }
+                l++;
+                // N 개의 페이지 번호를 전부 클릭햇고, Next 버튼이 있을 경우
+                if (l >= liTags1.size()) {
+                    List<WebElement> nextButton = driver.findElements(By.cssSelector("#tabNumber > div.mPaginate > a"));
+                    if (nextButton!= null && !nextButton.isEmpty()) {
+                        nextButton.get(0).click();
+                        l = 0;
+                        log.info("[CLICK THE NEXT BUTTON]");
                     }
                 }
             }
@@ -158,5 +160,4 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
             log.info("SAVED MESSAGE SIZE: {}.", saved.size());
         }
     }
-
 }

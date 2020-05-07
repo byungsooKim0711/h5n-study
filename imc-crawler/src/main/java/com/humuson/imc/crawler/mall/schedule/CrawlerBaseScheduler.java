@@ -2,7 +2,6 @@ package com.humuson.imc.crawler.mall.schedule;
 
 import com.humuson.imc.crawler.config.SeleniumWebDriverConfig;
 import org.openqa.selenium.By;
-import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -56,14 +55,15 @@ public abstract class CrawlerBaseScheduler {
 
         // 로그인 이후 비밀번호 변경 페이지가 나왔을 때
         List<WebElement> changePassword = driver.findElements(By.id("iptBtnEm"));
-        if (!changePassword.isEmpty()) {
+        if (changePassword != null && !changePassword.isEmpty()) {
             changePassword.get(0).click();
         }
 
-        List<WebElement> gnb = driver.findElements(By.id("ec-influencer-gnb-mode-pro"));
-        if (!gnb.isEmpty()) {
-            gnb.get(0).click();
-        }
+        driver.findElement(By.id("ec-influencer-gnb-mode-pro")).click();
+//        List<WebElement> gnb = driver.findElements(By.id("ec-influencer-gnb-mode-pro"));
+//        if (gnb != null && !gnb.isEmpty()) {
+//            gnb.get(0).click();
+//        }
         return this.driver;
     }
 
