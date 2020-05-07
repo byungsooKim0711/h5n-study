@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum Welcome {
 
-    CUSTOMER_NAME("\\$\\{고객이름}"),
-    CUSTOMER_ID("\\$\\{고객ID}"),
+    CUSTOMER_NAME("#\\{고객이름}"),
+    CUSTOMER_ID("#\\{고객ID}"),
     ;
 
     private String regex;
