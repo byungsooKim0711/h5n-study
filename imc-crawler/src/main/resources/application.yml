@@ -38,8 +38,7 @@ imc:
   crawler:
     web-driver:
       key: 'webdriver.chrome.driver'
-      value: src/main/resources/chromedriver.exe
-#      value: 'chromedriver'
+      value: 'chromedriver.exe'
       options:
         - '--headless'
         - '--no-sandbox'
