@@ -91,16 +91,24 @@ public class DepositGuideScheduler extends CrawlerBaseScheduler {
             String parentWindow = driver.getWindowHandle();
             log.info("BEFORE SWITCHING WINDOW: {}, TITLE: {}.", parentWindow, driver.getTitle());
 
-            WebElement pageElement = driver.findElement(By.xpath("//DIV[@class='mPaginate']/ol"));
-            List<WebElement> liTags = pageElement.findElements(By.tagName("li"));
+            List<WebElement> pageElements = driver.findElements(By.xpath("//DIV[@class='mPaginate']/ol"));
+            List<WebElement> liTags = null;
+            if (pageElements != null && !pageElements.isEmpty()) {
+                liTags = pageElements.get(0).findElements(By.tagName("li"));
+            }
 
             int l = 0;
-            while (l < liTags.size()) {
-                WebElement pageElement1 = driver.findElement(By.xpath("//DIV[@class='mPaginate']/ol"));
-                List<WebElement> liTags1 = pageElement1.findElements(By.tagName("li"));
-                // 페이지 번호 클릭
-                if (l > 0) {
-                    liTags1.get(l).click();
+            // do while로 진행 한 이유는 페이징 할 게 없으면 표시가 안됨.
+            do {
+                int liTagSize = 0;
+                if (liTags != null && !liTags.isEmpty()) {
+                    WebElement pageElement1 = driver.findElement(By.xpath("//DIV[@class='mPaginate']/ol"));
+                    List<WebElement> liTags1 = pageElement1.findElements(By.tagName("li"));
+                    liTagSize = liTags1.size();
+                    // 페이지 번호 클릭
+                    if (l > 0) {
+                        liTags1.get(l).click();
+                    }
                 }
 
                 WebElement table = driver.findElement(By.id("searchResultList"));
@@ -149,7 +157,7 @@ public class DepositGuideScheduler extends CrawlerBaseScheduler {
                 }
                 l++;
                 // N 개의 페이지 번호를 전부 클릭했고, Next 버튼이 있을 경우
-                if (l >= liTags1.size()) {
+                if (l >= liTagSize) {
                     List<WebElement> nextButton = driver.findElements(By.cssSelector("#tabNumber > div.mPaginate > a"));
                     if (nextButton != null && !nextButton.isEmpty()) {
                         nextButton.get(0).click();
@@ -157,7 +165,7 @@ public class DepositGuideScheduler extends CrawlerBaseScheduler {
                         log.info("[CLICK THE NEXT BUTTON]");
                     }
                 }
-            }
+            } while (liTags != null && l < liTags.size());
         }
     }
 }

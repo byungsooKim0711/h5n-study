@@ -1,6 +1,7 @@
 package com.humuson.imc.crawler.mall.schedule;
 
 import com.humuson.imc.crawler.config.SeleniumWebDriverConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,6 +14,7 @@ import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public abstract class CrawlerBaseScheduler {
 
     private boolean ready = false;
@@ -76,6 +78,7 @@ public abstract class CrawlerBaseScheduler {
     @PreDestroy
     public void preDestroy() {
         if (this.driver != null) {
+            log.info("DESTROY WEB DRIVER: {}", this.driver);
             this.driver.quit();
         }
     }

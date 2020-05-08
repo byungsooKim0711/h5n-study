@@ -102,6 +102,7 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
             List<ImcMtMsg> messages = new ArrayList<>();
 
             int l = 0;
+            // do while로 안해도 되는 이유는 페이징 할 게 없어도 1 표시가 됨.
             while (l < liTags.size()) {
                 WebElement pageElement1 = driver.findElement(By.xpath("//DIV[@class='mPaginate']/ol"));
                 List<WebElement> liTags1 = pageElement1.findElements(By.tagName("li"));
