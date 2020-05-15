@@ -14,12 +14,13 @@
   "dependencies": {
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
-    "material-design-icons-iconfont": "^5.0.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuetify": "^2.2.26"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@mdi/font": "^5.2.45",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
@@ -49,6 +50,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^2.0.2",
+    "material-design-icons-iconfont": "^5.0.1",
     "mocha": "^3.2.0",
     "node-notifier": "^5.1.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",

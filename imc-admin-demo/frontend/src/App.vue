@@ -1,28 +1,28 @@
 <template>
   <v-app id="app">
-    <div class="app-container">
-      <NavigationDrawer :toggle="drawer"/>
-      <v-content>
-        <router-view/>
-      </v-content>
-    </div>
+    <Navbar></Navbar>
+    <v-content>
+      <router-view></router-view>
+    </v-content>
   </v-app>
 </template>
 
 <script>
-import NavigationDrawer from '@/components/NavigationDrawer';
+import Navbar from '@/components/Navbar';
 
-  export default {
-    name: 'App',
+export default {
+  name: 'App',
 
-    components: {
-      NavigationDrawer
-    },
-
-    data() {
-      return {
-        drawer: false
-      }
-    }
+  components: {
+    Navbar,
   }
+}
 </script>
+
+<style>
+html,
+body {
+  font-weight: 500;
+  font-size: 15px;
+}
+</style>

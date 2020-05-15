@@ -1,0 +1,251 @@
+<template>
+  <nav>
+    <v-navigation-drawer v-model="drawer" dark app class="blue-grey darken-2 py-0">
+      <v-card max-width="500" class="mx-auto">
+        <v-toolbar color="teal" dark>
+          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+          <v-toolbar-title>IMC-ADMIN</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <!--<v-btn icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>-->
+        </v-toolbar>
+
+        <v-list>
+          <v-list-item router to="/dashboard">
+            <v-list-item-action>
+              <v-icon small>fas fa-tachometer-alt</v-icon>
+            </v-list-item-action>
+            <v-list-item-title>Dashboard</v-list-item-title>
+          </v-list-item>
+
+          <!-- 통계 -->
+          <v-list-group prepend-icon="account_circle" value="true">
+            <template v-slot:activator>
+              <v-list-item-title>통계</v-list-item-title>
+            </template>
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>알림톡</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>일별 전체 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>기간별 전체 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>발송 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>유/무효 상세 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>템플릿별 통계</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>친구톡</v-list-item-title>
+                </v-list-item-content>
+              </template>
+              <v-list-item link>
+                <v-list-item-title>일별 전체 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>발송 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>유/무효 상세</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>문자</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>부달 문자</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>일반 문자</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>문자 통합</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>전체통계</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>업체별 살송 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>AGENT 발송 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>부서별 발송 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>문자 중계사별 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>월간/일간 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>부가서비스 통계</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>월간/주간 지표</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>URL 트래킹 통계</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+          </v-list-group>
+
+          <!-- 정산 -->
+          <v-list-group no-action>
+            <template v-slot:activator>
+              <v-list-item-action>
+                <v-icon small>fas fa-credit-card</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>정산</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>알림톡</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>친구톡</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>문자(부달)</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>문자(일반)</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>통합 정산</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>업체별 정산</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+
+          <!-- 관리 -->
+          <v-list-group no-action>
+            <template v-slot:activator>
+              <v-list-item-action>
+                <v-icon small>fas fa-cogs</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>관리</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>고객 관리</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>단가 관리</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>템플릿 관리</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>발신번호 관리</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>AGENT 관리</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>라우팅 관리</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>메시지 조회</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>ADMIN 관리</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>장애알람 관리</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="">
+              <v-list-item-content>
+                <v-list-item-title>전화번호 복호화</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </v-list>
+      </v-card>
+    </v-navigation-drawer>
+  </nav>
+</template>
+
+<script>
+export default {
+  name: 'navbar',
+  data() {
+    return {
+      drawer: true,
+      admins: [
+        ['Management', 'people_outline'],
+        ['Settings', 'settings'],
+      ]
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
