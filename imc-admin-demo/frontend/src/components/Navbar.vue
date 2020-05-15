@@ -20,8 +20,11 @@
           </v-list-item>
 
           <!-- 통계 -->
-          <v-list-group prepend-icon="account_circle" value="true">
+          <v-list-group value="true">
             <template v-slot:activator>
+              <v-list-item-action>
+                <v-icon small>fas fa-chart-line</v-icon>
+              </v-list-item-action>
               <v-list-item-title>통계</v-list-item-title>
             </template>
 
@@ -174,47 +177,155 @@
                 <v-list-item-title>관리</v-list-item-title>
               </v-list-item-content>
             </template>
-            <v-list-item @click="">
-              <v-list-item-content>
-                <v-list-item-title>고객 관리</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="">
-              <v-list-item-content>
-                <v-list-item-title>단가 관리</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="">
-              <v-list-item-content>
-                <v-list-item-title>템플릿 관리</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="">
-              <v-list-item-content>
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>고객 관리</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>고객 목록</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>고객 등록</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>계약 조회</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>단가 관리</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>비즈메시지</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>문자메시지</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>템플릿 관리</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>템플릿 요청 목록</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>템플릿 목록</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>템플릿 등록</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>발신번호 관리</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>담당자 관리</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
                 <v-list-item-title>발신번호 관리</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="">
-              <v-list-item-content>
-                <v-list-item-title>AGENT 관리</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="">
-              <v-list-item-content>
-                <v-list-item-title>라우팅 관리</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="">
-              <v-list-item-content>
-                <v-list-item-title>메시지 조회</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="">
-              <v-list-item-content>
-                <v-list-item-title>ADMIN 관리</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="">
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>발신번호 등록</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>금지리스트 관리</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>AGENT 관리</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>AGENT 목록</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>AGENT 등록</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>AGENT 접속 관리</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>AGENT 파일 관리</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>라우팅 관리</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>메시지 라우팅</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>라우팅 그룹 목록</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>전체 토픽 목록</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>메시지 조회</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>비즈메시지</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>문자메시지</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+
+            <v-list-group no-action sub-group value="true">
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>ADMIN 관리</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item link>
+                <v-list-item-title>관리자 목록</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>공지사항</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>FAQ</v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+
+
+            <v-list-item link>
               <v-list-item-content>
                 <v-list-item-title>장애알람 관리</v-list-item-title>
               </v-list-item-content>
