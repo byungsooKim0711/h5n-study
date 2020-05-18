@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-navigation-drawer v-model="drawer" dark app class="blue-grey darken-2 py-0">
+    <v-navigation-drawer v-model="tmpDrawer" dark app class="blue-grey darken-2 py-0">
       <v-card max-width="500" class="mx-auto">
         <v-list-item>
           <v-list-item-content>
@@ -14,7 +14,7 @@
         </v-list-item>
         <v-divider></v-divider>
 
-        <v-list>
+        <v-list >
           <v-list-item router to="/dashboard">
             <v-list-item-action>
               <v-icon small>fas fa-tachometer-alt</v-icon>
@@ -23,7 +23,6 @@
           </v-list-item>
 
           <!-- 통계 -->
-          <!-- <v-list-group value="true"> -->
           <v-list-group>
             <template v-slot:activator>
               <v-list-item-action>
@@ -32,7 +31,7 @@
               <v-list-item-title>통계</v-list-item-title>
             </template>
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>알림톡</v-list-item-title>
@@ -349,11 +348,21 @@
 <script>
 export default {
   name: 'navbar',
+
+  watch: {
+    drawer() {
+      this.tmpDrawer = this.drawer;
+    }
+  },
+
+  props: ['drawer'],
+
   data() {
     return {
-      drawer: true,
+      tmpDrawer: this.drawer
     }
   }
+
 }
 </script>
 
