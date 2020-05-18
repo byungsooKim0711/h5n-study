@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-navigation-drawer v-model="tmpDrawer" dark app class="blue-grey darken-2 py-0">
+    <v-navigation-drawer v-model="drawer" dark app class="blue-grey darken-2 py-0">
       <v-card max-width="500" class="mx-auto">
         <v-list-item>
           <v-list-item-content>
@@ -346,21 +346,21 @@
 </template>
 
 <script>
+import { eventBus } from '@/EventBus.js';
+
 export default {
   name: 'navbar',
 
-  watch: {
-    drawer() {
-      this.tmpDrawer = this.drawer;
+  data() {
+    return {
+      drawer: true
     }
   },
 
-  props: ['drawer'],
-
-  data() {
-    return {
-      tmpDrawer: this.drawer
-    }
+  created() {
+    eventBus.$on('drawer', (event) => {
+      this.drawer = event;
+    });
   }
 
 }
