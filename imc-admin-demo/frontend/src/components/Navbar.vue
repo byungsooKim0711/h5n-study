@@ -20,7 +20,8 @@
           </v-list-item>
 
           <!-- 통계 -->
-          <v-list-group value="true">
+          <!-- <v-list-group value="true"> -->
+          <v-list-group>
             <template v-slot:activator>
               <v-list-item-action>
                 <v-icon small>fas fa-chart-line</v-icon>
@@ -53,7 +54,7 @@
             </v-list-group>
 
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group >
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>친구톡</v-list-item-title>
@@ -71,7 +72,7 @@
             </v-list-group>
 
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>문자</v-list-item-title>
@@ -90,7 +91,7 @@
             </v-list-group>
 
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group >
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>전체통계</v-list-item-title>
@@ -178,7 +179,7 @@
               </v-list-item-content>
             </template>
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>고객 관리</v-list-item-title>
@@ -196,7 +197,7 @@
               </v-list-item>
             </v-list-group>
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>단가 관리</v-list-item-title>
@@ -211,7 +212,7 @@
               </v-list-item>
             </v-list-group>
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>템플릿 관리</v-list-item-title>
@@ -229,7 +230,7 @@
               </v-list-item>
             </v-list-group>
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>발신번호 관리</v-list-item-title>
@@ -251,7 +252,7 @@
             </v-list-group>
 
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>AGENT 관리</v-list-item-title>
@@ -272,7 +273,7 @@
               </v-list-item>
             </v-list-group>
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>라우팅 관리</v-list-item-title>
@@ -290,7 +291,7 @@
               </v-list-item>
             </v-list-group>
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>메시지 조회</v-list-item-title>
@@ -306,7 +307,7 @@
             </v-list-group>
 
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>ADMIN 관리</v-list-item-title>
@@ -348,10 +349,6 @@ export default {
   data() {
     return {
       drawer: true,
-      admins: [
-        ['Management', 'people_outline'],
-        ['Settings', 'settings'],
-      ]
     }
   }
 }
