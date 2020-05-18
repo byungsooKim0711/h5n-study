@@ -2,14 +2,17 @@
   <nav>
     <v-navigation-drawer v-model="drawer" dark app class="blue-grey darken-2 py-0">
       <v-card max-width="500" class="mx-auto">
-        <v-toolbar color="teal" dark>
-          <v-app-bar-nav-icon></v-app-bar-nav-icon>
-          <v-toolbar-title>IMC-ADMIN</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <!--<v-btn icon>
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>-->
-        </v-toolbar>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              휴머스온
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              IMC 통합 어드민
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
 
         <v-list>
           <v-list-item router to="/dashboard">
