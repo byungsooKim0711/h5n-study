@@ -31,12 +31,14 @@ spring:
       cache: true
 
   datasource:
-    #    hikari:
-    url: jdbc:mariadb://localhost:3306/imc_admin?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/imc_admin?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: 1234
-    driver-class-name: org.mariadb.jdbc.Driver
-  #      driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
+      connection-timeout: 60000
   output:
     ansi:
       enabled: always
@@ -50,7 +52,11 @@ spring:
     generate-ddl: true
     properties:
       hibernate.format_sql: true
-
+#      hibernate.jdbc.batch_size: 10
+#      hibernate.jdbc.batch_versioned_data: true
+#      hibernate.order_insert: true
+#      hibernate.order_update: true
+#      hibernate.enable_lazy_load_no_trans: true
   security:
     user:
       name: kimbs
