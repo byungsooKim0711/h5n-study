@@ -1,5 +1,7 @@
 package org.kimbs.imc.admin.security;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.kimbs.imc.admin.domain.WebAdminUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,19 +11,24 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
+@Setter
 public class ImcUserDetails implements UserDetails {
 
-    private String username;
-    private String password;
-    private boolean active;
-    private List<GrantedAuthority> authorities;
+//    private String username;
+//    private String password;
+//    private boolean active;
+//    private List<GrantedAuthority> authorities;
+
+    private WebAdminUser user;
 
 
     public ImcUserDetails(WebAdminUser user) {
-        this.username = user.getUserLogin();
-        this.password = user.getPassword();
-        this.active = "Y".equals(user.getActiveYn());
+//        this.username = user.getUserLogin();
+//        this.password = user.getPassword();
+//        this.active = "Y".equals(user.getActiveYn());
 //        this.authorities = user.getR
+        this.user = user;
     }
     public ImcUserDetails() {
     }
@@ -33,12 +40,12 @@ public class ImcUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getUserLogin();
     }
 
     @Override
@@ -58,6 +65,6 @@ public class ImcUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return "Y".equals(user.getActiveYn());
     }
 }

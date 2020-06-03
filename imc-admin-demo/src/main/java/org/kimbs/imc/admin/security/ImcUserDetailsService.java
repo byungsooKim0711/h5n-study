@@ -20,7 +20,7 @@ public class ImcUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Optional<WebAdminUser> user = userRepository.findByUserLogin(s);
 
-        user.orElseThrow(() -> new UsernameNotFoundException("NOT FOUNT: " + s));
+        user.orElseThrow(() -> new UsernameNotFoundException("User not exist with name: " + s));
 
         return user.map(ImcUserDetails::new).get();
     }

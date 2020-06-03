@@ -3,24 +3,30 @@ package org.kimbs.imc.admin.domain;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
+import org.kimbs.imc.admin.config.BaseTimeEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
-@Table(name = "TB_WEB_ADMIN_USER")
-public class WebAdminUser {
+@Table(name = "TB_WEB_ADMIN_USER",
+        uniqueConstraints = {
+            @UniqueConstraint(name = "IDX_WEB_ADMIN_USER_01", columnNames = {"USER_LOGIN"})
+        }
+)
+public class WebAdminUser extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "AUTH_ID")
-    private Long authId;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "AUTH_ID", referencedColumnName = "ID")
+    private WebUserAuthor webUserAuthor;
 
-    @Column(name = "USER_LOGIN", unique = true)
+    @Column(name = "USER_LOGIN")
     @NotNull
     @Length(max = 45)
     private String userLogin;
@@ -36,7 +42,8 @@ public class WebAdminUser {
 
     @Column(name = "ACTIVE_YN")
     @NotNull
-    @ColumnDefault("Y")
+    @ColumnDefault("'Y'")
+    @Length(min = 1, max = 1)
     private String activeYn;
 
     @Column(name = "INFO_CP")
@@ -59,25 +66,3 @@ public class WebAdminUser {
     @Length(max = 1)
     private String authority;
 }
-
-
-/*
-CREATE TABLE `tb_web_admin_user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `auth_id` bigint(20) NOT NULL,
-  `user_login` varchar(45) NOT NULL,
-  `password` varchar(128) NOT NULL,
-  `kakao_biz_center_id` varchar(128) DEFAULT NULL,
-  `active_yn` varchar(1) NOT NULL DEFAULT 'Y',
-  `info_cp` varchar(64) DEFAULT NULL,
-  `info_em` varchar(64) DEFAULT NULL,
-  `info_na` varchar(64) DEFAULT NULL,
-  `fail_count` int(11) DEFAULT '0',
-  `create_at` varchar(19) NOT NULL,
-  `modified_at` varchar(19) NOT NULL,
-  `authority` varchar(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_web_admin_user_01` (`user_login`),
-  KEY `idx_web_admin_user_02` (`auth_id`)
-) ENGINE=InnoDB CHARSET=utf8
-*/
