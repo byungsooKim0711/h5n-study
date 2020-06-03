@@ -22,7 +22,7 @@
     </v-btn>
 
     <!-- 더보기? 버튼 -->
-    <v-menu bottom left>
+    <v-menu bottom right>
       <template v-slot:activator="{ on }">
         <v-btn dark icon v-on="on">
           <v-icon>more_vert</v-icon>
