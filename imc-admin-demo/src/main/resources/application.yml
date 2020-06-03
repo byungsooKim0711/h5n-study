@@ -7,6 +7,9 @@ server:
       enabled: true
   tomcat:
     uri-encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
 
 spring:
   mvc:
@@ -14,10 +17,6 @@ spring:
       prefix: /resource/static/
       suffix: .html
     locale: ko_KR
-
-  http:
-    encoding:
-      charset: UTF-8
 
   servlet:
     multipart:
