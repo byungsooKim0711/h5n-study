@@ -52,31 +52,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/**").permitAll()
                 .antMatchers("/login").permitAll()
-                .anyRequest().authenticated();
-
+                .anyRequest().authenticated()
+                ;
 
         http.formLogin()
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .loginPage("/index.html")
                 .loginProcessingUrl("/login")
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler)
-                .usernameParameter("username")
-                .passwordParameter("password");
+                .permitAll()
+                ;
 
         http.authenticationProvider(authProvider);
 
         http.logout()
                 .logoutUrl("/logout").permitAll()
                 .deleteCookies("IMC-SESSION-ID")
-                .logoutSuccessHandler(logoutSuccessHandler);
+                .logoutSuccessHandler(logoutSuccessHandler)
+                ;
 
         http.sessionManagement()
-                .invalidSessionStrategy(new ImcInvalidSessionStrategy())
+//                .invalidSessionStrategy(new ImcInvalidSessionStrategy())
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .maximumSessions(1)
-//                // .maxSessionsPreventsLogin(true)
+                .maxSessionsPreventsLogin(false)
                 .expiredUrl("/index.html")
                 .and().invalidSessionUrl("/index.html");
     }

@@ -17,5 +17,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         log.info("SUCCESS");
+
+        System.out.println(authentication.toString());
+        System.out.println(authentication.getName());
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication.getCredentials());
+        System.out.println(authentication.getDetails());
+        System.out.println(authentication.getAuthorities());
+//        httpServletResponse.getWriter().write(authentication.);
     }
 }

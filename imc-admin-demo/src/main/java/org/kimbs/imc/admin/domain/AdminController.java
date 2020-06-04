@@ -5,9 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kimbs.imc.admin.domain.code.AuthLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -32,5 +30,16 @@ public class AdminController {
         }
 
         return adminUserRepository.save(user);
+    }
+
+    @PostMapping("/admin/{id}")
+    public WebAdminUser modifyWebAdminUser(@RequestBody WebAdminUser webAdminUser, @PathVariable long id) {
+        return null;
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public WebAdminUser removeWebAdminUser(@PathVariable long id) {
+        // active 만 N으로 변경
+        return null;
     }
 }

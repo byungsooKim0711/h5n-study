@@ -33,7 +33,6 @@ public class AuthProvider implements AuthenticationProvider {
     private Authentication authenticate(String id, String pw) {
         List<SimpleGrantedAuthority> authList = new ArrayList<>();
 
-        log.info("@@@@@@@@@@@@@@@@@@@@@");
         // TODO:
         return null;
     }

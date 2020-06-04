@@ -18,10 +18,7 @@ public class ImcUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&& : " + s);
         Optional<WebAdminUser> user = userRepository.findByUserLogin(s);
-
-        System.out.println("###########################################");
 
         user.orElseThrow(() -> new UsernameNotFoundException("User not exist with name: " + s));
 
