@@ -25,8 +25,6 @@ public class AuthProvider implements AuthenticationProvider {
         String id = authentication.getName();
         String pw = authentication.getCredentials().toString();
 
-        log.info("ID: {}, PW: {}", id, pw);
-
         return authenticate(id, pw);
     }
 

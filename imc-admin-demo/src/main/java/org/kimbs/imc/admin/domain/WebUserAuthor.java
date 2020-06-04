@@ -20,20 +20,24 @@ public class WebUserAuthor extends BaseTimeEntity {
     @Column(name = "AUTH_LEVEL", nullable = false, length = 1)
     @ColumnDefault(value = "'S'")
     @Enumerated(EnumType.STRING)
-    private AuthLevel authLevel;
+    private AuthLevel authLevel = AuthLevel.S;
 
     @Column(name = "AUTH_NAME", nullable = false, length = 20)
     private String authName;
 
     @Column(name = "AUTH_BILL", nullable = false, length = 1)
-    private String authBill;
+    @ColumnDefault(value = "'N'")
+    private String authBill = "N";
 
     @Column(name = "AUTH_OPERATION", nullable = false, length = 1)
-    private String authOperation;
+    @ColumnDefault(value = "'N'")
+    private String authOperation = "N";
 
     @Column(name = "AUTH_USER", nullable = false, length = 1)
-    private String authUser;
+    @ColumnDefault(value = "'N'")
+    private String authUser = "N";
 
     @Column(name = "AUTH_MANAGE", nullable = false, length = 1)
-    private String authManage;
+    @ColumnDefault(value = "'N'")
+    private String authManage = "N";
 }

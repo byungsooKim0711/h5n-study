@@ -2,44 +2,28 @@ package org.kimbs.imc.admin.domain;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.kimbs.imc.admin.domain.code.AuthLevel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.kimbs.imc.admin.security.ImcUserDetailsService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 public class AdminController {
 
-    private final WebAdminUserRepository adminUserRepository;
-    private final WebUserAuthorRepository webUserAuthorRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final ImcUserDetailsService imcUserDetailsService;
 
     @PostMapping("/admin")
     public WebAdminUser addWebAdminUser(@RequestBody WebAdminUser user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        AuthLevel authLevel = user.getWebUserAuthor().getAuthLevel();
-        WebUserAuthor author = webUserAuthorRepository.findByAuthLevel(authLevel);
-
-        if (author != null) {
-            user.setWebUserAuthor(author);
-        }
-
-        return adminUserRepository.save(user);
+        return imcUserDetailsService.insertWebAdminUser(user);
     }
 
     @PostMapping("/admin/{id}")
-    public WebAdminUser modifyWebAdminUser(@RequestBody WebAdminUser webAdminUser, @PathVariable long id) {
-        return null;
+    public WebAdminUser modifyWebAdminUser(@RequestBody WebAdminUser webAdminUser, @PathVariable Long id) {
+        return imcUserDetailsService.updateWebAdminUser(webAdminUser, id);
     }
 
     @DeleteMapping("/admin/{id}")
-    public WebAdminUser removeWebAdminUser(@PathVariable long id) {
-        // active 만 N으로 변경
-        return null;
+    public WebAdminUser removeWebAdminUser(@PathVariable Long id) {
+        return imcUserDetailsService.deleteWebAdminUser(id);
     }
 }

@@ -3,7 +3,6 @@ package org.kimbs.imc.admin.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,10 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
     private final LogoutSuccessHandlerImpl logoutSuccessHandler;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     private final ImcUserDetailsService userDetailsService;
-
-    private final AuthProvider authProvider;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -39,12 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(this.getBCryptPasswordEncoder());
-    }
-
-    @Bean
-    public BCryptPasswordEncoder getBCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -65,8 +58,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(loginFailureHandler)
                 .permitAll()
                 ;
-
-        http.authenticationProvider(authProvider);
 
         http.logout()
                 .logoutUrl("/logout").permitAll()
