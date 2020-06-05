@@ -26,43 +26,32 @@ public class WebAdminUser extends BaseTimeEntity {
     @JoinColumn(name = "AUTH_ID", referencedColumnName = "ID")
     private WebUserAuthor webUserAuthor;
 
-    @Column(name = "USER_LOGIN")
-    @NotNull
-    @Length(max = 45)
+    @Column(name = "USER_LOGIN", length = 45, nullable = false)
     private String userLogin;
 
-    @Column(name = "PASSWORD")
-    @NotNull
-    @Length(max = 128)
+    @Column(name = "PASSWORD", length = 128, nullable = false)
     private String password;
 
-    @Column(name = "KAKAO_BIZ_CENTER_ID")
-    @Length(max = 128)
+    @Column(name = "KAKAO_BIZ_CENTER_ID", length = 128)
     private String kakaoBizCenterId;
 
-    @Column(name = "ACTIVE_YN")
-    @NotNull
+    @Column(name = "ACTIVE_YN", length = 1, nullable = false)
     @ColumnDefault("'Y'")
-    @Length(min = 1, max = 1)
     private String activeYn;
 
-    @Column(name = "INFO_CP")
-    @Length(max = 64)
+    @Column(name = "INFO_CP", length = 64)
     private String infoCp;
 
-    @Column(name = "INFO_EM")
-    @Length(max = 64)
+    @Column(name = "INFO_EM", length = 64)
     private String infoEm;
 
-    @Column(name = "INFO_NA")
-    @Length(max = 64)
+    @Column(name = "INFO_NA", length = 64)
     private String infoNa;
 
     @Column(name = "FAIL_COUNT")
     @ColumnDefault("0")
     private int failCount;
 
-    @Column(name = "AUTHORITY")
-    @Length(max = 1)
+    @Column(name = "AUTHORITY", length = 1)
     private String authority;
 }
