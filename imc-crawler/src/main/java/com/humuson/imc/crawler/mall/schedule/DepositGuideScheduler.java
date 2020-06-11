@@ -9,83 +9,79 @@ import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
-@Component
+//@Component
 @RequiredArgsConstructor
 public class DepositGuideScheduler extends CrawlerBaseScheduler {
 
     private final MtMsgService mtMsgService;
 
+    @Override
+    protected String parseShopInfo(ChromeDriver driver) {
+        // 상점관리 메뉴
+        driver.findElement(By.id("QA_Gnb_store")).click();
+        // 기본정보관리 메뉴
+        driver.findElement(By.id("QA_Lnb_Menu10")).click();
+        // 내쇼핑몰 정보 메뉴
+        driver.findElement(By.id("QA_Lnb_Menu11")).click();
+
+        String template = TemplateUtils.DEPOSIT_GUIDE_TEMPLATE;
+
+        // 쇼핑몰 이름
+        String shopName = driver.findElement(By.name("mall_name")).getAttribute("value");
+        // 대표 휴대전화
+        String phoneNumber = driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[5]/td/input")).getAttribute("value");
+        // 도메인
+        String mallUrl = driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[7]/td")).getText();
+
+        template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_NAME.getRegex(), shopName);
+        template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_TEL_NUMBER.getRegex(), phoneNumber);
+        template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_URL.getRegex(), mallUrl);
+
+        return template;
+    }
+
+    @Override
+    protected void navigateTemplateMenu(ChromeDriver driver) {
+        // 주문관리 메뉴 클릭
+        driver.findElement(By.id("QA_Gnb_sales")).click();
+        //입금전 관리 메뉴 클릭
+        driver.findElement(By.id("QA_Lnb_Menu71")).click();
+    }
+
+    @Override
+    protected void searchCondition(ChromeDriver driver) {
+        // 시작일 캘린더 (3일 버튼 클릭)
+        driver.findElement(By.cssSelector("#QA_deposit1 > div:nth-child(2) > table > tbody > tr:nth-child(2) > td > a:nth-child(4)")).click();
+
+        // option:nth-child(N): N==1 ? 10개씩 보기 / N==2? 20개씩 보기 / N==3? 30개씩 보기 / N==4? 50개씩 보기 / N==5? 100개씩 보기
+        driver.findElement(By.cssSelector("#tabNumber > div.mState > div.gRight > select:nth-child(2) > option:nth-child(5)")).click();
+        // 검색버튼 클릭
+        driver.findElement(By.xpath("//a[@id='eBtnSearch']/span")).click();
+    }
+
     @Scheduled(cron = "${imc.crawler.scheduled.deposit-guide}")
     @Override
     public void schedule() {
-        if (!super.isReady()) {
+        if (super.isReady()) {
             log.info("[UNREADY DEPOSIT-GUIDE SCHEDULER...]");
             return;
         }
-        ChromeDriver driver = super.getChromeDriver();
+        ChromeDriver driver = super.getChromeDriver("", "");
 
         log.info("[TRY DEPOSIT-GUIDE SCHEDULER...]");
 
         synchronized (driver) {
-            // 상점관리 메뉴
-            driver.findElement(By.id("QA_Gnb_store")).click();
-            // 기본정보관리 메뉴
-            driver.findElement(By.id("QA_Lnb_Menu10")).click();
-            // 내쇼핑몰 정보 메뉴
-            driver.findElement(By.id("QA_Lnb_Menu11")).click();
+            String template = this.parseShopInfo(driver);
 
-            String depositGuide = TemplateUtils.DEPOSIT_GUIDE_TEMPLATE;
+            this.navigateTemplateMenu(driver);
 
-            // 쇼핑몰 이름
-            depositGuide = TemplateUtils.replaceTemplateVariable(depositGuide, Mall.MALL_NAME.getRegex(), driver.findElement(By.name("mall_name")).getAttribute("value"));
-            // 대표 휴대전화
-            depositGuide = TemplateUtils.replaceTemplateVariable(depositGuide, Mall.MALL_TEL_NUMBER.getRegex(), driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[5]/td/input")).getAttribute("value"));
-            // 도메인
-            String mallUrl = driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[7]/td")).getText();
-            depositGuide = TemplateUtils.replaceTemplateVariable(depositGuide, Mall.MALL_URL.getRegex(), mallUrl);
-
-            // 주문관리 메뉴 클릭
-            driver.findElement(By.id("QA_Gnb_sales")).click();
-            //입금전 관리 메뉴 클릭
-            driver.findElement(By.id("QA_Lnb_Menu71")).click();
-
-            // 검색조건: 어제 ~ 오늘
-            // 시작일 캘린더 (어제)
-            LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-            driver.findElement(By.id("eStartCalendar")).click();
-            driver.findElement(By.xpath("//li[2]/select")).click();
-            new Select(driver.findElement(By.xpath("//li[2]/select"))).selectByVisibleText(yesterday.format(DateTimeFormatter.ofPattern("yyyy")));
-            driver.findElement(By.xpath("//li[2]/select")).click();
-            driver.findElement(By.xpath("//li[2]/select[2]")).click();
-            new Select(driver.findElement(By.xpath("//li[2]/select[2]"))).selectByVisibleText(yesterday.format(DateTimeFormatter.ofPattern("MM")));
-            driver.findElement(By.xpath("//li[2]/select[2]")).click();
-            driver.findElement(By.linkText(yesterday.format(DateTimeFormatter.ofPattern("dd")))).click();
-
-            // 종료일 캘린더 (오늘)
-            LocalDateTime today = LocalDateTime.now();
-            driver.findElement(By.id("eEndCalendar")).click();
-            driver.findElement(By.xpath("//li[2]/select")).click();
-            new Select(driver.findElement(By.xpath("//li[2]/select"))).selectByVisibleText(today.format(DateTimeFormatter.ofPattern("yyyy")));
-            driver.findElement(By.xpath("//li[2]/select")).click();
-            driver.findElement(By.xpath("//li[2]/select[2]")).click();
-            new Select(driver.findElement(By.xpath("//li[2]/select[2]"))).selectByVisibleText(today.format(DateTimeFormatter.ofPattern("MM")));
-            driver.findElement(By.xpath("//li[2]/select[2]")).click();
-            driver.findElement(By.linkText(today.format(DateTimeFormatter.ofPattern("dd")))).click();
-
-
-            // option:nth-child(N): N==1 ? 10개씩 보기 / N==2? 20개씩 보기 / N==3? 30개씩 보기 / N==4? 50개씩 보기 / N==5? 100개씩 보기
-            driver.findElement(By.cssSelector("#tabNumber > div.mState > div.gRight > select:nth-child(2) > option:nth-child(2)")).click();
-            // 검색버튼 클릭
-            driver.findElement(By.xpath("//a[@id='eBtnSearch']/span")).click();
+            this.searchCondition(driver);
 
             // 메인 페이지
             String parentWindow = driver.getWindowHandle();
@@ -137,7 +133,7 @@ public class DepositGuideScheduler extends CrawlerBaseScheduler {
                     username = username.split("\\(")[0].trim();
 
                     log.info("PRICE:{}, BANK:{}, ACCOUNT:{}, DEPOSITOR:{}", price, bank, account, depositor);
-                    String contents = depositGuide;
+                    String contents = template;
                     contents = TemplateUtils.replaceTemplateVariable(contents, Deposit.DEPOSIT_BANK.getRegex(), bank);
                     contents = TemplateUtils.replaceTemplateVariable(contents, Deposit.DEPOSIT_ACCOUNT.getRegex(), account);
                     contents = TemplateUtils.replaceTemplateVariable(contents, Deposit.DEPOSIT_DEPOSITOR.getRegex(), depositor);

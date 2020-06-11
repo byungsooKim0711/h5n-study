@@ -7,6 +7,7 @@ public class TemplateUtils {
 
     private static final String TEMPLATE_VARIABLE = "#\\{.+?}";
 
+    // 회원 가입 인사 템플릿
     public static final String WELCOME_TEMPLATE = "[#{쇼핑몰이름}]\n"+
             "안녕하세요. #{고객이름}님!\n"+
             "\n"+
@@ -25,6 +26,7 @@ public class TemplateUtils {
             "고객센터\n"+
             "(#{쇼핑몰번호})\n";
 
+    // 입금 안내 템플릿
     public static final String DEPOSIT_GUIDE_TEMPLATE = "[#{쇼핑몰이름}]\n" +
             "안녕하세요. #{고객이름}님!\n" +
             "\n" +
@@ -40,6 +42,52 @@ public class TemplateUtils {
             "\n" +
             "▷ #{쇼핑몰이름} 바로가기\n" +
             "[#{쇼핑몰URL}]\n" +
+            "고객센터\n" +
+            "(#{쇼핑몰번호})\n";
+
+    // 신규 주문 안내 템플릿
+    public static final String NEW_ORDER_TEMPLATE = "[#{쇼핑몰이름}]\n" +
+            "안녕하세요. #{고객이름}님!\n" +
+            "\n" +
+            "#{고객이름}님의 소중한 주문 안내드립니다. (굿)\n" +
+            "\n" +
+            "- 날짜 : #{DATE}\n" +
+            "- 주문번호 : #{ORDERID}\n" +
+            "- 금액 : #{PRICE}원\n" +
+            "\n" +
+            "감사합니다. 좋은하루 되세요. (감동)\n" +
+            "\n" +
+            "\n" +
+            "▷ #{쇼핑몰이름} 바로가기\n" +
+            "#{쇼핑몰URL}\n" +
+            "고객센터\n" +
+            "(#{쇼핑몰번호})\n";
+
+    public static final String COMPLETED_ORDER_TEMPLATE = "[#{쇼핑몰이름}]\n" +
+            "안녕하세요. #{고객이름}님!\n" +
+            "\n" +
+            "주문하신 상품이 배송 완료되었습니다. (좋아)\n" +
+            "\n" +
+            "- 상품명 : #{PRODUCT}\n" +
+            "\n" +
+            "#{고객이름}님 마음에 쏙 드셨으면 좋겠습니다.\n" +
+            "앞으로도 #{쇼핑몰이름}을(를) 많이 사랑해주세요. :-)\n" +
+            "\n" +
+            "\n" +
+            "▷ #{쇼핑몰이름} 바로가기\n" +
+            "#{쇼핑몰URL}\n" +
+            "고객센터\n" +
+            "(#{쇼핑몰번호})\n";
+
+    public static final String BOARD_ANSWER_TEMPLATE = "[#{쇼핑몰이름}]\n" +
+            "안녕하세요. #{고객이름}님\n" +
+            "\n" +
+            "문의하신 내용에 답변이 등록되었습니다.\n" +
+            "감사합니다^^\n" +
+            "\n" +
+            "\n" +
+            "▷ #{쇼핑몰이름} 바로가기\n" +
+            "#{쇼핑몰URL}\n" +
             "고객센터\n" +
             "(#{쇼핑몰번호})\n";
 

@@ -10,7 +10,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 @EnableScheduling
 public class SchedulerConfig implements SchedulingConfigurer {
 
-    private final int SCHEDULE_MAX_POOL_SIZE = 10;
+    private final int SCHEDULE_MAX_POOL_SIZE = 15;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {

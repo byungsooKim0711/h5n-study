@@ -9,7 +9,7 @@ public enum Welcome {
     CUSTOMER_ID("#\\{고객ID}"),
     ;
 
-    private String regex;
+    private final String regex;
 
     Welcome(String regex) {
         this.regex = regex;

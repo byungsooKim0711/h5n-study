@@ -9,7 +9,7 @@ public enum Mall {
     MALL_URL("#\\{쇼핑몰URL}"),
     ;
 
-    private String regex;
+    private final String regex;
 
     Mall(String regex) {
         this.regex = regex;

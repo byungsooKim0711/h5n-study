@@ -28,6 +28,12 @@ spring:
 #      hibernate.order_update: true
 #      hibernate.enable_lazy_load_no_trans: true
 
+  redis:
+    host: '127.0.0.1'
+    port: 6379
+    password:
+
+
 logging:
   level:
     com.querydsl.sql: INFO
@@ -39,12 +45,16 @@ imc:
     web-driver:
       key: 'webdriver.chrome.driver'
       value: 'chromedriver.exe'
+      implicitly-wait: 10
       options:
-        - '--headless'
-        - '--no-sandbox'
-        - '--disable-dev-shm-usage'
+#        - '--headless'
+#        - '--no-sandbox'
+#        - '--disable-dev-shm-usage'
     scheduled:
       welcome: '*/5 * * * * *'
       deposit-guide: '*/5 * * * * *'
+      board: '*/5 * * * * *'
+
+
       load-mall-admin: '10 20 */1 * * *'
       load-mall-user: '40 */1 * * * *'

@@ -20,81 +20,103 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@Component
+//@Component
 @RequiredArgsConstructor
 public class WelcomeScheduler extends CrawlerBaseScheduler {
 
     private final MtMsgService mtMsgService;
+
+    @Override
+    protected String parseShopInfo(ChromeDriver driver) {
+        // 상점관리 메뉴
+        driver.findElement(By.id("QA_Gnb_store")).click();
+        // 기본정보관리 메뉴
+        driver.findElement(By.id("QA_Lnb_Menu10")).click();
+        // 내쇼핑몰 정보 메뉴
+        driver.findElement(By.id("QA_Lnb_Menu11")).click();
+
+        String template = TemplateUtils.WELCOME_TEMPLATE;
+
+        // 쇼핑몰 이름
+        String shopName = driver.findElement(By.name("mall_name")).getAttribute("value");
+        // 대표 휴대전화
+        String phoneNumber = driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[5]/td/input")).getAttribute("value");
+        // 도메인
+        String mallUrl = driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[7]/td")).getText();
+
+        template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_NAME.getRegex(), shopName);
+        template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_TEL_NUMBER.getRegex(), phoneNumber);
+        template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_URL.getRegex(), mallUrl);
+
+        return template;
+    }
+
+    @Override
+    protected void navigateTemplateMenu(ChromeDriver driver) {
+        // 고객관리 메뉴
+        driver.findElement(By.xpath("//A[@id='QA_Gnb_member']")).click();
+
+        driver.findElement(By.id("QA_Lnb_Menu90")).click();
+    }
+
+    @Override
+    protected void searchCondition(ChromeDriver driver) {
+        // 검색조건:
+        // 가입일 선택
+        driver.findElement(By.name("day_type")).click();
+        new Select(driver.findElement(By.name("day_type"))).selectByVisibleText("가입일");
+        driver.findElement(By.name("day_type")).click();
+
+        // 시작일 캘린더 (3일 전)
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(3);
+        driver.findElement(By.id("btnRegistStartDate")).click();
+        driver.findElement(By.xpath("//li[2]/select")).click();
+        new Select(driver.findElement(By.xpath("//li[2]/select"))).selectByVisibleText(yesterday.format(DateTimeFormatter.ofPattern("yyyy")));
+        driver.findElement(By.xpath("//li[2]/select")).click();
+        driver.findElement(By.xpath("//li[2]/select[2]")).click();
+        new Select(driver.findElement(By.xpath("//li[2]/select[2]"))).selectByVisibleText(yesterday.format(DateTimeFormatter.ofPattern("MM")));
+        driver.findElement(By.xpath("//li[2]/select[2]")).click();
+        driver.findElement(By.linkText(yesterday.format(DateTimeFormatter.ofPattern("dd")))).click();
+
+        // 종료일 캘린더 (오늘)
+        LocalDateTime today = LocalDateTime.now();
+        driver.findElement(By.id("btnRegistEndDate")).click();
+        driver.findElement(By.xpath("//li[2]/select")).click();
+        new Select(driver.findElement(By.xpath("//li[2]/select"))).selectByVisibleText(today.format(DateTimeFormatter.ofPattern("yyyy")));
+        driver.findElement(By.xpath("//li[2]/select")).click();
+        driver.findElement(By.xpath("//li[2]/select[2]")).click();
+        new Select(driver.findElement(By.xpath("//li[2]/select[2]"))).selectByVisibleText(today.format(DateTimeFormatter.ofPattern("MM")));
+        driver.findElement(By.xpath("//li[2]/select[2]")).click();
+        driver.findElement(By.linkText(today.format(DateTimeFormatter.ofPattern("dd")))).click();
+
+        // option:nth-child(N): N==1 ? 10개씩 보기 / N==2? 20개씩 보기 / N==3? 30개씩 보기 / N==4? 50개씩 보기 / N==5? 100개씩 보기
+        driver.findElement(By.cssSelector("#QA_profile2 > div.mState > div.gRight > select:nth-child(2) > option:nth-child(5)")).click();
+        // 검색버튼 클릭
+        driver.findElement(By.xpath("//div[@id='QA_profile1']/div/div[4]/a/span")).click();
+    }
 
     @Scheduled(cron = "${imc.crawler.scheduled.welcome}")
     @Override
     public void schedule() {
 
         // 어플리케이션 초기화 전에 스케줄러가 동작 방지
-        if (!super.isReady()) {
+        if (super.isReady()) {
             log.info("[UNREADY WELCOME SCHEDULER...]");
             return;
         }
 
         // TODO: 계정마다 Driver 생성, 작업 후 quit();
         // TODO: 쓰레드 사용 확인해봐야 한다.
-        ChromeDriver driver = super.getChromeDriver();
+        ChromeDriver driver = super.getChromeDriver("", "");
 
         log.info("[TRY WELCOME SCHEDULER...]");
 
         synchronized (driver) {
-            // 상점관리 메뉴
-            driver.findElement(By.id("QA_Gnb_store")).click();
-            // 기본정보관리 메뉴
-            driver.findElement(By.id("QA_Lnb_Menu10")).click();
-            // 내쇼핑몰 정보 메뉴
-            driver.findElement(By.id("QA_Lnb_Menu11")).click();
+            String template = this.parseShopInfo(driver);
 
-            String template = TemplateUtils.WELCOME_TEMPLATE;
+            this.navigateTemplateMenu(driver);
 
-            // 쇼핑몰 이름
-            template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_NAME.getRegex(), driver.findElement(By.name("mall_name")).getAttribute("value"));
-            // 대표 휴대전화
-            template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_TEL_NUMBER.getRegex(), driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[5]/td/input")).getAttribute("value"));
-            // 도메인
-            String mallUrl = driver.findElement(By.xpath("//div[@id='QA_myShop1']/div[2]/table/tbody/tr[7]/td")).getText();
-            template = TemplateUtils.replaceTemplateVariable(template, Mall.MALL_URL.getRegex(), mallUrl);
-
-            // 고객관리 메뉴
-            driver.findElement(By.xpath("//A[@id='QA_Gnb_member']")).click();
-
-            driver.findElement(By.id("QA_Lnb_Menu90")).click();
-
-            // 검색조건: 어제 ~ 오늘
-            // 가입일 선택
-            driver.findElement(By.name("day_type")).click();
-            new Select(driver.findElement(By.name("day_type"))).selectByVisibleText("가입일");
-            driver.findElement(By.name("day_type")).click();
-
-            // 시작일 캘린더 (어제)
-            LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-            driver.findElement(By.id("btnRegistStartDate")).click();
-            driver.findElement(By.xpath("//li[2]/select")).click();
-            new Select(driver.findElement(By.xpath("//li[2]/select"))).selectByVisibleText(yesterday.format(DateTimeFormatter.ofPattern("yyyy")));
-            driver.findElement(By.xpath("//li[2]/select")).click();
-            driver.findElement(By.xpath("//li[2]/select[2]")).click();
-            new Select(driver.findElement(By.xpath("//li[2]/select[2]"))).selectByVisibleText(yesterday.format(DateTimeFormatter.ofPattern("MM")));
-            driver.findElement(By.xpath("//li[2]/select[2]")).click();
-            driver.findElement(By.linkText(yesterday.format(DateTimeFormatter.ofPattern("dd")))).click();
-
-            // 종료일 캘린더 (오늘)
-            LocalDateTime today = LocalDateTime.now();
-            driver.findElement(By.id("btnRegistEndDate")).click();
-            driver.findElement(By.xpath("//li[2]/select")).click();
-            new Select(driver.findElement(By.xpath("//li[2]/select"))).selectByVisibleText(today.format(DateTimeFormatter.ofPattern("yyyy")));
-            driver.findElement(By.xpath("//li[2]/select")).click();
-            driver.findElement(By.xpath("//li[2]/select[2]")).click();
-            new Select(driver.findElement(By.xpath("//li[2]/select[2]"))).selectByVisibleText(today.format(DateTimeFormatter.ofPattern("MM")));
-            driver.findElement(By.xpath("//li[2]/select[2]")).click();
-            driver.findElement(By.linkText(today.format(DateTimeFormatter.ofPattern("dd")))).click();
-
-            // 검색버튼 클릭
-            driver.findElement(By.xpath("//div[@id='QA_profile1']/div/div[4]/a/span")).click();
+            this.searchCondition(driver);
 
             WebElement pageElement = driver.findElement(By.xpath("//DIV[@class='mPaginate']/ol"));
             List<WebElement> liTags = pageElement.findElements(By.tagName("li"));
@@ -105,9 +127,9 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
             // do while로 안해도 되는 이유는 페이징 할 게 없어도 1 표시가 됨.
             while (l < liTags.size()) {
                 WebElement pageElement1 = driver.findElement(By.xpath("//DIV[@class='mPaginate']/ol"));
-                List<WebElement> liTags1 = pageElement1.findElements(By.tagName("li"));
+                liTags = pageElement1.findElements(By.tagName("li"));
                 if (l > 0) {
-                    liTags1.get(l).click();
+                    liTags.get(l).click();
                 }
 
                 // tbody tr, td 가져옴
@@ -146,8 +168,8 @@ public class WelcomeScheduler extends CrawlerBaseScheduler {
                     }
                 }
                 l++;
-                // N 개의 페이지 번호를 전부 클릭햇고, Next 버튼이 있을 경우
-                if (l >= liTags1.size()) {
+                // N 개의 페이지 번호를 전부 클릭했고, Next 버튼이 있을 경우
+                if (l >= liTags.size()) {
                     List<WebElement> nextButton = driver.findElements(By.cssSelector("#tabNumber > div.mPaginate > a"));
                     if (nextButton!= null && !nextButton.isEmpty()) {
                         nextButton.get(0).click();

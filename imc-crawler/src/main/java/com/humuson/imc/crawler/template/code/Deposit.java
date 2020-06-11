@@ -12,7 +12,7 @@ public enum Deposit {
     DEPOSIT_DEPOSITOR("#\\{DEPOSITOR}")
     ;
 
-    private String regex;
+    private final String regex;
 
     Deposit(String regex) {
         this.regex = regex;

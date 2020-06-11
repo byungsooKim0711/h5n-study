@@ -29,30 +29,35 @@ public abstract class CrawlerBaseScheduler {
     }
 
     boolean isReady() {
-        return this.ready;
+        return !this.ready;
     }
+
+    // 쇼핑몰 정보 메뉴로 이동
+    protected abstract String parseShopInfo(ChromeDriver driver);
+    protected abstract void navigateTemplateMenu(ChromeDriver driver);
+    protected abstract void searchCondition(ChromeDriver driver);
+//    protected abstract boolean checkDuplicateMessage(Object object);
 
     protected abstract void schedule();
 
-    ChromeDriver getChromeDriver() {
+    ChromeDriver getChromeDriver(String id, String pw) {
         if (this.driver != null) {
             return this.driver;
         }
 
         ChromeOptions options = new ChromeOptions();
-//        options.setPageLoadStrategy(PageLoadStrategy.NONE);
         this.driverConfig.getOptions().forEach(options::addArguments);
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(driverConfig.getImplicitlyWait(), TimeUnit.SECONDS);
         driver.manage().window().maximize();
 
         driver.get("https://eclogin.cafe24.com/Shop/");
         driver.findElement(By.id("mall_id")).click();
         driver.findElement(By.id("mall_id")).clear();
-        driver.findElement(By.id("mall_id")).sendKeys("asdf");
+        driver.findElement(By.id("mall_id")).sendKeys(id);
         driver.findElement(By.id("userpasswd")).click();
         driver.findElement(By.id("userpasswd")).clear();
-        driver.findElement(By.id("userpasswd")).sendKeys("asdf!");
+        driver.findElement(By.id("userpasswd")).sendKeys(pw);
         driver.findElement(By.linkText("로그인")).click();
 
         // 로그인 이후 비밀번호 변경 페이지가 나왔을 때
@@ -61,11 +66,8 @@ public abstract class CrawlerBaseScheduler {
             changePassword.get(0).click();
         }
 
+        // 스마트모드라면 프리모드로 변경
         driver.findElement(By.id("ec-influencer-gnb-mode-pro")).click();
-//        List<WebElement> gnb = driver.findElements(By.id("ec-influencer-gnb-mode-pro"));
-//        if (gnb != null && !gnb.isEmpty()) {
-//            gnb.get(0).click();
-//        }
         return this.driver;
     }
 
