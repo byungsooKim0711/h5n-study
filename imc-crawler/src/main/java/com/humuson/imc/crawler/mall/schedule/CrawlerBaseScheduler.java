@@ -12,6 +12,7 @@ import org.springframework.context.event.EventListener;
 
 import javax.annotation.PreDestroy;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -37,6 +38,9 @@ public abstract class CrawlerBaseScheduler {
     protected abstract void navigateTemplateMenu(ChromeDriver driver);
     protected abstract void searchCondition(ChromeDriver driver);
 //    protected abstract boolean checkDuplicateMessage(Object object);
+    protected String generateHashKey(Object... keys) {
+        return "" + Objects.hash(keys);
+    }
 
     protected abstract void schedule();
 

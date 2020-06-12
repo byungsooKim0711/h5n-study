@@ -1,6 +1,5 @@
 package com.humuson.imc.crawler.mall.schedule;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humuson.imc.crawler.model.BoardMessage;
 import com.humuson.imc.crawler.template.TemplateUtils;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -131,30 +129,10 @@ public class BoardScheduler extends CrawlerBaseScheduler {
                         String username = driver.findElement(By.cssSelector("#QA_main1 > div.mBoard > table > tbody > tr:nth-child(4) > td")).getText();
                         String phoneNumber = driver.findElement(By.cssSelector("#QA_main1 > div.mBoard > table > tbody > tr:nth-child(8) > td")).getText();
 
-                        BoardMessage message = new BoardMessage();
-                        message.setMallId(mallId);
-                        message.setUserId(userId);
-                        message.setUsername(username);
-                        message.setPhoneNumber(phoneNumber);
-                        message.setRegisteredDate(registeredDate);
-
-                        if (boardMap.containsKey(message.toString())) {
-                            // 새로 띄운 창 닫음
-                            driver.close();
-                            // 메인 페이지로 포커스 이동
-                            driver.switchTo().window(parentWindow);
-                            continue;
-                        }
-
                         log.info("[PARSE DATA] MALL_ID: {}, USER_ID: {}, USERNAME: {}, PHONE: {}, REGISTERED_DATE: {}", mallId, userId, username, phoneNumber, registeredDate);
 
                         String contents = template;
                         contents = TemplateUtils.replaceTemplateVariable(contents, Board.BOARD_NAME.getRegex(), username);
-                        if (TemplateUtils.isFinishedTemplate(contents)) {
-                            log.info("\nFINISHED TEMPLATE:\n{}", contents);
-                        } else {
-                            log.error("\nUNFINISHED TEMPLATE:\n{}", contents);
-                        }
 
                         // 새로 띄운 창 닫음
                         driver.close();
@@ -162,17 +140,37 @@ public class BoardScheduler extends CrawlerBaseScheduler {
                         driver.switchTo().window(parentWindow);
                         log.info("BACK TO PARENT WINDOW: {}, TITLE: {}", driver.getWindowHandle(), driver.getTitle());
 
-                        // 발송
-                        try {
-                            String key = "CRAWLER-BOARD";
-                            redisTemplate.opsForHash().put(key, message.toString(), mapper.writeValueAsString(message));
-                            redisTemplate.expire(key, 4, TimeUnit.DAYS);
-                        } catch (JsonProcessingException e) {
-                            e.printStackTrace();
+                        BoardMessage message = new BoardMessage();
+                        message.setMallId(mallId);
+                        message.setUserId(userId);
+                        message.setUsername(username);
+                        message.setPhoneNumber(phoneNumber);
+                        message.setRegisteredDate(registeredDate);
+                        message.setMessage(contents);
+
+                        String hashKey = super.generateHashKey(message.getMallId(), message.getUserId(), message.getRegisteredDate());
+
+                        if (boardMap.containsKey(hashKey)) {
+                            continue;
                         }
 
+                        if (TemplateUtils.isFinishedTemplate(contents)) {
+                            log.info("\nFINISHED TEMPLATE:\n{}", contents);
+                        } else {
+                            log.error("\nUNFINISHED TEMPLATE:\n{}", contents);
+                        }
+
+                        try {
+                        // 발송
+
                         // 발송된건 메모리에 올림 ( +redis)
-                        boardMap.put(message.toString(), message);
+                            String key = "CRAWLER-BOARD";
+                            redisTemplate.opsForHash().put(key, hashKey, mapper.writeValueAsString(message));
+//                            redisTemplate.expire(key, 120, TimeUnit.SECONDS);
+                            boardMap.put(hashKey, message);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 

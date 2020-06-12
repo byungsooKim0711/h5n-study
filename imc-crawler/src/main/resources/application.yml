@@ -32,6 +32,23 @@ spring:
     host: '127.0.0.1'
     port: 6379
     password:
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+#        time-between-eviction-runs:
+      cluster:
+        refresh:
+          adaptive: false
+#          period:
+      shutdown-timeout: 100ms
+    database: 0
+    ssl: false
+
+
+
 
 
 logging:

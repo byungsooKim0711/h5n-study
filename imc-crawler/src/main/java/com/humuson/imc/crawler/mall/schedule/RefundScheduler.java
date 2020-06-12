@@ -1,8 +1,14 @@
 package com.humuson.imc.crawler.mall.schedule;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Component;
 
+@Slf4j
+@RequiredArgsConstructor
 @Component
 public class RefundScheduler extends CrawlerBaseScheduler {
 
@@ -21,8 +27,10 @@ public class RefundScheduler extends CrawlerBaseScheduler {
 
     }
 
+    @Schedules(value = {
+            @Scheduled(cron = "0 0/2 * * * *")
+    })
     @Override
     protected void schedule() {
-
     }
 }
