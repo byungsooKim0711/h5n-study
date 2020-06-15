@@ -79,6 +79,7 @@ public class TemplateUtils {
             "고객센터\n" +
             "(#{쇼핑몰번호})\n";
 
+    // 게시물 답변
     public static final String BOARD_ANSWER_TEMPLATE = "[#{쇼핑몰이름}]\n" +
             "안녕하세요. #{고객이름}님\n" +
             "\n" +
@@ -91,6 +92,25 @@ public class TemplateUtils {
             "고객센터\n" +
             "(#{쇼핑몰번호})\n";
 
+    // 주문 결제 완료
+//    public static final String
+
+    // 무통장 입금 완료
+    public static final String DEPOSIT_WITHOUT_BANKBOOK = "[#{쇼핑몰이름}]\n" +
+            "안녕하세요. #{고객이름}님!\n" +
+            "\n" +
+            "입금확인 되었습니다. (뽀뽀)\n" +
+            "\n" +
+            "- 날짜 : #{결제일}\n" +
+            "- 주문번호 : #{ORDERID}\n" +
+            "\n" +
+            "#{쇼핑몰이름}을(를) 사랑해주셔서 감사합니다. (굿)\n" +
+            "\n" +
+            "\n" +
+            "▷ #{쇼핑몰이름} 바로가기\n" +
+            "#{쇼핑몰URL}\n" +
+            "고객센터\n" +
+            "(#{발신자번호})";
 
     // 템플릿의 변수로 되어있는 부분을 개인화
     public static String replaceTemplateVariable(String template, String regex, String value) {

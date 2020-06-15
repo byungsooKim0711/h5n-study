@@ -71,6 +71,7 @@ imc:
       welcome: '*/5 * * * * *'
       deposit-guide: '*/5 * * * * *'
       board: '*/5 * * * * *'
+      without-bankbook: '*/5 * * * * *'
 
 
       load-mall-admin: '10 20 */1 * * *'
