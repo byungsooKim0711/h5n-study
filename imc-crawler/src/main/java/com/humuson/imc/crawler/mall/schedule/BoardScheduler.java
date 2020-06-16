@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
+//@Component
 public class BoardScheduler extends CrawlerBaseScheduler {
 
     private final ConcurrentHashMap<String, BoardMessage> boardMap;

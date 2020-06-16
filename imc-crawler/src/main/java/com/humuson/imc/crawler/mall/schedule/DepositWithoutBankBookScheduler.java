@@ -4,9 +4,12 @@ import com.humuson.imc.crawler.template.TemplateUtils;
 import com.humuson.imc.crawler.template.code.Mall;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 
 // 무통장 입금 완료 스케줄러
@@ -78,6 +81,15 @@ public class DepositWithoutBankBookScheduler extends CrawlerBaseScheduler {
 
             this.searchCondition(driver);
 
+            List<WebElement> tables = driver.findElements(By.cssSelector("#shipedReadyList > table"));
+            for (int i=1; i<tables.size(); i++) {
+                WebElement table = tables.get(i);
+
+                String orderNumber = table.findElement(By.cssSelector("tbody > tr:nth-child(1) > td.orderNum")).getText();
+                String paymentType = table.findElement(By.cssSelector("tbody > tr:nth-child(1) > td:nth-child(17)")).getText();
+                String paymentDate = table.findElement(By.xpath("tbody/tr[1]/td[2]")).getText();
+                log.info("주문번호: {}, 주문일: {}, 결제수단: {}", orderNumber, paymentDate, paymentType);
+            }
 
         }
     }
