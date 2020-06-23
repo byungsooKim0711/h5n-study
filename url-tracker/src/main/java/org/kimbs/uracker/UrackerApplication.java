@@ -10,4 +10,5 @@ public class UrackerApplication {
 		SpringApplication.run(UrackerApplication.class, args);
 	}
 
+	// https://daddyprogrammer.org/post/4056/reactive-redis/
 }
