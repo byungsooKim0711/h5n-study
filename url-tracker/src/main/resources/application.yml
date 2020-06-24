@@ -1,16 +1,59 @@
 server:
   port: 39061
+  netty:
+    connection-timeout: 3000
+
+logging:
+  config: classpath:logback-spring.xml
 
 spring:
+  application:
+    name: "URL-TRACKING"
+  main:
+    web-application-type: REACTIVE
+
   redis:
     host: 127.0.0.1
     port: 6379
     password:
     database: 1
 #    lettuce:
-#      pool:
-#        max-active: 8
-#        max-idle: 8
-#        min-idle: 0
-#        max-wait: -1ms
-#      shutdown-timeout: 100ms
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+      shutdown-timeout: 100ms
+
+  kafka:
+    bootstrap-servers: "10.147.1.90:9092"
+    producer:
+      retries: 0
+      batch-size: 20000
+      compression-type: gzip
+      # Custom setting - batch 요청을 위한 버퍼링 시간. batch-size에 다다르면 즉시 메시지를 전송한다.
+      linger-ms: 50
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: url-tracking
+      enable-auto-commit: false
+      max-poll-records: 500
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      concurrency: 5
+      ack-mode: manual-immediate
+      poll-timeout: 3000
+      # Custom setting - batch listener
+      batch: false
+      # Custom setting - auto startup listener
+      auto-startup: true
+    # Custom setting - retries
+    retry:
+      max-attempts: 10
+      initial-interval: 1000
+      multiplier: 2
+      max-interval: 10000
