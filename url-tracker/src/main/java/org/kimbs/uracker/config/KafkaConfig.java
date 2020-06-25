@@ -93,7 +93,7 @@ public class KafkaConfig {
     private final CommonKafkaBatchErrorHandler commonBatchErrorHandler;
 
     @Bean
-    ConcurrentKafkaListenerContainerFactory<Object, Object> kafkaListenerContainerFactory(ConcurrentKafkaListenerContainerFactoryConfigurer configurer) {
+    public ConcurrentKafkaListenerContainerFactory<Object, Object> kafkaListenerContainerFactory(ConcurrentKafkaListenerContainerFactoryConfigurer configurer) {
         ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setBatchListener(listenerBatch);
