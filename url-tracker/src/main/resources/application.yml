@@ -17,7 +17,7 @@ spring:
     port: 6379
     password:
     database: 1
-#    lettuce:
+    #    lettuce:
     jedis:
       pool:
         max-active: 8
@@ -32,7 +32,7 @@ spring:
       retries: 0
       batch-size: 20000
       compression-type: gzip
-      # Custom setting - batch ¿äÃ»À» À§ÇÑ ¹öÆÛ¸µ ½Ã°£. batch-size¿¡ ´Ù´Ù¸£¸é Áï½Ã ¸Ş½ÃÁö¸¦ Àü¼ÛÇÑ´Ù.
+      # Custom setting - batch ìš”ì²­ì„ ìœ„í•œ ë²„í¼ë§ ì‹œê°„. batch-sizeì— ë‹¤ë‹¤ë¥´ë©´ ì¦‰ì‹œ ë©”ì‹œì§€ë¥¼ ì „ì†¡í•œë‹¤.
       linger-ms: 50
       buffer-memory: 33554432
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
