@@ -5,8 +5,8 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.kimbs.uracker.handler.CommonKafkaBatchErrorHandler;
 import org.kimbs.uracker.handler.CommonKafkaErrorHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -18,7 +18,6 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,13 +89,13 @@ public class KafkaConfig {
     @Value("${spring.kafka.retry.max-interval}")
     private int retryMaxInterval;
 
-    @Autowired
-    private ConcurrentKafkaListenerContainerFactory<String, String> factory;
     private final CommonKafkaErrorHandler commonErrorHandler;
     private final CommonKafkaBatchErrorHandler commonBatchErrorHandler;
 
-    @PostConstruct
-    public void init() {
+    @Bean
+    ConcurrentKafkaListenerContainerFactory<Object, Object> kafkaListenerContainerFactory(ConcurrentKafkaListenerContainerFactoryConfigurer configurer) {
+        ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+
         factory.setBatchListener(listenerBatch);
 
         // Container Error Handlers 사용시 false 설정
@@ -116,6 +115,7 @@ public class KafkaConfig {
         }
 
         factory.setAutoStartup(listenerAutoStartup);
+        return factory;
     }
 
     @Bean
