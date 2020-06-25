@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import java.nio.ByteBuffer;
+import java.util.UUID;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,16 +26,17 @@ public class UrackerService {
 
     private final UrackerConfig config;
 
+    private final ObjectMapper mapper;
+
     public String setTinyId(UrackerTarget target) throws JsonProcessingException, Exception {
         return null;
     }
 
-    public UrackerTarget get(String id) throws JsonProcessingException, Exception {
+    public UrackerTarget getUrackerTarget(String id) throws JsonProcessingException, Exception {
         return null;
     }
 
     private void sendToKafka(String topic, Object message) throws JsonProcessingException, Exception {
-        ObjectMapper mapper = new ObjectMapper();
         final String data;
 
         try {
@@ -54,4 +58,9 @@ public class UrackerService {
         });
     }
 
+    private String shortUUID() {
+        UUID uuid = UUID.randomUUID();
+        long l = ByteBuffer.wrap(uuid.toString().getBytes()).getLong();
+        return Long.toString(l, Character.MAX_RADIX);
+    }
 }

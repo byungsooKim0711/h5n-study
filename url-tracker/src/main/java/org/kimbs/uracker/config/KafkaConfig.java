@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.kimbs.uracker.handler.CommonKafkaBatchErrorHandler;
 import org.kimbs.uracker.handler.CommonKafkaErrorHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -89,7 +90,8 @@ public class KafkaConfig {
     @Value("${spring.kafka.retry.max-interval}")
     private int retryMaxInterval;
 
-    private final ConcurrentKafkaListenerContainerFactory<String, String> factory;
+    @Autowired
+    private ConcurrentKafkaListenerContainerFactory<String, String> factory;
     private final CommonKafkaErrorHandler commonErrorHandler;
     private final CommonKafkaBatchErrorHandler commonBatchErrorHandler;
 

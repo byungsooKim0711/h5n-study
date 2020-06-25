@@ -57,3 +57,14 @@ spring:
       initial-interval: 1000
       multiplier: 2
       max-interval: 10000
+
+uracker:
+  # default ttl (default: 30일, 단위: seconds)
+  ttl: 2592000
+  topics:
+    hist-target:
+      - hist-target-01
+      - hist-target-02
+    report:
+      - report-01
+      - report-02
