@@ -27,7 +27,7 @@ spring:
       shutdown-timeout: 100ms
 
   kafka:
-    bootstrap-servers: "10.147.1.90:9092"
+    bootstrap-servers: "127.0.0.1:9092"
     producer:
       retries: 0
       batch-size: 20000

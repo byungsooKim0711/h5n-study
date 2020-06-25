@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+//public class CommonKafkaBatchErrorHandler extends RetryingBatchErrorHandler {
 public class CommonKafkaBatchErrorHandler implements BatchErrorHandler {
 
     @Override
@@ -20,4 +21,6 @@ public class CommonKafkaBatchErrorHandler implements BatchErrorHandler {
             }
         }
     }
+
+
 }
