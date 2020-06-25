@@ -10,8 +10,8 @@ spring:
   application:
     name: "URL-TRACKING"
   main:
-    web-application-type: REACTIVE
-
+    web-application-type: reactive
+    lazy-initialization: true
   redis:
     host: 127.0.0.1
     port: 6379
@@ -45,17 +45,24 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     listener:
       concurrency: 5
-      ack-mode: manual-immediate
       poll-timeout: 3000
       # Custom setting - batch listener
+#      type: single
       batch: false
       # Custom setting - auto startup listener
       auto-startup: true
+      ack-mode: manual_immediate
+      log-container-config: on
+      missing-topics-fatal: false
     # Custom setting - retries
     retry:
+      # 재시도 횟수 10회
       max-attempts: 10
+      # 1초부터 시작
       initial-interval: 1000
+      # 2의 배수 1, 2, 4, 8, ... max-interval, max-interval ...
       multiplier: 2
+      # 최대 10초
       max-interval: 10000
 
 uracker:
