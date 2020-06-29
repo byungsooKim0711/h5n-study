@@ -14,10 +14,13 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @RequiredArgsConstructor
 public class UrackerRouter implements WebFluxConfigurer {
 
+    private final RoutingFilterFunction routingFilterFunction;
+
     @Bean
     public RouterFunction<ServerResponse> customerRouterFunction(UrackerHandler urackerHandler) {
         return RouterFunctions
                 .route(RequestPredicates.GET("/{id}").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), urackerHandler::getUrl)
-                .andRoute(RequestPredicates.POST("/").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), urackerHandler::postUrl);
+                .andRoute(RequestPredicates.POST("/").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), urackerHandler::postUrl)
+                .filter(routingFilterFunction);
     }
 }
