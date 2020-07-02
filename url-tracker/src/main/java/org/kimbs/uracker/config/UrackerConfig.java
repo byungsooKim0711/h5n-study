@@ -11,7 +11,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "uracker", ignoreUnknownFields = true)
 public class UrackerConfig {
 
-    private int ttl;
+    private int ttl = 60 * 60 * 24 * 30;
 
     private Topics topics = new Topics();
 
