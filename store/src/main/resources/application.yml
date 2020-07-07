@@ -1,0 +1,82 @@
+
+server:
+  port: 42105
+
+logging:
+  config: classpath:logback-spring.xml
+
+#  level:
+#    org.hibernate.type: trace
+
+spring:
+  application:
+    name: STORE-90
+  banner:
+    location: classpath:banner.txt
+    image:
+      location: classpath:banner.png
+
+  main:
+    web-application-type: SERVLET
+
+  task:
+    scheduling:
+      pool:
+        size: 15
+      thread-name-prefix: store
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://119.207.76.90:3306/IMC_DEV?autoReconnect=true&useSSL=false&serverTimezone=UTC
+    username: imc-dev
+    password: humuson0722
+    hikari:
+      connection-test-query: SELECT 1
+      maximum-pool-size: 20
+      minimum-idle: 10
+      auto-commit: false
+      connection-timeout: 60000
+    # jpa 설정
+    data:
+      jpa:
+        repositories:
+          # jpa enabled
+          enabled: true
+    jpa:
+      # Show or not log for each sql query
+      show-sql: false
+      hibernate:
+        # Hibernate ddl auto (create, create-drop, update)
+        ddl-auto: none
+      properties:
+        hibernate:
+          # The SQL dialect makes Hibernate generate better SQL for the chosen database
+          dialect: org.hibernate.dialect.MySQL5Dialect
+          hibernate.format_sql: true
+      open-in-view: false
+    # Redis 설정
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+imc:
+  relay:
+    server-name: 90
+    sql-context-path: file:${user.dir}/SqlContext.xml
+    show-sql: false
+    scheduled:
+      # db 주요 정보를 redis에 저장할 지 여부. store 서버가 2개 이상일 경우, 1개만 설정한다.
+      enable-redis-store: true
+      # apiInfo 정보를 db에서 redis로 저장한다. 최초에 일괄 저장하고, 이후 스케줄에 따라 변경된 정보를 저장한다.
+      redis-store-api-info: "*/10 * * * * *"
+
