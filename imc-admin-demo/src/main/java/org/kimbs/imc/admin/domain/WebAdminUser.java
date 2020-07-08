@@ -2,11 +2,9 @@ package org.kimbs.imc.admin.domain;
 
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.validator.constraints.Length;
 import org.kimbs.imc.admin.config.BaseTimeEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
