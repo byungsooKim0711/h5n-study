@@ -1,5 +1,6 @@
 package org.kimbs.imc.admin.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,10 +19,16 @@ import java.io.IOException;
 @Slf4j
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    static final String REQUEST_PARAM_NAME = "remember_username";
-    static final String COOKIE_NAME = "saved_username";
-    static final int DEFAULT_MAX_AGE = 60 * 60 * 24 * 7;
+    private static final String REQUEST_PARAM_NAME = "remember_username";
+    private static final String COOKIE_NAME = "saved_username";
+    private static final int DEFAULT_MAX_AGE = 60 * 60 * 24 * 7;
     private int maxAge = DEFAULT_MAX_AGE;
+
+    private final ObjectMapper mapper;
+
+    public LoginSuccessHandler(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -39,7 +46,9 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         if (url != null) {
             super.onAuthenticationSuccess(request, response, authentication);
         } else {
-            UserDetails user = (UserDetails) authentication.getPrincipal();
+            ImcUserDetails user = (ImcUserDetails) authentication.getPrincipal();
+            // User 정보를 write 할 때 비밀번호 정보는 지운다.
+            user.getUser().setPassword("");
 
             for (GrantedAuthority ga : user.getAuthorities()) {
                 log.info("GrantedAuthority : " + ga.getAuthority());
@@ -100,6 +109,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 //            } else {
 //            response.sendRedirect(request.getContextPath() + "/dashboard");
 //            }
+
+            response.getWriter().write(mapper.writeValueAsString(user));
         }
 
 //        httpServletResponse.getWriter().write(authentication.);

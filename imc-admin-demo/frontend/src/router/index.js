@@ -8,6 +8,21 @@ import Dashboard from '@/pages/Dashboard'
 
 Vue.use(Router)
 
+// const checkAuth = (...roles) => (from, to, next) => {
+//   let id = store.state.account.currentAccount.id;
+//   let role = store.state.account.currentAccount.roles;
+//
+//   if (!id) {
+//     let find = roles.find(checkRole => checkRole == role);
+//     if (find) {
+//       return next();
+//     }
+//   }
+//   next('/login');
+// }
+
+
+
 export default new Router({
   // mode: 'history',
   base: process.env.BASE_URL,

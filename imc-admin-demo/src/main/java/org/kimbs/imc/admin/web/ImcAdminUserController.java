@@ -1,14 +1,15 @@
-package org.kimbs.imc.admin.domain;
+package org.kimbs.imc.admin.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.kimbs.imc.admin.domain.WebAdminUser;
 import org.kimbs.imc.admin.security.ImcUserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class AdminController {
+public class ImcAdminUserController {
 
     private final ImcUserDetailsService imcUserDetailsService;
 

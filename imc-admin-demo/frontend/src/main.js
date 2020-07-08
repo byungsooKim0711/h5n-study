@@ -4,8 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import vuetify from '@/plugins/vuetify'
+import { store } from './store/store'
 
 Vue.config.productionTip = false
+
+/* axios global variable 추가 */
+window.axios = require('axios');
 
 /* eslint-disable no-new */
 new Vue({

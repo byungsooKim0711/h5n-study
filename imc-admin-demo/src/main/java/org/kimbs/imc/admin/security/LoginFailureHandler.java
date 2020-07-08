@@ -1,6 +1,8 @@
 package org.kimbs.imc.admin.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,12 @@ import java.io.IOException;
 @Component
 public class LoginFailureHandler implements AuthenticationFailureHandler {
 
+    private final ObjectMapper mapper;
+
+    public LoginFailureHandler(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
 //        URL obj = new URL("http://" + hostIp + "/api/updateLoginFailCount?username=" + request.getParameter("j_username"));
@@ -21,11 +29,14 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 //        con.setRequestMethod("GET");
 //        con.setRequestProperty("User-Agent", "Mozilla/5.0");
 //        con.getResponseCode();
-//
+
 //        String forwardUrl = request.getContextPath() + "/";
 //        response.sendRedirect(forwardUrl);
 //		request.setAttribute("errMsg", "로그인에 실패했습니다. 5회 실패 시 로그인이 차단됩니다. 차단될 경우 관리자에 문의해 주세요.");
 //
 //		request.getRequestDispatcher(forwardUrl).forward(request, response);
+
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
     }
 }

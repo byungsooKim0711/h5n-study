@@ -11,7 +11,7 @@ server:
     encoding:
       charset: UTF-8
     session:
-      timeout: 30m
+      timeout: 60m
       cookie:
         name: 'IMC-SESSION-ID'
 

@@ -1,6 +1,10 @@
-package org.kimbs.imc.admin.security;
+package org.kimbs.imc.admin.config;
 
 import lombok.RequiredArgsConstructor;
+import org.kimbs.imc.admin.security.ImcUserDetailsService;
+import org.kimbs.imc.admin.security.LoginFailureHandler;
+import org.kimbs.imc.admin.security.LoginSuccessHandler;
+import org.kimbs.imc.admin.security.LogoutSuccessHandlerImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
