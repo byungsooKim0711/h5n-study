@@ -2,6 +2,7 @@ package org.kimbs.imc.admin.config;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.kimbs.imc.admin.domain.convertor.LocalDateTimeConverter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

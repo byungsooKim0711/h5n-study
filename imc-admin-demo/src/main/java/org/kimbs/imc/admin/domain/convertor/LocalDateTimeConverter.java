@@ -1,4 +1,4 @@
-package org.kimbs.imc.admin.config;
+package org.kimbs.imc.admin.domain.convertor;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -15,6 +15,6 @@ public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime,
 
     @Override
     public LocalDateTime convertToEntityAttribute(String dbData) {
-        return LocalDateTime.parse(dbData,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return LocalDateTime.parse(dbData, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
