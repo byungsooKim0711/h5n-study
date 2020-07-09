@@ -30,7 +30,7 @@ public class ImcUserDetails implements UserDetails {
         // Default 권한
         Set<GrantedAuthority> authList = Sets.newHashSet(
                 new SimpleGrantedAuthority(ImcGrantedAuthority.AUTH_DASHBOARD.name()),
-                new SimpleGrantedAuthority(ImcGrantedAuthority.AUTH_DASHBOARD.name()));
+                new SimpleGrantedAuthority(ImcGrantedAuthority.AUTH_STAT.name()));
 
         WebUserAuthor author = user.getWebUserAuthor();
 
