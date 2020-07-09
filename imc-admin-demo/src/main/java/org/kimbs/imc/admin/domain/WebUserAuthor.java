@@ -3,7 +3,7 @@ package org.kimbs.imc.admin.domain;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 import org.kimbs.imc.admin.config.BaseTimeEntity;
-import org.kimbs.imc.admin.domain.code.AuthLevel;
+import org.kimbs.imc.admin.domain.code.ImcAuthLevel;
 
 import javax.persistence.*;
 
@@ -20,7 +20,7 @@ public class WebUserAuthor extends BaseTimeEntity {
     @Column(name = "AUTH_LEVEL", nullable = false, length = 1)
     @ColumnDefault(value = "'S'")
     @Enumerated(EnumType.STRING)
-    private AuthLevel authLevel = AuthLevel.S;
+    private ImcAuthLevel authLevel = ImcAuthLevel.S;
 
     @Column(name = "AUTH_NAME", nullable = false, length = 20)
     private String authName;
