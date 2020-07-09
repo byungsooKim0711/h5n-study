@@ -35,7 +35,7 @@ public class WebAdminUser extends BaseTimeEntity {
 
     @Column(name = "ACTIVE_YN", length = 1, nullable = false)
     @ColumnDefault("'Y'")
-    private String activeYn;
+    private String activeYn = "Y";
 
     @Column(name = "INFO_CP", length = 64)
     private String infoCp;
@@ -48,7 +48,7 @@ public class WebAdminUser extends BaseTimeEntity {
 
     @Column(name = "FAIL_COUNT")
     @ColumnDefault("0")
-    private int failCount;
+    private int failCount = 0;
 
     @Column(name = "AUTHORITY", length = 1)
     private String authority;

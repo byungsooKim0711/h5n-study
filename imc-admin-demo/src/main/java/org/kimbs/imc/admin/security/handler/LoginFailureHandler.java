@@ -1,4 +1,4 @@
-package org.kimbs.imc.admin.security;
+package org.kimbs.imc.admin.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-public class LoginFailureHandler implements AuthenticationFailureHandler {
+public class LoginFailureHandler implements AuthenticationFailureHandler, RemoteIpHandler {
 
     private final ObjectMapper mapper;
 
@@ -23,7 +23,11 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     }
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+        String remoteIp = this.getRemoteIp(request);
+        String username = request.getParameter("username");
+        log.warn("Login Failed. remote-ip: {}, username: {}, cause: {}", remoteIp, username, e.getMessage());
+
 //        URL obj = new URL("http://" + hostIp + "/api/updateLoginFailCount?username=" + request.getParameter("j_username"));
 //        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 //        con.setRequestMethod("GET");
@@ -36,7 +40,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 //
 //		request.getRequestDispatcher(forwardUrl).forward(request, response);
 
-        httpServletResponse.setContentType("application/json");
-        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType("application/json");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
     }
 }

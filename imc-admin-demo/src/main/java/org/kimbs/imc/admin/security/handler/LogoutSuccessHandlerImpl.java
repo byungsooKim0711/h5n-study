@@ -1,4 +1,4 @@
-package org.kimbs.imc.admin.security;
+package org.kimbs.imc.admin.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
+public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler, RemoteIpHandler {
 
     private final ObjectMapper mapper;
 

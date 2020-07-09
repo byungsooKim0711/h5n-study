@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 
 /**
  * IMC 통합 어드민 관리자 컨트롤러
@@ -27,12 +28,25 @@ public class ImcAdminUserController {
     private final ImcUserDetailsService imcUserDetailsService;
 
     // Vue.js 에서 세션 확인용으로 사용. (Custom Session Repository 적용 이후)
-    @GetMapping
+    @GetMapping("/login/check")
     public Object checkLoginSession(HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession(false);
         if (session == null) {
             throw new Exception("User is not login");
         }
+
+        System.out.println(session.getId());
+        Enumeration<String> names = session.getAttributeNames();
+        while(names.hasMoreElements()) {
+            System.out.println(names.nextElement());
+        }
+
+        System.out.println(session.getCreationTime());
+        System.out.println(session.getLastAccessedTime());
+        System.out.println(session.getMaxInactiveInterval());
+        System.out.println(session.getServletContext());
+        System.out.println(session.isNew());
+        System.out.println(session);
 
         ImcUserDetails account = (ImcUserDetails) session.getAttribute("account");
         if (account == null) {
@@ -42,9 +56,11 @@ public class ImcAdminUserController {
         return account;
     }
 
+//    @PreAuthorize("hasRole('AUTH_MANAGE')")
     @PostMapping("/admin")
     public ResponseEntity<WebAdminUser> addWebAdminUser(@RequestBody WebAdminUser user, UriComponentsBuilder uriBuilder) throws Exception{
         WebAdminUser created = imcUserDetailsService.insertWebAdminUser(user);
+        created.setPassword("");
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setLocation(uriBuilder.path("/admin/{id}").buildAndExpand(created.getId()).toUri());
@@ -52,17 +68,13 @@ public class ImcAdminUserController {
         return new ResponseEntity<>(created, headers, HttpStatus.CREATED);
     }
 
+//    @PreAuthorize("hasRole('AUTH_MANAGE')")
     @PutMapping("/admin/{id}")
     public ResponseEntity<WebAdminUser> modifyWebAdminUser(@RequestBody WebAdminUser webAdminUser, @PathVariable Long id) throws Exception {
         WebAdminUser updated = imcUserDetailsService.updateWebAdminUser(webAdminUser, id);
+        updated.setPassword("");
 
-        return ResponseEntity.ok(updated);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-    @DeleteMapping("/admin/{id}")
-    public ResponseEntity<WebAdminUser> removeWebAdminUser(@PathVariable Long id) throws Exception {
-        WebAdminUser deleted = imcUserDetailsService.deleteWebAdminUser(id);
-
-        return ResponseEntity.accepted().body(deleted);
-    }
 }

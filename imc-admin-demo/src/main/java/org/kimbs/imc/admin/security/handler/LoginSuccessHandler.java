@@ -1,10 +1,10 @@
-package org.kimbs.imc.admin.security;
+package org.kimbs.imc.admin.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.kimbs.imc.admin.security.ImcUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements RemoteIpHandler {
 
     private static final String REQUEST_PARAM_NAME = "remember_username";
     private static final String COOKIE_NAME = "saved_username";
@@ -32,8 +32,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        log.info("SUCCESS");
-
         System.out.println(authentication.toString());
         System.out.println(authentication.getName());
         System.out.println(authentication.getPrincipal());
@@ -57,24 +55,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             HttpSession session = request.getSession();
 
             // L4를 거쳐올 경우를 고려하여 IP를 얻어냄
-            String remoteIp = request.getHeader("X-Forwarded-For");
-            if (remoteIp == null || remoteIp.length() == 0 || "unknown".equalsIgnoreCase(remoteIp)) {
-                remoteIp = request.getHeader("Proxy-Client-IP");
-            }
-            if (remoteIp == null || remoteIp.length() == 0 || "unknown".equalsIgnoreCase(remoteIp)) {
-                remoteIp = request.getHeader("WL-Proxy-Client-IP");
-            }
-            if (remoteIp == null || remoteIp.length() == 0 || "unknown".equalsIgnoreCase(remoteIp)) {
-                remoteIp = request.getHeader("HTTP_CLIENT_IP");
-            }
-            if (remoteIp == null || remoteIp.length() == 0 || "unknown".equalsIgnoreCase(remoteIp)) {
-                remoteIp = request.getHeader("HTTP_X_FORWARDED_FOR");
-            }
-            if (remoteIp == null || remoteIp.length() == 0 || "unknown".equalsIgnoreCase(remoteIp)) {
-                remoteIp = request.getRemoteAddr();
-            }
+            String remoteIp = this.getRemoteIp(request);
 
-            log.info("User ID : " + user.getUsername() + ", Remote IP : " + remoteIp);
             // 실패 카운트 Update
 //            URL obj = new URL( "http://" + hostIp + "/api/resetLoginFailCount?username=" + request.getParameter("j_username"));
 //            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -82,6 +64,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 //            con.setRequestProperty("User-Agent", "Mozilla/5.0");
 //            con.getResponseCode();
 
+            // TODO: 나중에 기존 설정 따라가야한다.
             if (remoteIp.indexOf("xxx.xx.xx.") == 0 || remoteIp.indexOf("xx.xxx.xx.") == 0 || remoteIp.indexOf("0:0:0:0:0:0:0:1") == 0) {
                 session.setAttribute("SUPER_ADMIN", "Y");
             } else {
@@ -110,6 +93,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 //            response.sendRedirect(request.getContextPath() + "/dashboard");
 //            }
 
+            log.info("Login Success. remote-ip: {}, username: {}", remoteIp, user.getUsername());
             response.getWriter().write(mapper.writeValueAsString(user));
         }
 

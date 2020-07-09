@@ -5,7 +5,6 @@ import org.kimbs.imc.admin.domain.WebAdminUser;
 import org.kimbs.imc.admin.domain.WebAdminUserRepository;
 import org.kimbs.imc.admin.domain.WebUserAuthor;
 import org.kimbs.imc.admin.domain.WebUserAuthorRepository;
-import org.kimbs.imc.admin.domain.code.ImcAuthLevel;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,29 +34,65 @@ public class ImcUserDetailsService implements UserDetailsService {
     }
 
     // 권한(1, 2, 3), 아이디, 카카오 아이디, 이름, 전화번호, 이메일 입력
-    public WebAdminUser insertWebAdminUser(WebAdminUser webAdminUser) {
+    /*  Json Format
+        {
+            "userLogin": "test",
+            "password": "test",
+            "kakaoBizCenterId": "test@test.test",
+            "infoCp": "test",
+            "infoEm": "test@test.test",
+            "infoNa": "test",
+            "webUserAuthor": {
+                "id": 2
+            }
+        }
+    */
+    public WebAdminUser insertWebAdminUser(WebAdminUser webAdminUser) throws Exception {
         webAdminUser.setPassword(passwordEncoder.encode(webAdminUser.getPassword()));
 
-        ImcAuthLevel authLevel = webAdminUser.getWebUserAuthor().getAuthLevel();
-        WebUserAuthor author = webUserAuthorRepository.findByAuthLevel(authLevel);
+        int authId = webAdminUser.getWebUserAuthor().getId();
+        Optional<WebUserAuthor> author = webUserAuthorRepository.findById(authId);
 
-        if (author != null) {
-            webAdminUser.setWebUserAuthor(author);
-        }
+        webAdminUser.setWebUserAuthor(author.orElseThrow(() -> new Exception("Unknown authority id: " + authId)));
 
         return adminUserRepository.save(webAdminUser);
     }
 
-    // 권한만 변경 가능
-    public WebAdminUser updateWebAdminUser(WebAdminUser webAdminUser, Long id) {
-        return null;
+
+    /*  Json Format
+        {
+            "userLogin": "test",
+            "password": "test",
+            "kakaoBizCenterId": "test@test.test",
+            "infoCp": "test",
+            "activeYn": "Y",
+            "infoEm": "test@test.test",
+            "infoNa": "test",
+            "webUserAuthor": {
+                "id": 3 // 권한 변경
+            }
+        }
+    */
+    public WebAdminUser updateWebAdminUser(WebAdminUser webAdminUser, Long id) throws Exception {
+//        Optional<WebAdminUser> adminUser = adminUserRepository.findById(id);
+//        WebAdminUser admin = adminUser.orElseThrow(() -> new Exception("Unknown admin user id: " + id));
+//
+//        int authId = webAdminUser.getWebUserAuthor().getId();
+//        Optional<WebUserAuthor> adminAuthor = webUserAuthorRepository.findById(authId);
+//        WebUserAuthor author = adminAuthor.orElseThrow(() -> new Exception("Unknown authority id: " + authId));
+//
+//        admin.setWebUserAuthor(author);
+
+
+//        Optional<WebAdminUser> adminUser = adminUserRepository.findById(id);
+//        WebAdminUser admin = adminUser.orElseThrow(() -> new Exception("Unknown admin user id: " + id));
+//        return adminUserRepository.save(admin);
+
+        long l = adminUserRepository.updateWebAdminUser(webAdminUser, id);
+        if (l > 0) {
+            return adminUserRepository.findById(id).orElseThrow(() -> new Exception("Unknown admin user id: " + id));
+        }
+
+        throw new Exception("Unknown admin user id: " + id);
     }
-
-    // active_yn만 n으로 변경 한다.
-    public WebAdminUser deleteWebAdminUser(Long id) {
-        return null;
-    }
-
-
-    // 권한 생성, 조회, 기능
 }

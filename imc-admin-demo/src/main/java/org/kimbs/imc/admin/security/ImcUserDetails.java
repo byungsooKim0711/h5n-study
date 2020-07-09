@@ -80,6 +80,6 @@ public class ImcUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return "Y".equals(user.getActiveYn());
+        return "Y".equals(user.getActiveYn()) && user.getFailCount() < 5;
     }
 }

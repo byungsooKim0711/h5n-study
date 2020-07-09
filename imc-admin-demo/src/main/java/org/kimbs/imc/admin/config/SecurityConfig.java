@@ -1,10 +1,11 @@
 package org.kimbs.imc.admin.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.kimbs.imc.admin.security.ImcUserDetailsService;
-import org.kimbs.imc.admin.security.LoginFailureHandler;
-import org.kimbs.imc.admin.security.LoginSuccessHandler;
-import org.kimbs.imc.admin.security.LogoutSuccessHandlerImpl;
+import org.kimbs.imc.admin.security.handler.LoginFailureHandler;
+import org.kimbs.imc.admin.security.handler.LoginSuccessHandler;
+import org.kimbs.imc.admin.security.handler.LogoutSuccessHandlerImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,12 +18,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
+import java.util.Enumeration;
 
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LoginSuccessHandler loginSuccessHandler;
@@ -49,8 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/login/**").permitAll()
+//                .antMatchers("/admin/**").hasRole("AUTH_MANAGE")
+                .anyRequest().authenticated();
                 ;
 
         http.formLogin()
@@ -83,6 +88,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new HttpSessionEventPublisher() {
             @Override
             public void sessionCreated(HttpSessionEvent event) {
+                HttpSession session = event.getSession();
+                System.out.println(session.getId());
+                Enumeration<String> names = session.getAttributeNames();
+                while(names.hasMoreElements()) {
+                    System.out.println(names.nextElement());
+                }
+
+                log.info("{}", session.getCreationTime());
+                log.info("{}", session.getLastAccessedTime());
+                log.info("{}", session.getMaxInactiveInterval());
+                log.info("{}", session.getServletContext());
+                log.info("{}", session.isNew());
+                log.info("{}", session);
                 super.sessionCreated(event);
             }
 
