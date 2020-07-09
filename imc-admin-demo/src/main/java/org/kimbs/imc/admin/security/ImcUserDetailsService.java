@@ -5,11 +5,11 @@ import org.kimbs.imc.admin.domain.WebAdminUser;
 import org.kimbs.imc.admin.domain.WebAdminUserRepository;
 import org.kimbs.imc.admin.domain.WebUserAuthor;
 import org.kimbs.imc.admin.domain.WebUserAuthorRepository;
-import org.kimbs.imc.admin.domain.code.AuthLevel;
+import org.kimbs.imc.admin.domain.code.ImcAuthLevel;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +23,7 @@ public class ImcUserDetailsService implements UserDetailsService {
     private final WebUserAuthorRepository webUserAuthorRepository;
     private final WebAdminUserRepository adminUserRepository;
 
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -38,7 +38,7 @@ public class ImcUserDetailsService implements UserDetailsService {
     public WebAdminUser insertWebAdminUser(WebAdminUser webAdminUser) {
         webAdminUser.setPassword(passwordEncoder.encode(webAdminUser.getPassword()));
 
-        AuthLevel authLevel = webAdminUser.getWebUserAuthor().getAuthLevel();
+        ImcAuthLevel authLevel = webAdminUser.getWebUserAuthor().getAuthLevel();
         WebUserAuthor author = webUserAuthorRepository.findByAuthLevel(authLevel);
 
         if (author != null) {
