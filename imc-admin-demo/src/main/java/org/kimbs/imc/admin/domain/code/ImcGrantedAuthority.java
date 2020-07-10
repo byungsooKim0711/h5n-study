@@ -13,7 +13,7 @@ public enum ImcGrantedAuthority {
     USER,
     ;
 
-    public static final String PREFIX = "ROLE_";
+    private static final String PREFIX = "ROLE_";
 
     public String getRole() {
         return PREFIX + this.name();
