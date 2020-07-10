@@ -21,8 +21,16 @@ import Navbar from '@/components/Navbar';
 import Toolbar from '@/components/Toolbar';
 import Footer from '@/components/Footer';
 
+import { mapGetters } from "vuex";
+
 export default {
   name: 'App',
+
+  computed: {
+    ...mapGetters({
+      currentAccount: 'getCurrentAccount'
+    })
+  },
 
   components: {
     Navbar,
@@ -35,6 +43,7 @@ export default {
       drawer: true
     }
   },
+
   methods: {
     toggleDrawer() {
       this.drawer = !this.drawer;
@@ -44,9 +53,9 @@ export default {
 </script>
 
 <style>
-html,
+/* html,
 body {
   font-weight: 500;
   font-size: 13px;
-}
+} */
 </style>

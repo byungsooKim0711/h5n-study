@@ -22,7 +22,7 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler, RemoteIpH
 
     @Override
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        HttpSession session = httpServletRequest.getSession();
+        HttpSession session = httpServletRequest.getSession(false);
 
         if (session != null) {
             session.removeAttribute("account");

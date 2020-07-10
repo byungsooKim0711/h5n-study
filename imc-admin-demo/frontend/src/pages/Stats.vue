@@ -37,7 +37,7 @@
       <v-app style="background-color: white;" class="ma-n4">
         <v-container>
           <template>
-            <v-data-table v-model="selected" :single-select="singleSelect" item-key="name" show-select :headers="headers" :items="desserts" sort-by="applied" class=""mr-2>
+            <v-data-table v-model="selected" :single-select="singleSelect" item-key="name" show-select :headers="headers" :items="desserts" sort-by="applied" class="" mr-2>
               <template v-slot:top>
                 <v-toolbar flat color="white">
                   <v-toolbar-title>Applications</v-toolbar-title>

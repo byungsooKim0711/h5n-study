@@ -2,6 +2,7 @@ package org.kimbs.imc.admin.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.kimbs.imc.admin.domain.code.ImcGrantedAuthority;
 import org.kimbs.imc.admin.security.ImcUserDetailsService;
 import org.kimbs.imc.admin.security.handler.LoginFailureHandler;
 import org.kimbs.imc.admin.security.handler.LoginSuccessHandler;
@@ -18,9 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
-import java.util.Enumeration;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -54,8 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/login/**").permitAll()
-                .antMatchers("/admin/**").hasRole("MANAGE")
-                .anyRequest().authenticated();
+                .antMatchers("/logout/**").permitAll()
+                .antMatchers("/admin/**").hasRole(ImcGrantedAuthority.MANAGE.name())
+                .anyRequest().authenticated()
                 ;
 
         http.formLogin()
@@ -70,7 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.logout()
                 .logoutUrl("/logout").permitAll()
-                .deleteCookies("IMC-SESSION-ID")
+//                .deleteCookies("IMC-SESSION-ID")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
                 .logoutSuccessHandler(logoutSuccessHandler)
                 ;
 
@@ -88,25 +90,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new HttpSessionEventPublisher() {
             @Override
             public void sessionCreated(HttpSessionEvent event) {
-                HttpSession session = event.getSession();
-                System.out.println(session.getId());
-                Enumeration<String> names = session.getAttributeNames();
-                while(names.hasMoreElements()) {
-                    System.out.println(names.nextElement());
-                }
-
-                log.info("{}", session.getCreationTime());
-                log.info("{}", session.getLastAccessedTime());
-                log.info("{}", session.getMaxInactiveInterval());
-                log.info("{}", session.getServletContext());
-                log.info("{}", session.isNew());
-                log.info("{}", session);
                 super.sessionCreated(event);
             }
 
             @Override
             public void sessionDestroyed(HttpSessionEvent event) {
-                event.getSession().removeAttribute("account");
                 super.sessionDestroyed(event);
             }
         };

@@ -32,13 +32,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        System.out.println(authentication.toString());
-        System.out.println(authentication.getName());
-        System.out.println(authentication.getPrincipal());
-        System.out.println(authentication.getCredentials());
-        System.out.println(authentication.getDetails());
-        System.out.println(authentication.getAuthorities());
-
         String url = getTargetUrlParameter();
 
         if (url != null) {
@@ -94,6 +87,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 //            }
 
             log.info("Login Success. remote-ip: {}, username: {}", remoteIp, user.getUsername());
+            response.setCharacterEncoding("UTF-8");
             response.getWriter().write(mapper.writeValueAsString(user));
         }
 

@@ -23,7 +23,7 @@
           </v-list-item>
 
           <!-- 통계 -->
-          <v-list-group>
+          <!-- <v-list-group>
             <template v-slot:activator>
               <v-list-item-action>
                 <v-icon small>fas fa-chart-line</v-icon>
@@ -125,10 +125,10 @@
                 <v-list-item-title>URL 트래킹 통계</v-list-item-title>
               </v-list-item>
             </v-list-group>
-          </v-list-group>
+          </v-list-group> -->
 
           <!-- 정산 -->
-          <v-list-group no-action>
+          <!-- <v-list-group no-action>
             <template v-slot:activator>
               <v-list-item-action>
                 <v-icon small>fas fa-credit-card</v-icon>
@@ -168,7 +168,7 @@
                 <v-list-item-title>업체별 정산</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-          </v-list-group>
+          </v-list-group> -->
 
           <!-- 관리 -->
           <v-list-group no-action>
@@ -192,14 +192,18 @@
                 <v-list-item-title>고객 목록</v-list-item-title>
               </v-list-item>
               <v-list-item link>
+                <v-list-item-title>API 목록</v-list-item-title>
+              </v-list-item>
+
+              <!-- <v-list-item link>
                 <v-list-item-title>고객 등록</v-list-item-title>
-              </v-list-item>
-              <v-list-item link>
+              </v-list-item> -->
+              <!-- <v-list-item link>
                 <v-list-item-title>계약 조회</v-list-item-title>
-              </v-list-item>
+              </v-list-item> -->
             </v-list-group>
 
-            <v-list-group no-action sub-group>
+            <!-- <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>단가 관리</v-list-item-title>
@@ -212,9 +216,9 @@
               <v-list-item link>
                 <v-list-item-title>문자메시지</v-list-item-title>
               </v-list-item>
-            </v-list-group>
+            </v-list-group> -->
 
-            <v-list-group no-action sub-group>
+            <!-- <v-list-group no-action sub-group>
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title>템플릿 관리</v-list-item-title>
@@ -306,7 +310,7 @@
               <v-list-item link>
                 <v-list-item-title>문자메시지</v-list-item-title>
               </v-list-item>
-            </v-list-group>
+            </v-list-group> -->
 
 
             <v-list-group no-action sub-group>
@@ -316,19 +320,19 @@
                 </v-list-item-content>
               </template>
 
-              <v-list-item link>
+              <v-list-item link router to="/operation/admin">
                 <v-list-item-title>관리자 목록</v-list-item-title>
               </v-list-item>
-              <v-list-item link>
+              <!-- <v-list-item link>
                 <v-list-item-title>공지사항</v-list-item-title>
               </v-list-item>
               <v-list-item link>
                 <v-list-item-title>FAQ</v-list-item-title>
-              </v-list-item>
+              </v-list-item> -->
             </v-list-group>
 
 
-            <v-list-item link>
+            <!-- <v-list-item link>
               <v-list-item-content>
                 <v-list-item-title>장애알람 관리</v-list-item-title>
               </v-list-item-content>
@@ -337,7 +341,7 @@
               <v-list-item-content>
                 <v-list-item-title>전화번호 복호화</v-list-item-title>
               </v-list-item-content>
-            </v-list-item>
+            </v-list-item> -->
           </v-list-group>
         </v-list>
       </v-card>
@@ -362,7 +366,6 @@ export default {
       this.drawer = event;
     });
   }
-
 }
 </script>
 

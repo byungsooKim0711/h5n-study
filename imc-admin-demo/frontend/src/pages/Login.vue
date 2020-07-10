@@ -26,9 +26,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { mapGetters } from "vuex";
 
 export default {
+  name: "Login",
+
   data: () => ({
     drawer: null,
     username: '',
@@ -42,23 +44,18 @@ export default {
 
   methods: {
     login: function() {
-      let form = new FormData();
-      form.append("username", this.username);
-      form.append("password", this.password);
+      if (this.username && this.password) {
+        let form = new FormData();
+        form.append("username", this.username);
+        form.append("password", this.password);
 
-      let me = this;
-      axios.post('/login', form)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        if (error.response.status === 401) {
-          alert("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
-        }
-        if (error.response.status >= 500 && error.response.status < 600) {
-          alert("일시적인 문제로 다시 시도바랍니다. 문제가 지속될 경우 관리자에게 문의하세요.");
-        }
-     })
+        this.$store.dispatch("LOGIN", form).then(response => {
+          this.$router.push("/dashboard");
+        });
+
+      } else {
+        alert("아이디와 비밀번호를 입력해주세요.");
+      }
     }
   },
 
@@ -67,5 +64,6 @@ export default {
   }
 }
 </script>
+
 <style>
 </style>

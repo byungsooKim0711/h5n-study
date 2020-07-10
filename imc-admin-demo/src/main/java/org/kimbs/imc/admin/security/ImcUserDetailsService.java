@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional // TODO:
@@ -31,6 +33,17 @@ public class ImcUserDetailsService implements UserDetailsService {
         user.orElseThrow(() -> new UsernameNotFoundException("User not exist with name: " + s));
 
         return user.map(ImcUserDetails::new).get();
+    }
+
+    public List<WebAdminUser> selectAllWebAdminUser() {
+        List<WebAdminUser> adminList = adminUserRepository.findAll();
+        return adminList;
+    }
+
+    public List<WebUserAuthor> selectAllWebUserAuthor() {
+        List<WebUserAuthor> authorList = webUserAuthorRepository.findAll();
+
+        return authorList;
     }
 
     // 권한(1, 2, 3), 아이디, 카카오 아이디, 이름, 전화번호, 이메일 입력
@@ -74,20 +87,6 @@ public class ImcUserDetailsService implements UserDetailsService {
         }
     */
     public WebAdminUser updateWebAdminUser(WebAdminUser webAdminUser, Long id) throws Exception {
-//        Optional<WebAdminUser> adminUser = adminUserRepository.findById(id);
-//        WebAdminUser admin = adminUser.orElseThrow(() -> new Exception("Unknown admin user id: " + id));
-//
-//        int authId = webAdminUser.getWebUserAuthor().getId();
-//        Optional<WebUserAuthor> adminAuthor = webUserAuthorRepository.findById(authId);
-//        WebUserAuthor author = adminAuthor.orElseThrow(() -> new Exception("Unknown authority id: " + authId));
-//
-//        admin.setWebUserAuthor(author);
-
-
-//        Optional<WebAdminUser> adminUser = adminUserRepository.findById(id);
-//        WebAdminUser admin = adminUser.orElseThrow(() -> new Exception("Unknown admin user id: " + id));
-//        return adminUserRepository.save(admin);
-
         long l = adminUserRepository.updateWebAdminUser(webAdminUser, id);
 
         return adminUserRepository.findById(id).orElseThrow(() -> new Exception("Unknown admin user id: " + id));
