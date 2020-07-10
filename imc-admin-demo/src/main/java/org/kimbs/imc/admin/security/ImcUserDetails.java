@@ -29,25 +29,25 @@ public class ImcUserDetails implements UserDetails {
 
         // Default 권한
         Set<GrantedAuthority> authList = Sets.newHashSet(
-                new SimpleGrantedAuthority(ImcGrantedAuthority.AUTH_DASHBOARD.name()),
-                new SimpleGrantedAuthority(ImcGrantedAuthority.AUTH_STAT.name()));
+                new SimpleGrantedAuthority(ImcGrantedAuthority.DASHBOARD.getRole()),
+                new SimpleGrantedAuthority(ImcGrantedAuthority.STAT.getRole()));
 
         WebUserAuthor author = user.getWebUserAuthor();
 
         if ("Y".equals(author.getAuthBill())) {
-            authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.AUTH_BILL.name()));
+            authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.BILL.getRole()));
         }
 
         if ("Y".equals(author.getAuthManage())) {
-            authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.AUTH_MANAGE.name()));
+            authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.MANAGE.getRole()));
         }
 
         if ("Y".equals(author.getAuthOperation())) {
-            authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.AUTH_OPERATION.name()));
+            authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.OPERATION.getRole()));
         }
 
         if ("Y".equals(author.getAuthUser())) {
-            authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.AUTH_USER.name()));
+            authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.USER.getRole()));
         }
 
         return authList;

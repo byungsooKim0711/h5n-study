@@ -89,10 +89,7 @@ public class ImcUserDetailsService implements UserDetailsService {
 //        return adminUserRepository.save(admin);
 
         long l = adminUserRepository.updateWebAdminUser(webAdminUser, id);
-        if (l > 0) {
-            return adminUserRepository.findById(id).orElseThrow(() -> new Exception("Unknown admin user id: " + id));
-        }
 
-        throw new Exception("Unknown admin user id: " + id);
+        return adminUserRepository.findById(id).orElseThrow(() -> new Exception("Unknown admin user id: " + id));
     }
 }

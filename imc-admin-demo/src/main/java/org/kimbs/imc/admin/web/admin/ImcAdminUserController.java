@@ -8,6 +8,7 @@ import org.kimbs.imc.admin.security.ImcUserDetailsService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -56,7 +57,7 @@ public class ImcAdminUserController {
         return account;
     }
 
-//    @PreAuthorize("hasRole('AUTH_MANAGE')")
+    @PreAuthorize("hasRole('ROLE_MANAGE')")
     @PostMapping("/admin")
     public ResponseEntity<WebAdminUser> addWebAdminUser(@RequestBody WebAdminUser user, UriComponentsBuilder uriBuilder) throws Exception{
         WebAdminUser created = imcUserDetailsService.insertWebAdminUser(user);
@@ -68,7 +69,7 @@ public class ImcAdminUserController {
         return new ResponseEntity<>(created, headers, HttpStatus.CREATED);
     }
 
-//    @PreAuthorize("hasRole('AUTH_MANAGE')")
+    @PreAuthorize("hasRole('ROLE_MANAGE')")
     @PutMapping("/admin/{id}")
     public ResponseEntity<WebAdminUser> modifyWebAdminUser(@RequestBody WebAdminUser webAdminUser, @PathVariable Long id) throws Exception {
         WebAdminUser updated = imcUserDetailsService.updateWebAdminUser(webAdminUser, id);

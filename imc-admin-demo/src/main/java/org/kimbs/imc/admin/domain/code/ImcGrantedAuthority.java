@@ -5,11 +5,18 @@ import lombok.Getter;
 @Getter
 public enum ImcGrantedAuthority {
 
-    AUTH_DASHBOARD,
-    AUTH_STAT,
-    AUTH_BILL,
-    AUTH_MANAGE,
-    AUTH_OPERATION,
-    AUTH_USER
+    DASHBOARD,
+    STAT,
+    BILL,
+    MANAGE,
+    OPERATION,
+    USER,
+    ;
+
+    public static final String PREFIX = "ROLE_";
+
+    public String getRole() {
+        return PREFIX + this.name();
+    }
 
 }
