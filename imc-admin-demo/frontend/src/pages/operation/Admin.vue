@@ -46,19 +46,19 @@
                       ></v-select>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.userLogin" label="아이디" :disabled="editedIndex != -1"></v-text-field>
+                      <v-text-field v-model="editedItem.userLogin" label="아이디" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.kakaoBizCenterId" label="카카오아이디" :disabled="editedIndex != -1"></v-text-field>
+                      <v-text-field v-model="editedItem.kakaoBizCenterId" label="카카오아이디" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.infoNa" label="이름" :disabled="editedIndex != -1"></v-text-field>
+                      <v-text-field v-model="editedItem.infoNa" label="이름" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.infoCp" label="전화번호" :disabled="editedIndex != -1"></v-text-field>
+                      <v-text-field v-model="editedItem.infoCp" label="전화번호" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.infoEm" label="이메일" :disabled="editedIndex != -1"></v-text-field>
+                      <v-text-field v-model="editedItem.infoEm" label="이메일" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -93,6 +93,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 export default {
   data: () => ({
     dialog: false,
@@ -179,14 +180,36 @@ export default {
 
   methods: {
     editItem (item) {
-      this.editedIndex = this.adminList.findIndex(a => a.id == item.id);
+      this.editedIndex = this.adminList.findIndex(a => a.id === item.id);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem (item) {
-      const index = this.adminList.indexOf(item)
-      confirm('관리자를 미사용처리 하시겠습니까?') && this.adminList.splice(index, 1);
+      const index = this.adminList.findIndex(a => a.id === item.id);
+
+      if (this.adminList[index].activeYn === "Y") {
+        if (confirm('관리자를 미사용처리 하시겠습니까?')) {
+
+        }
+      } else {
+        if (confirm('관리자를 사용처리 하시겠습니까?')) {
+
+        }
+      }
+      if (confirm('관리자를 미사용처리 하시겠습니까?')) {
+        this.adminList[index].activeYn = "N";
+        axios.put("/admin/" + this.adminList[index].id, this.adminList[index], {})
+          .then(response => {
+            console.log(response);
+            Vue.set(this.adminList, this.adminList.findIndex(a => a.id === response.data.id), response.data);
+          })
+
+          .catch(error => {
+            console.error(error);
+            alert("관리자 권한을 수정하는데 실파였습니다.");
+          });
+      }
     },
 
     close () {
@@ -194,15 +217,30 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
-        this.selectAuthor = {};
       })
     },
 
     save () {
       if (this.editedIndex > -1) {
-        Object.assign(this.adminList[this.editedIndex], this.editedItem)
+        axios.put("/admin/" + this.adminList[this.editedIndex].id, this.editedItem, {})
+        .then(response => {
+          console.log(response);
+          Vue.set(this.adminList, this.adminList.findIndex(a => a.id === response.data.id), response.data);
+        })
+        .catch(error => {
+          console.error(error);
+          alert("관리자 권한을 수정하는데 실파였습니다.");
+        });
       } else {
-        this.adminList.push(this.editedItem)
+        axios.post('/admin', this.editedItem, {})
+          .then(response => {
+            console.log(response);
+            this.adminList.push(response.data);
+          })
+          .catch(error => {
+            console.error(error);
+            alert("관리자를 등록하는데 오류가 발생하였습니다.");
+          });
       }
       this.close()
     },
@@ -213,9 +251,6 @@ export default {
       })
       .then(response => {
         this.webUserAuthor = response.data;
-        // this.webUserAuthor.findIndex(author => author.id)
-
-        // this.defaultItem.webUserAuthor =
       })
       .catch(error => {
         console.log(error);

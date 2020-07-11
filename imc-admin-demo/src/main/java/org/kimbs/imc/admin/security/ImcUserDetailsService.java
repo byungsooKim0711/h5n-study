@@ -61,7 +61,7 @@ public class ImcUserDetailsService implements UserDetailsService {
         }
     */
     public WebAdminUser insertWebAdminUser(WebAdminUser webAdminUser) throws Exception {
-        webAdminUser.setPassword(passwordEncoder.encode(webAdminUser.getPassword()));
+        webAdminUser.setPassword(passwordEncoder.encode(webAdminUser.getUserLogin() + "!@#$"));
 
         int authId = webAdminUser.getWebUserAuthor().getId();
         Optional<WebUserAuthor> author = webUserAuthorRepository.findById(authId);

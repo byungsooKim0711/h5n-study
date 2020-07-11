@@ -33,6 +33,7 @@ public class ImcAdminUserController {
 
     private final ImcUserDetailsService imcUserDetailsService;
 
+    // 로그인 유저인지 세션 체크
     @GetMapping("/login/check")
     public ResponseEntity<?> checkLoginSession(HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession(false);
@@ -52,6 +53,7 @@ public class ImcAdminUserController {
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
+    // 관리자 목록 조회
     @Secured("ROLE_MANAGE")
     @GetMapping("/admin")
     public ResponseEntity<List<WebAdminUser>> getWebAdminUserList() throws Exception {
@@ -61,6 +63,7 @@ public class ImcAdminUserController {
         return new ResponseEntity<>(admins, HttpStatus.OK);
     }
 
+    // 관리자 추가
 //    @PreAuthorize("hasRole('ROLE_MANAGE')")
     @Secured("ROLE_MANAGE")
     @PostMapping("/admin")
@@ -74,6 +77,7 @@ public class ImcAdminUserController {
         return new ResponseEntity<>(created, headers, HttpStatus.CREATED);
     }
 
+    // 관리자 수정
 //    @PreAuthorize("hasRole('ROLE_MANAGE')")
     @Secured("ROLE_MANAGE")
     @PutMapping("/admin/{id}")
@@ -84,6 +88,7 @@ public class ImcAdminUserController {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
+    // 권한 리스트 조회
     @Secured("ROLE_MANAGE")
     @GetMapping("/admin/author")
     public ResponseEntity<List<WebUserAuthor>> getWebUserAuthorList() throws Exception {
