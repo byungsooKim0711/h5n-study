@@ -38,7 +38,7 @@
           <v-icon>mdi-account</v-icon>
           <v-list-item-title>내 정보</v-list-item-title>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item @click="logout()">
           <v-icon>mdi-logout</v-icon>
           <v-list-item-title>로그아웃</v-list-item-title>
         </v-list-item>
@@ -65,6 +65,17 @@ export default {
 
       this.$emit('drawer', this.drawer);
       eventBus.$emit('drawer', this.drawer);
+    },
+
+    logout() {
+      axios.get("/logout", {})
+      .then(response => {
+        console.log(response);
+        alert("로그아웃되었습니다.");
+      })
+      .catch(error => {
+        console.log(error);
+      })
     }
   }
 }

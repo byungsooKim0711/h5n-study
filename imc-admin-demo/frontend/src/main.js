@@ -5,6 +5,7 @@ import App from './App';
 import router from './router';
 import vuetify from '@/plugins/vuetify';
 import { store } from './store/store';
+import vueMoment from 'vue-moment';
 
 Vue.config.productionTip = false;
 
@@ -18,12 +19,15 @@ axios.interceptors.request.use(function (request) {
   return Promise.reject(error);
 });
 
-/* axios request interceptors */
+/* axios response interceptors */
 axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
   return Promise.reject(error);
 });
+
+/* Moment 설정 */
+Vue.use(vueMoment);
 
 
 /* eslint-disable no-new */

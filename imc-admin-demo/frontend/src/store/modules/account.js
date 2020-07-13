@@ -26,10 +26,8 @@ const mutations = {
 
 const actions = {
   LOGIN ( {commit}, form) {
-    return new Promise((resolve, reject) => {
-      axios.post('/login', form).then(response => {
+    return axios.post('/login', form).then(response => {
         commit('LOGIN', response.data);
-        resolve(response);
       })
       .catch(error => {
         if (error.response.status === 401) {
@@ -40,9 +38,7 @@ const actions = {
         } else {
           alert("일시적인 문제로 다시 시도바랍니다. 문제가 지속될 경우 관리자에게 문의하세요.");
         }
-        reject(error);
-      })
-    });
+      });
   }
 }
 

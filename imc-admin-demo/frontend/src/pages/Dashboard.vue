@@ -1,13 +1,13 @@
 <template>
-  <v-container id="dashboard" fluid>
+  <!--<v-container id="dashboard" fluid>
     <v-row dense>
       <v-col cols="2">
         <v-card color="#F7FFF7">
           <v-card-title class="headline">금월 과금발송</v-card-title>
           <v-card-subtitle class="headline">7,912,189</v-card-subtitle>
-          <!-- <v-card-actions>
+          &lt;!&ndash; <v-card-actions>
             <v-btn text>Listen Now</v-btn>
-          </v-card-actions> -->
+          </v-card-actions> &ndash;&gt;
         </v-card>
       </v-col>
       <v-col cols="2">
@@ -41,12 +41,12 @@
         </v-card>
       </v-col>
 
-      <!-- TODO: 스타일 안쓰고, 맨 왼쪽으로 어떻게...?? -->
-      <!-- <v-row style="text-align: right">
+      &lt;!&ndash; TODO: 스타일 안쓰고, 맨 왼쪽으로 어떻게...?? &ndash;&gt;
+      &lt;!&ndash; <v-row style="text-align: right">
         <v-col>
           <v-btn>금월 실발송 업체 수 : 346</v-btn>
         </v-col>
-      </v-row> -->
+      </v-row> &ndash;&gt;
     </v-row>
     <v-row dense>
       <v-col justify-self="end">
@@ -146,7 +146,7 @@
         </v-timeline>
       </v-col>
     </v-row>
-  </v-container>
+  </v-container>-->
 </template>
 
 <script>

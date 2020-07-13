@@ -54,7 +54,7 @@ public class ImcAdminUserController {
     }
 
     // 관리자 목록 조회
-    @Secured("ROLE_MANAGE")
+//    @Secured("ROLE_MANAGE")
     @GetMapping("/admin")
     public ResponseEntity<List<WebAdminUser>> getWebAdminUserList() throws Exception {
         List<WebAdminUser> admins = imcUserDetailsService.selectAllWebAdminUser();
@@ -65,7 +65,7 @@ public class ImcAdminUserController {
 
     // 관리자 추가
 //    @PreAuthorize("hasRole('ROLE_MANAGE')")
-    @Secured("ROLE_MANAGE")
+//    @Secured("ROLE_MANAGE")
     @PostMapping("/admin")
     public ResponseEntity<WebAdminUser> addWebAdminUser(@RequestBody WebAdminUser user, UriComponentsBuilder uriBuilder) throws Exception {
         WebAdminUser created = imcUserDetailsService.insertWebAdminUser(user);
@@ -79,7 +79,7 @@ public class ImcAdminUserController {
 
     // 관리자 수정
 //    @PreAuthorize("hasRole('ROLE_MANAGE')")
-    @Secured("ROLE_MANAGE")
+//    @Secured("ROLE_MANAGE")
     @PutMapping("/admin/{id}")
     public ResponseEntity<WebAdminUser> modifyWebAdminUser(@RequestBody WebAdminUser webAdminUser, @PathVariable Long id) throws Exception {
         WebAdminUser updated = imcUserDetailsService.updateWebAdminUser(webAdminUser, id);
@@ -89,7 +89,7 @@ public class ImcAdminUserController {
     }
 
     // 권한 리스트 조회
-    @Secured("ROLE_MANAGE")
+//    @Secured("ROLE_MANAGE")
     @GetMapping("/admin/author")
     public ResponseEntity<List<WebUserAuthor>> getWebUserAuthorList() throws Exception {
         List<WebUserAuthor> authors = imcUserDetailsService.selectAllWebUserAuthor();

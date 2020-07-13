@@ -39,7 +39,7 @@ export default {
   }),
 
   created() {
-    // window.history.pushState("", "", "/#/");
+    window.history.pushState("", "", "/#/");
   },
 
   methods: {

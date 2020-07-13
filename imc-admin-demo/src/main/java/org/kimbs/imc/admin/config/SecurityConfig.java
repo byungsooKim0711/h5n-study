@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/logout/**").permitAll()
-                .antMatchers("/admin/**").hasRole(ImcGrantedAuthority.MANAGE.name())
+//                .antMatchers("/admin/**").hasRole(ImcGrantedAuthority.MANAGE.name())
                 .anyRequest().authenticated()
                 ;
 

@@ -5,6 +5,13 @@
       :items="adminListWithIndex"
       class="elevation-1"
     >
+      <template v-slot:item.createAt="{item}">
+        <span>{{item.createAt | moment('YYYY-MM-DD HH:mm:ss')}}</span>
+      </template>
+      <template v-slot:item.modifiedAt="{item}">
+        <span>{{item.modifiedAt | moment('YYYY-MM-DD HH:mm:ss')}}</span>
+      </template>
+
       <template v-slot:top>
         <v-toolbar flat color="white">
           <v-toolbar-title>IMC 관리자 관리</v-toolbar-title>
@@ -187,29 +194,27 @@ export default {
 
     deleteItem (item) {
       const index = this.adminList.findIndex(a => a.id === item.id);
-
+      let activeYn = "N";
       if (this.adminList[index].activeYn === "Y") {
         if (confirm('관리자를 미사용처리 하시겠습니까?')) {
-
+          activeYn = "N";
         }
       } else {
         if (confirm('관리자를 사용처리 하시겠습니까?')) {
-
+          activeYn = "Y";
         }
       }
-      if (confirm('관리자를 미사용처리 하시겠습니까?')) {
-        this.adminList[index].activeYn = "N";
-        axios.put("/admin/" + this.adminList[index].id, this.adminList[index], {})
-          .then(response => {
-            console.log(response);
-            Vue.set(this.adminList, this.adminList.findIndex(a => a.id === response.data.id), response.data);
-          })
+      this.adminList[index].activeYn = activeYn;
+      axios.put("/admin/" + this.adminList[index].id, this.adminList[index], {})
+        .then(response => {
+          console.log(response);
+          Vue.set(this.adminList, this.adminList.findIndex(a => a.id === response.data.id), response.data);
+        })
 
-          .catch(error => {
-            console.error(error);
-            alert("관리자 권한을 수정하는데 실파였습니다.");
-          });
-      }
+        .catch(error => {
+          console.error(error);
+          alert("관리자 권한을 수정하는데 실파였습니다.");
+        });
     },
 
     close () {

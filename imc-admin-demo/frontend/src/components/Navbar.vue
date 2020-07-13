@@ -188,10 +188,10 @@
                 </v-list-item-content>
               </template>
 
-              <v-list-item link>
+              <v-list-item route to="/user/list">
                 <v-list-item-title>고객 목록</v-list-item-title>
               </v-list-item>
-              <v-list-item link>
+              <v-list-item route to="/user/api">
                 <v-list-item-title>API 목록</v-list-item-title>
               </v-list-item>
 
