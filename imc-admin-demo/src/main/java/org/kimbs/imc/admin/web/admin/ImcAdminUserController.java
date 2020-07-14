@@ -10,7 +10,6 @@ import org.kimbs.imc.admin.security.ImcUserDetailsService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,17 +38,20 @@ public class ImcAdminUserController {
         HttpSession session = request.getSession(false);
 
         if (session == null) {
+            log.info("Login check Fail. Session is null");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority(ImcGrantedAuthority.USER.getRole()))) {
+            log.info("Login check Fail. Not includes GrantedAuthority");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         ImcUserDetails account = (ImcUserDetails) authentication.getPrincipal();
 
+        log.info("Login check success. login-id: {}, granted-authorities: {}", account.getUsername(), account.getAuthorities());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 

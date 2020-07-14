@@ -2,7 +2,7 @@ package org.kimbs.imc.admin.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.kimbs.imc.admin.domain.code.ImcGrantedAuthority;
+import org.kimbs.imc.admin.security.ImcUserDetails;
 import org.kimbs.imc.admin.security.ImcUserDetailsService;
 import org.kimbs.imc.admin.security.handler.LoginFailureHandler;
 import org.kimbs.imc.admin.security.handler.LoginSuccessHandler;
@@ -16,9 +16,13 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 
 @Slf4j
@@ -95,6 +99,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             @Override
             public void sessionDestroyed(HttpSessionEvent event) {
+                HttpSession session = event.getSession();
+                SecurityContext context = (SecurityContext) session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+
+                if (context != null) {
+                    Authentication authentication = context.getAuthentication();
+                    log.info("Session destroyed. username: {}", ((ImcUserDetails)authentication.getPrincipal()).getUsername());
+                }
                 super.sessionDestroyed(event);
             }
         };

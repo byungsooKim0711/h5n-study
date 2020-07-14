@@ -1,9 +1,9 @@
 <template>
   <v-app id="app">
-    <Navbar :drawer="drawer"></Navbar>
+    <Navbar :drawer="drawer" v-if="currentRoute != '/' && currentRoute != 'Login'"></Navbar>
     <v-content>
       <!-- 툴바 -->
-      <Toolbar></Toolbar>
+      <Toolbar v-if="currentRoute != '/' && currentRoute != 'Login'"></Toolbar>
     </v-content>
 
     <v-content>
@@ -11,7 +11,7 @@
       <router-view></router-view>
     </v-content>
 
-    <Footer></Footer>
+    <Footer v-if="currentRoute != '/' && currentRoute != 'Login'"></Footer>
 
   </v-app>
 </template>
@@ -28,7 +28,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      currentAccount: 'getCurrentAccount'
+      currentRoute: 'getCurrentRoute'
     })
   },
 

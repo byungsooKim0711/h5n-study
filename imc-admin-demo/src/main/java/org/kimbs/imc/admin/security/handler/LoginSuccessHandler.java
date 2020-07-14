@@ -35,15 +35,12 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         String url = getTargetUrlParameter();
 
         if (url != null) {
+            log.info("Url is not null: {}", url);
             super.onAuthenticationSuccess(request, response, authentication);
         } else {
             ImcUserDetails user = (ImcUserDetails) authentication.getPrincipal();
             // User 정보를 write 할 때 비밀번호 정보는 지운다.
             user.getUser().setPassword("");
-
-            for (GrantedAuthority ga : user.getAuthorities()) {
-                log.info("GrantedAuthority : " + ga.getAuthority());
-            }
 
             HttpSession session = request.getSession();
 
@@ -86,7 +83,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 //            response.sendRedirect(request.getContextPath() + "/dashboard");
 //            }
 
-            log.info("Login Success. remote-ip: {}, username: {}", remoteIp, user.getUsername());
+            log.info("Login Success. remote-ip: {}, username: {}, granted-authorities: {}", remoteIp, user.getUsername(), user.getAuthorities());
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(mapper.writeValueAsString(user));
         }

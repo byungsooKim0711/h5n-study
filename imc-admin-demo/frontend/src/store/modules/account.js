@@ -1,6 +1,7 @@
 // import axios from 'axios'
 
 import axios from "axios";
+import router from "../../router";
 
 const state = {
   currentAccount: {
@@ -21,6 +22,12 @@ const mutations = {
   LOGIN(state, authenticate) {
     state.currentAccount.authorities = authenticate.authorities;
     state.currentAccount.user = authenticate.user;
+  },
+
+  // 로그아웃 시 권한정보와 유저 정보를 초기화 한다.
+  LOGOUT(state) {
+    state.currentAccount.authorities = [];
+    state.currentAccount.user = {};
   }
 }
 
@@ -28,14 +35,13 @@ const actions = {
   LOGIN ( {commit}, form) {
     return axios.post('/login', form).then(response => {
         commit('LOGIN', response.data);
+        router.push("/dashboard");
       })
       .catch(error => {
         if (error.response.status === 401) {
           alert("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
         }
-        else if (error.response.status >= 500 && error.response.status < 600) {
-          alert("일시적인 문제로 다시 시도바랍니다. 문제가 지속될 경우 관리자에게 문의하세요.");
-        } else {
+        else {
           alert("일시적인 문제로 다시 시도바랍니다. 문제가 지속될 경우 관리자에게 문의하세요.");
         }
       });

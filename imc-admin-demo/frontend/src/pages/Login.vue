@@ -44,14 +44,13 @@ export default {
 
   methods: {
     login: function() {
+      console.log("try login...");
       if (this.username && this.password) {
         let form = new FormData();
         form.append("username", this.username);
         form.append("password", this.password);
 
-        this.$store.dispatch("LOGIN", form).then(response => {
-          this.$router.push("/dashboard");
-        });
+        this.$store.dispatch("LOGIN", form);
 
       } else {
         alert("아이디와 비밀번호를 입력해주세요.");

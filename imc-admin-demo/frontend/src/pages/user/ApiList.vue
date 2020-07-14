@@ -11,7 +11,7 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="apiList"
+      :items="apiListWithIndex"
       :page.sync="page"
       :items-per-page="itemsPerPage"
       hide-default-footer
@@ -42,6 +42,16 @@
   export default {
     name: "ApiList",
 
+    computed: {
+      apiListWithIndex() {
+        return this.apiList.map(
+          (apiList, index) => ({
+            ...apiList,
+            index: index + 1
+          }))
+      }
+    },
+
     data () {
       return {
         page: 1,
@@ -50,7 +60,7 @@
         search: "",
 
         headers: [
-          { text: '순번', value: '$index', sortable: false, align: 'start' },
+          { text: '순번', value: 'index', sortable: false, align: 'start' },
           { text: '회사명', value: 'webUserId' },
           { text: 'API KEY', value: 'apiKey' },
           { text: '생성일', value: 'createAt' },

@@ -11,7 +11,7 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="userList"
+      :items="userListWithIndex"
       :page.sync="page"
       :items-per-page="itemsPerPage"
       hide-default-footer
@@ -42,6 +42,16 @@
   export default {
     name: "UserList",
 
+    computed: {
+      userListWithIndex() {
+        return this.userList.map(
+          (userList, index) => ({
+            ...userList,
+            index: index + 1
+          }))
+      }
+    },
+
     data () {
       return {
         page: 1,
@@ -50,7 +60,7 @@
         search: "",
 
         headers: [
-          { text: '순번', value: '$index', sortable: false, align: 'start' },
+          { text: '순번', value: 'index', sortable: false, align: 'start' },
           { text: '회사명', value: 'company' },
           { text: '사업자번호', value: 'bizNum' },
           { text: '담당자', value: 'infoNa' },

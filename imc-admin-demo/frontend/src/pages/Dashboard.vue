@@ -1,6 +1,7 @@
 <template>
-  <!--<v-container id="dashboard" fluid>
-    <v-row dense>
+  <v-container id="dashboard" fluid>
+    "Dashboard"
+    <!-- <v-row dense>
       <v-col cols="2">
         <v-card color="#F7FFF7">
           <v-card-title class="headline">금월 과금발송</v-card-title>
@@ -145,8 +146,8 @@
           </v-timeline-item>
         </v-timeline>
       </v-col>
-    </v-row>
-  </v-container>-->
+    </v-row> -->
+  </v-container>
 </template>
 
 <script>

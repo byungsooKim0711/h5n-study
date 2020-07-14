@@ -26,17 +26,19 @@
       <template v-slot:activator="{ on }">
         <v-btn dark icon v-on="on">
           <v-icon>more_vert</v-icon>
+          <!-- {{currentAccount.user.infoNa}} -->
         </v-btn>
       </template>
+
 
       <v-list>
         <!-- <v-list-item v-for="(item, i) in items" :key="i" @click="">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item> -->
 
-        <v-list-item link>
+        <v-list-item route to="/myinfo">
           <v-icon>mdi-account</v-icon>
-          <v-list-item-title>내 정보</v-list-item-title>
+          <v-list-item-title>내정보</v-list-item-title>
         </v-list-item>
         <v-list-item @click="logout()">
           <v-icon>mdi-logout</v-icon>
@@ -49,9 +51,16 @@
 
 <script>
 import { eventBus } from '@/EventBus.js';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'toolbar',
+
+  computed: {
+    ...mapGetters({
+      currentAccount: 'getCurrentAccount'
+    })
+  },
 
   data() {
     return {
@@ -71,6 +80,8 @@ export default {
       axios.get("/logout", {})
       .then(response => {
         console.log(response);
+        this.$store.commit("LOGOUT");
+        this.$router.replace("/");
         alert("로그아웃되었습니다.");
       })
       .catch(error => {

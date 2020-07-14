@@ -5,6 +5,9 @@
       :items="adminListWithIndex"
       class="elevation-1"
     >
+      <template v-slot:item.activeYn="{item}">
+        <span>{{item.activeYn | activeYnFilter}}</span>
+      </template>
       <template v-slot:item.createAt="{item}">
         <span>{{item.createAt | moment('YYYY-MM-DD HH:mm:ss')}}</span>
       </template>
@@ -21,7 +24,7 @@
             vertical
           ></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" >
+          <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="primary"
@@ -123,7 +126,7 @@ export default {
       { text: '이메일', value: 'infoEm' },
       { text: '등록일', value: 'createAt' },
       { text: '수정일', value: 'modifiedAt' },
-      { text: '비밀번호 오류 횟수', value: 'failCount' },
+      { text: '오류 횟수', value: 'failCount' },
       { text: '수정', value: 'actions', sortable: false },
     ],
 
@@ -162,6 +165,16 @@ export default {
           ...adminList,
           index: index + 1
         }))
+    }
+  },
+
+  filters: {
+    activeYnFilter(x) {
+      if (x === "Y") {
+        return "사용";
+      } else {
+        return "미사용";
+      }
     }
   },
 
