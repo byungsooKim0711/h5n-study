@@ -13,18 +13,18 @@ Vue.config.productionTip = false;
 window.axios = require('axios');
 
 /* axios request interceptors */
-axios.interceptors.request.use(function (request) {
-  return request;
-}, function (error) {
-  return Promise.reject(error);
-});
+// axios.interceptors.request.use(function (request) {
+//   return request;
+// }, function (error) {
+//   return Promise.reject(error);
+// });
 
 /* axios response interceptors */
-axios.interceptors.response.use(function (response) {
-  return response;
-}, function (error) {
-  return Promise.reject(error);
-});
+// axios.interceptors.response.use(function (response) {
+//   return response;
+// }, function (error) {
+//   return Promise.reject(error);
+// });
 
 /* Moment 설정 */
 Vue.use(vueMoment);
