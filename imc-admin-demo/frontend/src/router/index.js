@@ -14,6 +14,8 @@ import { store } from '../store/store'
 
 Vue.use(VueRouter)
 
+
+// 권한 여부 확인
 const checkAuth = (...roles) => (to, from, next) => {
 
   let id = store.state.account.currentAccount.user.id;
@@ -23,17 +25,24 @@ const checkAuth = (...roles) => (to, from, next) => {
     let find = roles.find(role => authorities.find(auth => auth.authority === role));
     if (find) {
       return next();
+    } else {
+      alert("접근권한이 없습니다.");
+      return ;
     }
   }
-  alert("접근권한이 없습니다.");
+  return next("/login");
 }
 
+// 로그인 여부 확인
 const isLogin = () => (to, from, next) => {
-  console.log(store.state.account.currentAccount.user.id);
   if (store.state.account.currentAccount.user.id != undefined) {
     return next("/dashboard");
   }
   next();
+}
+
+const notfoundRoute = () => (to, from, next) => {
+  next(from.path);
 }
 
 const router = new VueRouter({
@@ -80,6 +89,12 @@ const router = new VueRouter({
       name: 'Admin',
       component: Admin,
       beforeEnter: checkAuth("ROLE_MANAGE")
+    },
+    {
+      path: '*',
+      name: 'Dashboard',
+      component: Dashboard,
+      beforeEnter: notfoundRoute()
     }
   ]
 });
@@ -87,19 +102,21 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   axios.get('/login/check')
   .then(response => {
-    console.log(response);
+    if (response.data.status === 700) {
+      store.commit("LOGOUT");
+      store.commit("SET_CURRENT_ROUTE", "/");
+      next("/");
+    }
     store.commit("LOGIN", response.data);
-    store.commit('SET_CURRENT_ROUTE', to.name);
+    store.commit("SET_CURRENT_ROUTE", to.path);
     next();
   })
   .catch(error => {
     console.error(error);
     store.commit("LOGOUT");
-    // router.replace("/");
-    // next("/login");
-    // window.history.pushState("", "", "/#/");
+    store.commit("SET_CURRENT_ROUTE", "/");
     next();
-
+    // window.history.pushState("", "", "/#/");
   });
 });
 

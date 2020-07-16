@@ -79,7 +79,6 @@ export default {
     logout() {
       axios.get("/logout", {})
       .then(response => {
-        console.log(response);
         this.$store.commit("LOGOUT");
         this.$router.replace("/");
         alert("로그아웃되었습니다.");

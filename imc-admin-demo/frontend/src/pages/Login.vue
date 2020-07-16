@@ -15,6 +15,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="primary" type="submit">Login</v-btn>
+                  <!-- <v-btn color="primary" @click="findPassword()">비밀번호 찾기</v-btn> -->
                 </v-card-actions>
               </v-form>
             </v-card-text>
@@ -44,7 +45,6 @@ export default {
 
   methods: {
     login: function() {
-      console.log("try login...");
       if (this.username && this.password) {
         let form = new FormData();
         form.append("username", this.username);
@@ -55,6 +55,10 @@ export default {
       } else {
         alert("아이디와 비밀번호를 입력해주세요.");
       }
+    },
+
+    findPassword: function() {
+      alert("준비 중입니다.");
     }
   },
 

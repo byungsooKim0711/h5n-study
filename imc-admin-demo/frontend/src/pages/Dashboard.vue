@@ -1,6 +1,5 @@
 <template>
   <v-container id="dashboard" fluid>
-    "Dashboard"
     <!-- <v-row dense>
       <v-col cols="2">
         <v-card color="#F7FFF7">
