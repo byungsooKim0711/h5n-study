@@ -1,6 +1,9 @@
 package com.humuson.imc.admin.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.humuson.imc.admin.domain.WebAdminUser;
+import com.humuson.imc.admin.security.ImcUserDetails;
+import com.humuson.imc.admin.security.ImcUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -16,29 +19,28 @@ import java.io.IOException;
 @Component
 public class LoginFailureHandler implements AuthenticationFailureHandler, RemoteIpHandler {
 
-    private final ObjectMapper mapper;
+    private final ImcUserDetailsService imcUserDetailsService;
 
-    public LoginFailureHandler(ObjectMapper mapper) {
-        this.mapper = mapper;
+    public LoginFailureHandler(ImcUserDetailsService imcUserDetailsService) {
+        this.imcUserDetailsService = imcUserDetailsService;
     }
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException authenticationException) throws IOException, ServletException {
         String remoteIp = this.getRemoteIp(request);
         String username = request.getParameter("username");
-        log.warn("Login Failed. remote-ip: {}, username: {}, cause: {}", remoteIp, username, e.getMessage());
+        log.warn("Login Failed. remote-ip: {}, username: {}, cause: {}", remoteIp, username, authenticationException.getMessage());
 
-//        URL obj = new URL("http://" + hostIp + "/api/updateLoginFailCount?username=" + request.getParameter("j_username"));
-//        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-//        con.setRequestMethod("GET");
-//        con.setRequestProperty("User-Agent", "Mozilla/5.0");
-//        con.getResponseCode();
 
-//        String forwardUrl = request.getContextPath() + "/";
-//        response.sendRedirect(forwardUrl);
-//		request.setAttribute("errMsg", "로그인에 실패했습니다. 5회 실패 시 로그인이 차단됩니다. 차단될 경우 관리자에 문의해 주세요.");
-//
-//		request.getRequestDispatcher(forwardUrl).forward(request, response);
+        // TODO: 성능이 별로일 것 같다..
+        try {
+            ImcUserDetails failureUserDetail = (ImcUserDetails) imcUserDetailsService.loadUserByUsername(username);
+            WebAdminUser failureUser = failureUserDetail.getUser();
+            failureUser.setFailCount(failureUser.getFailCount() + 1);
+            imcUserDetailsService.updateWebAdminUser(failureUser, failureUser.getId());
+        } catch (Exception exception) {
+            log.warn("Login failed count update error. username: {}, cause: {}", username, exception.getMessage());
+        }
 
         response.setContentType("application/json");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());

@@ -1,7 +1,9 @@
 package com.humuson.imc.admin.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.humuson.imc.admin.domain.WebAdminUser;
 import com.humuson.imc.admin.security.ImcUserDetails;
+import com.humuson.imc.admin.security.ImcUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -24,9 +26,11 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     private int maxAge = DEFAULT_MAX_AGE;
 
     private final ObjectMapper mapper;
+    private final ImcUserDetailsService imcUserDetailsService;
 
-    public LoginSuccessHandler(ObjectMapper mapper) {
+    public LoginSuccessHandler(ObjectMapper mapper, ImcUserDetailsService imcUserDetailsService) {
         this.mapper = mapper;
+        this.imcUserDetailsService = imcUserDetailsService;
     }
 
     @Override
@@ -38,9 +42,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             super.onAuthenticationSuccess(request, response, authentication);
         } else {
             ImcUserDetails user = (ImcUserDetails) authentication.getPrincipal();
-            // User 정보를 write 할 때 비밀번호 정보는 지운다.
-            user.getUser().setPassword("");
-
             HttpSession session = request.getSession();
 
             // L4를 거쳐올 경우를 고려하여 IP를 얻어냄
@@ -72,6 +73,16 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
                 response.addCookie(cookie);
             }
 
+            WebAdminUser successUser = user.getUser();
+
+            // TODO: 성능이 별로일 것 같다..
+            try {
+                user.getUser().setFailCount(0);
+                imcUserDetailsService.updateWebAdminUser(successUser, successUser.getId());
+            } catch (Exception exception) {
+                log.warn("Login failed count update error. username: {}, cause: {}", successUser.getUserLogin(), exception.getMessage());
+            }
+
             // 비밀번호 수정 필요시 Redirect
 //            ImcUserDetails adminUser = (ImcUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //            if("Y".equals(adminUser.getDefaultPassYn())) {
@@ -83,6 +94,9 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 //            }
 
             log.info("Login Success. remote-ip: {}, username: {}, granted-authorities: {}", remoteIp, user.getUsername(), user.getAuthorities());
+
+            // User 정보를 write 할 때 비밀번호 정보는 지운다.
+            user.getUser().setPassword("");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(mapper.writeValueAsString(user));
         }
