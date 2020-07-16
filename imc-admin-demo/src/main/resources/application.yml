@@ -91,4 +91,7 @@ logging:
   level:
     com.querydsl.sql: trace
     org.hibernate.type: trace
+#  config: file:${user.dir}/logback-spring.xml
+  config: classpath:logback-spring.xml
+
 
