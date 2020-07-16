@@ -19,7 +19,7 @@
 		</encoder>
 	</appender>
 
-	<logger name="org.kimbs.imc" level="INFO"/>
+	<logger name="com.humuson.imc" level="INFO"/>
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
