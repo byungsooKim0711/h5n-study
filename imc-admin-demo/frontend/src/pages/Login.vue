@@ -36,7 +36,6 @@ export default {
     drawer: null,
     username: '',
     password: '',
-    account: {}
   }),
 
   created() {
@@ -50,7 +49,10 @@ export default {
         form.append("username", this.username);
         form.append("password", this.password);
 
-        this.$store.dispatch("LOGIN", form);
+        this.$store.dispatch("LOGIN", form).then(() => {
+          this.username = '';
+          this.password = '';
+        });
 
       } else {
         alert("아이디와 비밀번호를 입력해주세요.");
@@ -60,10 +62,6 @@ export default {
     findPassword: function() {
       alert("준비 중입니다.");
     }
-  },
-
-  props: {
-    source: String
   }
 }
 </script>

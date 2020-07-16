@@ -19,12 +19,6 @@
 </template>
 
 <script>
-import Navbar from '@/components/Navbar';
-import Toolbar from '@/components/Toolbar';
-import Footer from '@/components/Footer';
-
-import AxiosInterceptor from '@/components/AxiosInterceptor';
-
 import { mapGetters } from "vuex";
 
 export default {
@@ -37,10 +31,10 @@ export default {
   },
 
   components: {
-    Navbar,
-    Toolbar,
-    Footer,
-    AxiosInterceptor
+    Navbar: () => import('@/components/Navbar'),
+    Toolbar: () => import('@/components/Toolbar'),
+    Footer: () => import('@/components/Footer'),
+    AxiosInterceptor: () => import('@/components/AxiosInterceptor')
   },
 
   data() {
@@ -54,11 +48,7 @@ export default {
     // this.currentAccount.user.id !== undefiend 해도 왜 에러가 나는가..
     isLogin() {
       try {
-        if (this.currentAccount.user.id) {
-          return true;
-        } else {
-          return false;
-        }
+        return !!this.currentAccount.user.id;
       } catch (e) {
         return false;
       }

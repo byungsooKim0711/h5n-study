@@ -1,15 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Login from '@/pages/Login'
-import Dashboard from '@/pages/Dashboard'
-import UserList from '@/pages/user/UserList'
-import ApiList from '@/pages/user/ApiList'
-import Admin from '@/pages/operation/Admin'
-import MyInfo from '@/pages/my/MyInfo'
-
-import axios from 'axios'
-
 import { store } from '../store/store'
 
 Vue.use(VueRouter)
@@ -35,7 +26,7 @@ const checkAuth = (...roles) => (to, from, next) => {
 
 // 로그인 여부 확인
 const isLogin = () => (to, from, next) => {
-  if (store.state.account.currentAccount.user.id != undefined) {
+  if (store.state.account.currentAccount.user.id !== undefined) {
     return next("/dashboard");
   }
   next();
@@ -47,53 +38,55 @@ const notfoundRoute = () => (to, from, next) => {
 
 const router = new VueRouter({
   base: process.env.BASE_URL,
+  // mode: 'history',
+  // scrollBehavior: () => ({ y: 0 }),
   routes: [
     {
       path: '/',
       name: 'Login',
-      component: Login,
+      component: () => import('@/pages/Login'),
       beforeEnter: isLogin()
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login,
+      component: () => import('@/pages/Login'),
       beforeEnter: isLogin()
     },
     {
       path: '/myinfo',
       name: 'MyInfo',
-      component: MyInfo,
+      component: () => import('@/pages/my/MyInfo'),
       beforeEnter: checkAuth("ROLE_USER")
     },
     {
       path: '/dashboard',
       name: 'Dashboard',
-      component: Dashboard,
+      component: () => import('@/pages/Dashboard'),
       beforeEnter: checkAuth("ROLE_USER")
     },
     {
       path: '/user/list',
       name: 'UserList',
-      component: UserList,
+      component: () => import('@/pages/user/UserList'),
       beforeEnter: checkAuth("ROLE_USER")
     },
     {
       path: '/user/api',
       name: 'ApiList',
-      component: ApiList,
+      component: () => import('@/pages/user/ApiList'),
       beforeEnter: checkAuth("ROLE_USER")
     },
     {
       path: '/operation/admin',
       name: 'Admin',
-      component: Admin,
+      component: () => import('@/pages/operation/Admin'),
       beforeEnter: checkAuth("ROLE_MANAGE")
     },
     {
       path: '*',
       name: 'Dashboard',
-      component: Dashboard,
+      component: () => import('@/pages/Dashboard'),
       beforeEnter: notfoundRoute()
     }
   ]

@@ -185,16 +185,7 @@ export default {
   },
 
   mounted () {
-    axios.get("/admin", {
-    })
-    .then(response => {
-      this.adminList = response.data;
-    })
-    .catch(error => {
-      console.log(error);
-      alert("관리자 정보를 가져오는데 실패하였습니다.");
-    });
-
+    this.getAdminUserList();
     this.getUserAuthor();
   },
 
@@ -206,28 +197,18 @@ export default {
     },
 
     deleteItem (item) {
-      const index = this.adminList.findIndex(a => a.id === item.id);
-      let activeYn = "N";
-      if (this.adminList[index].activeYn === "Y") {
+      let admin = this.adminList[this.adminList.findIndex(a => a.id === item.id)];
+      if (admin.activeYn === "Y") {
         if (confirm('관리자를 미사용처리 하시겠습니까?')) {
-          activeYn = "N";
+          admin.activeYn = "N";
+          this.updateAdminUserActiveYn(admin);
         }
       } else {
         if (confirm('관리자를 사용처리 하시겠습니까?')) {
-          activeYn = "Y";
+          admin.activeYn = "Y";
+          this.updateAdminUserActiveYn(admin);
         }
       }
-      this.adminList[index].activeYn = activeYn;
-      axios.put("/admin/" + this.adminList[index].id, this.adminList[index], {})
-        .then(response => {
-          console.log(response);
-          Vue.set(this.adminList, this.adminList.findIndex(a => a.id === response.data.id), response.data);
-        })
-
-        .catch(error => {
-          console.error(error);
-          alert("관리자 권한을 수정하는데 실파였습니다.");
-        });
     },
 
     close () {
@@ -274,7 +255,30 @@ export default {
         console.log(error);
         alert("권한 정보를 가져오는데 실패하였습니다.");
       });
+    },
+
+    getAdminUserList () {
+      axios.get("/admin", {})
+      .then(response => {
+        this.adminList = response.data;
+      })
+      .catch(error => {
+        console.log(error);
+        alert("관리자 정보를 가져오는데 실패하였습니다.");
+      });
+    },
+
+    updateAdminUserActiveYn(admin) {
+      axios.put("/admin/" + admin.id, admin, {})
+      .then(response => {
+        Vue.set(this.adminList, this.adminList.findIndex(a => a.id === response.data.id), response.data);
+      })
+
+      .catch(error => {
+        console.error(error);
+        alert("관리자 권한을 수정하는데 실파였습니다.");
+      });
     }
-  },
+  }
 }
 </script>

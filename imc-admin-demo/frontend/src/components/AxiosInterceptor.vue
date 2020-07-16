@@ -47,7 +47,7 @@ export default {
 
   methods: {
     setLoadingSpinner(on) {
-      if (on == true) {
+      if (on === true) {
         document.getElementById("loading-spinner").classList.add("on");
       } else {
         document.getElementById("loading-spinner").classList.remove("on");

@@ -12,8 +12,9 @@
     </v-btn> -->
 
     <!-- App 버튼 -->
-    <v-btn icon>
-      <v-icon>apps</v-icon>
+    <v-btn icon route to="/dashboard">
+      <!--<v-icon>apps</v-icon>-->
+      <v-icon>mdi-view-dashboard</v-icon>
     </v-btn>
 
     <!-- 새로고침 버튼 -->

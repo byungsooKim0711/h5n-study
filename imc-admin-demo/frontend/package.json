@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "IMC-ADMIN",
   "version": "1.0.0",
-  "description": "imc-admin-demo",
+  "description": "imc-admin",
   "author": "kimbs",
   "private": true,
   "scripts": {
