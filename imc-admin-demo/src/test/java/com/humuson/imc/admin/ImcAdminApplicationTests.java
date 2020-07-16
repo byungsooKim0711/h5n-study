@@ -1,4 +1,4 @@
-package com.kimbs.imc.admin;
+package com.humuson.imc.admin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
