@@ -12,8 +12,8 @@ server:
       charset: UTF-8
     session:
       timeout: 60m
-      cookie:
-        name: 'IMC-SESSION-ID'
+#      cookie:
+#        name: 'IMC-SESSION-ID'
 
 spring:
   mvc:
@@ -69,7 +69,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: none
-    generate-ddl: true
+    generate-ddl: false
     properties:
       hibernate.format_sql: true
 #      hibernate.jdbc.batch_size: 10
