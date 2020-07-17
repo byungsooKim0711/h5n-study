@@ -98,18 +98,17 @@ router.beforeEach((to, from, next) => {
     if (response.data.status === 700) {
       store.commit("LOGOUT");
       store.commit("SET_CURRENT_ROUTE", "/");
-      return next("/login");
+      next("/");
     }
     store.commit("LOGIN", response.data);
     store.commit("SET_CURRENT_ROUTE", to.path);
-    return next();
+    next();
   })
   .catch(error => {
     console.error(error);
     store.commit("LOGOUT");
     store.commit("SET_CURRENT_ROUTE", "/");
     return next();
-    // window.history.pushState("", "", "/#/");
   });
 });
 

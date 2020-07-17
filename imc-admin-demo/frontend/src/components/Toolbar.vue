@@ -85,7 +85,7 @@ export default {
         alert("로그아웃되었습니다.");
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       })
     }
   }

@@ -13,23 +13,23 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "imc.admin")
 public class ImcAdminConfig {
 
-    private Security security;
+    private final Security security;
 
     @Getter
     @Validated
     @ConstructorBinding
     @AllArgsConstructor
     public static class Security {
-        private String defaultViewUrl;
+        private final String defaultViewUrl;
 
-        private String[] permitAllUrl;
+        private final String[] permitAllUrl;
 
-        private String loginUrl;
+        private final String loginUrl;
 
-        private String logoutUrl;
+        private final String logoutUrl;
 
-        private String[] staticResources;
+        private final String[] staticResources;
 
-        private String[] roleManageUrl;
+        private final String[] roleManageUrl;
     }
 }

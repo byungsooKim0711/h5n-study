@@ -67,15 +67,15 @@
 
 
             <h4 class="display-2 font-weight-light mb-3 black--text">
-              김병수
+              내정보 화면은 테스트중 입니다.
             </h4>
 
             <p class="font-weight-light grey--text">
-              설명...
+              무시하세요.
             </p>
 
             <v-btn color="success" rounded class="mr-0">
-              비밀번호 변경
+              버튼입니다.
             </v-btn>
           </v-card-text>
         </v-card>

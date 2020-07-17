@@ -74,7 +74,6 @@
     mounted() {
       axios.get("/user/api", {})
       .then(response => {
-        console.log(response);
         this.apiList = response.data;
       })
       .catch(error => {

@@ -77,7 +77,6 @@
     mounted() {
       axios.get("/user", {})
       .then(response => {
-        console.log(response);
         this.userList = response.data;
       })
       .catch(error => {
