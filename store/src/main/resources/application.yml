@@ -36,7 +36,7 @@ spring:
       minimum-idle: 10
       auto-commit: false
       connection-timeout: 60000
-    # jpa ¼³Á¤
+    # jpa ì„¤ì •
     data:
       jpa:
         repositories:
@@ -54,7 +54,7 @@ spring:
           dialect: org.hibernate.dialect.MySQL5Dialect
           hibernate.format_sql: true
       open-in-view: false
-    # Redis ¼³Á¤
+    # Redis ì„¤ì •
   redis:
     host: 127.0.0.1
     port: 6379
@@ -75,8 +75,7 @@ imc:
     sql-context-path: file:${user.dir}/SqlContext.xml
     show-sql: false
     scheduled:
-      # db ÁÖ¿ä Á¤º¸¸¦ redis¿¡ ÀúÀåÇÒ Áö ¿©ºÎ. store ¼­¹ö°¡ 2°³ ÀÌ»óÀÏ °æ¿ì, 1°³¸¸ ¼³Á¤ÇÑ´Ù.
+      # db ì£¼ìš” ì •ë³´ë¥¼ redisì— ì €ì¥í•  ì§€ ì—¬ë¶€. store ì„œë²„ê°€ 2ê°œ ì´ìƒì¼ ê²½ìš°, 1ê°œë§Œ ì„¤ì •í•œë‹¤.
       enable-redis-store: true
-      # apiInfo Á¤º¸¸¦ db¿¡¼­ redis·Î ÀúÀåÇÑ´Ù. ÃÖÃÊ¿¡ ÀÏ°ı ÀúÀåÇÏ°í, ÀÌÈÄ ½ºÄÉÁÙ¿¡ µû¶ó º¯°æµÈ Á¤º¸¸¦ ÀúÀåÇÑ´Ù.
+      # apiInfo ì •ë³´ë¥¼ dbì—ì„œ redisë¡œ ì €ì¥í•œë‹¤. ìµœì´ˆì— ì¼ê´„ ì €ì¥í•˜ê³ , ì´í›„ ìŠ¤ì¼€ì¤„ì— ë”°ë¼ ë³€ê²½ëœ ì •ë³´ë¥¼ ì €ì¥í•œë‹¤.
       redis-store-api-info: "*/10 * * * * *"
-
