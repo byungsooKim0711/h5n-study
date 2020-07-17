@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 @Slf4j
+@Deprecated
 public class AuthProvider implements AuthenticationProvider {
 
     private final ImcUserDetailsService userDetailsService;

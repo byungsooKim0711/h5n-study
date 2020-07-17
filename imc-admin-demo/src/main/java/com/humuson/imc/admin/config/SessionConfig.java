@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //@Configuration
 //@EnableSpringHttpSession
+@Deprecated
 public class SessionConfig {
 
     @Bean

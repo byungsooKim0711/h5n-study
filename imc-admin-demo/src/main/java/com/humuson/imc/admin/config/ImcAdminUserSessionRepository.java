@@ -7,6 +7,7 @@ import org.springframework.session.SessionRepository;
 import java.time.Duration;
 import java.util.Map;
 
+@Deprecated
 public class ImcAdminUserSessionRepository implements SessionRepository<Session> {
 
     private Integer defaultMaxInactiveInterval;
