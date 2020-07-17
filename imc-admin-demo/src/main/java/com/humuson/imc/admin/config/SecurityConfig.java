@@ -48,11 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // object mapper
     private final ObjectMapper mapper;
 
+    // configuration
+    private final ImcAdminConfig config;
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
             .ignoring()
-            .antMatchers("/static/css/**", "/static/fonts/**", "/static/img/**", "/static/js/**", "./favicon.ico");
+            .antMatchers(config.getSecurity().getStaticResources());
     }
 
     @Override
@@ -65,37 +68,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/login/**").permitAll()
-                .antMatchers("/logout/**").permitAll()
-//                .antMatchers("/admin/**").hasRole(ImcGrantedAuthority.MANAGE.name())
-                .anyRequest().authenticated()
-                ;
+            .antMatchers(config.getSecurity().getPermitAllUrl()).permitAll()
+//                .antMatchers(config.getSecurity().getRoleManageUrl()).hasRole(ImcGrantedAuthority.MANAGE.name())
+            .anyRequest().authenticated()
+            ;
 
         http.formLogin()
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .loginPage("/index.html")
-                .loginProcessingUrl("/login")
-                .successHandler(loginSuccessHandler)
-                .failureHandler(loginFailureHandler)
-                .permitAll()
-                ;
+            .usernameParameter("username")
+            .passwordParameter("password")
+            .loginPage(config.getSecurity().getDefaultViewUrl())
+            .loginProcessingUrl(config.getSecurity().getLoginUrl())
+            .successHandler(loginSuccessHandler)
+            .failureHandler(loginFailureHandler)
+            .permitAll()
+            ;
 
         http.logout()
-                .logoutUrl("/logout").permitAll()
+            .logoutUrl(config.getSecurity().getLogoutUrl()).permitAll()
 //                .deleteCookies("IMC-SESSION-ID")
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
-                .logoutSuccessHandler(logoutSuccessHandler)
-                ;
+            .deleteCookies("JSESSIONID")
+            .invalidateHttpSession(true)
+            .logoutSuccessHandler(logoutSuccessHandler)
+            ;
 
         http.sessionManagement()
-                .invalidSessionStrategy(new ImcInvalidSessionStrategy(mapper))
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                .maximumSessions(1)
-                .maxSessionsPreventsLogin(false)
-                .expiredUrl("/index.html")
-                .and().invalidSessionUrl("/index.html");
+            .invalidSessionStrategy(new ImcInvalidSessionStrategy(mapper))
+            .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+            .maximumSessions(1)
+            .maxSessionsPreventsLogin(false)
+            .expiredUrl(config.getSecurity().getDefaultViewUrl())
+            .and().invalidSessionUrl(config.getSecurity().getDefaultViewUrl());
     }
 
     @Bean

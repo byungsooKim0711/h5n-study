@@ -95,3 +95,20 @@ logging:
   config: classpath:logback-spring.xml
 
 
+imc:
+  admin:
+    security:
+      default-view-url: "/index.html"
+      permit-all-url:
+        - "/login/**"
+        - "/logout/**"
+      login-url: "/login"
+      logout-url: "/logout"
+      static-resources:
+        - "/static/css/**"
+        - "/static/fonts/**"
+        - "/static/img/**"
+        - "/static/js/**"
+        - "./favicon.ico"
+      role-manage-url:
+        - "/admin/**"
