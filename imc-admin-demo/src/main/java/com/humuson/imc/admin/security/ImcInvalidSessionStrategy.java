@@ -26,6 +26,7 @@ public class ImcInvalidSessionStrategy implements InvalidSessionStrategy {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         response.getWriter().write(mapper.writeValueAsString(exceptionObject));
+        response.sendRedirect("/");
 //        response.sendRedirect("/#/");
     }
 }

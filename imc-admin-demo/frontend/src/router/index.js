@@ -9,19 +9,22 @@ Vue.use(VueRouter)
 // 권한 여부 확인
 const checkAuth = (...roles) => (to, from, next) => {
 
-  let id = store.state.account.currentAccount.user.id;
-  let authorities = store.state.account.currentAccount.authorities;
-
-  if (id !== undefined) {
-    let find = roles.find(role => authorities.find(auth => auth.authority === role));
-    if (find) {
-      return next();
-    } else {
-      alert("접근권한이 없습니다.");
-      return ;
+  try {
+    let id = store.state.account.currentAccount.user.id;
+    let authorities = store.state.account.currentAccount.authorities;
+    if (id !== undefined) {
+      let find = roles.find(role => authorities.find(auth => auth.authority === role));
+      if (find) {
+        return next();
+      } else {
+        alert("접근권한이 없습니다.");
+        return ;
+      }
     }
+    return next("/login");
+  } catch (e) {
+    return next("/login");
   }
-  return next("/login");
 }
 
 // 로그인 여부 확인
