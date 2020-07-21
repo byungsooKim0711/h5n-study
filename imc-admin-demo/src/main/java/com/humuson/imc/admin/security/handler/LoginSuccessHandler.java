@@ -2,6 +2,7 @@ package com.humuson.imc.admin.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humuson.imc.admin.domain.WebAdminUser;
+import com.humuson.imc.admin.domain.convertor.WebAdminUserDtoConverter;
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.security.ImcUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +28,12 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
     private final ObjectMapper mapper;
     private final ImcUserDetailsService imcUserDetailsService;
+    private final WebAdminUserDtoConverter converter;
 
-    public LoginSuccessHandler(ObjectMapper mapper, ImcUserDetailsService imcUserDetailsService) {
+    public LoginSuccessHandler(ObjectMapper mapper, ImcUserDetailsService imcUserDetailsService, WebAdminUserDtoConverter converter) {
         this.mapper = mapper;
         this.imcUserDetailsService = imcUserDetailsService;
+        this.converter = converter;
     }
 
     @Override
@@ -98,7 +101,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             // User 정보를 write 할 때 비밀번호 정보는 지운다.
             user.getUser().setPassword("");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(mapper.writeValueAsString(user));
+            response.getWriter().write(mapper.writeValueAsString(converter.convert(user)));
         }
 
 //        httpServletResponse.getWriter().write(authentication.);
