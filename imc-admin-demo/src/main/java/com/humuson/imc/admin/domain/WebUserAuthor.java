@@ -1,15 +1,15 @@
 package com.humuson.imc.admin.domain;
 
+import com.humuson.imc.admin.config.BaseTimeEntity;
 import com.humuson.imc.admin.domain.code.ImcAuthLevel;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
-import com.humuson.imc.admin.config.BaseTimeEntity;
 
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "TB_WEB_USER_AUTHOR")
-@Data
 public class WebUserAuthor extends BaseTimeEntity {
 
     @Id

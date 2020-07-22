@@ -2,9 +2,9 @@ package com.humuson.imc.admin.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humuson.imc.admin.domain.WebAdminUser;
-import com.humuson.imc.admin.domain.convertor.WebAdminUserDtoConverter;
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.security.ImcUserDetailsService;
+import com.humuson.imc.admin.web.dto.ImcLoginUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -24,16 +24,13 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     private static final String REQUEST_PARAM_NAME = "remember_username";
     private static final String COOKIE_NAME = "saved_username";
     private static final int DEFAULT_MAX_AGE = 60 * 60 * 24 * 7;
-    private int maxAge = DEFAULT_MAX_AGE;
 
     private final ObjectMapper mapper;
     private final ImcUserDetailsService imcUserDetailsService;
-    private final WebAdminUserDtoConverter converter;
 
-    public LoginSuccessHandler(ObjectMapper mapper, ImcUserDetailsService imcUserDetailsService, WebAdminUserDtoConverter converter) {
+    public LoginSuccessHandler(ObjectMapper mapper, ImcUserDetailsService imcUserDetailsService) {
         this.mapper = mapper;
         this.imcUserDetailsService = imcUserDetailsService;
-        this.converter = converter;
     }
 
     @Override
@@ -50,13 +47,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             // L4를 거쳐올 경우를 고려하여 IP를 얻어냄
             String remoteIp = this.getRemoteIp(request);
 
-            // 실패 카운트 Update
-//            URL obj = new URL( "http://" + hostIp + "/api/resetLoginFailCount?username=" + request.getParameter("j_username"));
-//            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-//            con.setRequestMethod("GET");
-//            con.setRequestProperty("User-Agent", "Mozilla/5.0");
-//            con.getResponseCode();
-
             // TODO: 나중에 기존 설정 따라가야한다.
             if (remoteIp.indexOf("xxx.xxx.xxx.") == 0 || remoteIp.indexOf("0:0:0:0:0:0:0:1") == 0) {
                 session.setAttribute("SUPER_ADMIN", "Y");
@@ -68,7 +58,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             if (remember != null) {
                 String username = user.getUsername();
                 Cookie cookie = new Cookie(COOKIE_NAME, username);
-                cookie.setMaxAge(maxAge);
+                cookie.setMaxAge(DEFAULT_MAX_AGE);
                 response.addCookie(cookie);
             } else {
                 Cookie cookie = new Cookie(COOKIE_NAME, "");
@@ -78,7 +68,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
             WebAdminUser successUser = user.getUser();
 
-            // TODO: 성능이 별로일 것 같다..
+            // Set login failure count to zero.
             try {
                 user.getUser().setFailCount(0);
                 imcUserDetailsService.updateWebAdminUser(successUser, successUser.getId());
@@ -98,10 +88,9 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
             log.info("Login Success. remote-ip: {}, username: {}, granted-authorities: {}", remoteIp, user.getUsername(), user.getAuthorities());
 
-            // User 정보를 write 할 때 비밀번호 정보는 지운다.
-            user.getUser().setPassword("");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(mapper.writeValueAsString(converter.convert(user)));
+            ImcLoginUserDto loginUser = new ImcLoginUserDto().convertDto(user);
+            response.getWriter().write(mapper.writeValueAsString(loginUser));
         }
 
 //        httpServletResponse.getWriter().write(authentication.);

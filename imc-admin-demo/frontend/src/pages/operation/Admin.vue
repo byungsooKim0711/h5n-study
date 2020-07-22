@@ -228,7 +228,7 @@ export default {
         })
         .catch(error => {
           console.error(error);
-          alert("관리자 권한을 수정하는데 실파였습니다.");
+          // alert("관리자 권한을 수정하는데 실파였습니다.");
         });
       } else {
         axios.post('/admin', this.editedItem, {})
@@ -238,7 +238,7 @@ export default {
           })
           .catch(error => {
             console.error(error);
-            alert("관리자를 등록하는데 오류가 발생하였습니다.");
+            // alert("관리자를 등록하는데 오류가 발생하였습니다.");
           });
       }
       this.close()
@@ -253,7 +253,7 @@ export default {
       })
       .catch(error => {
         console.log(error);
-        alert("권한 정보를 가져오는데 실패하였습니다.");
+        // alert("권한 정보를 가져오는데 실패하였습니다.");
       });
     },
 
@@ -264,7 +264,7 @@ export default {
       })
       .catch(error => {
         console.log(error);
-        alert("관리자 정보를 가져오는데 실패하였습니다.");
+        // alert("관리자 정보를 가져오는데 실패하였습니다.");
       });
     },
 
@@ -276,7 +276,7 @@ export default {
 
       .catch(error => {
         console.error(error);
-        alert("관리자 권한을 수정하는데 실파였습니다.");
+        // alert("관리자 권한을 수정하는데 실패하였습니다.");
       });
     }
   }

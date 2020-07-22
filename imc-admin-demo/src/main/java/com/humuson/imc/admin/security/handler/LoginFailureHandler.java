@@ -1,6 +1,5 @@
 package com.humuson.imc.admin.security.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humuson.imc.admin.domain.WebAdminUser;
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.security.ImcUserDetailsService;
@@ -32,7 +31,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler, Remote
         log.warn("Login Failed. remote-ip: {}, username: {}, cause: {}", remoteIp, username, authenticationException.getMessage());
 
 
-        // TODO: 성능이 별로일 것 같다..
+        // login failure count++
         try {
             ImcUserDetails failureUserDetail = (ImcUserDetails) imcUserDetailsService.loadUserByUsername(username);
             WebAdminUser failureUser = failureUserDetail.getUser();

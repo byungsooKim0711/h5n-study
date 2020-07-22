@@ -25,4 +25,12 @@ public class ApiInfo extends BaseTimeEntity {
     @ColumnDefault("'Y'")
     private String useYn = "Y";
 
+//    @Builder
+//    public ApiInfo(Long id, String apiKey, Long webUserId, String useYn) {
+//        this.id = id;
+//        this.apiKey = apiKey;
+//        this.webUserId = webUserId;
+//        this.useYn = useYn;
+//    }
+
 }
