@@ -1,11 +1,13 @@
-package com.humuson.imc.admin.web.admin;
+package com.humuson.imc.admin.web.domain.admin.controller;
 
-import com.humuson.imc.admin.domain.WebAdminUser;
-import com.humuson.imc.admin.domain.WebUserAuthor;
-import com.humuson.imc.admin.domain.code.ImcGrantedAuthority;
+import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
+import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
+import com.humuson.imc.admin.web.domain.code.ImcGrantedAuthority;
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.security.ImcUserDetailsService;
-import com.humuson.imc.admin.web.dto.ImcLoginUserDto;
+import com.humuson.imc.admin.web.dto.ImcLoginUser;
+import com.humuson.imc.admin.web.dto.converter.ImcLoginUserConverter;
+import com.humuson.imc.admin.web.dto.WebAdminUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -36,34 +38,41 @@ public class ImcAdminUserController {
 
     // 로그인 유저인지 세션 체크
     @GetMapping("/login/check")
-    public ResponseEntity<ImcLoginUserDto> checkLoginSession(HttpServletRequest request) throws Exception {
+    public ResponseEntity<ImcLoginUser> checkLoginSession(HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession(false);
 
         if (session == null) {
-            log.info("Login check Fail. Session is null");
+//            log.info("Login check Fail. Session is null");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority(ImcGrantedAuthority.USER.getRole()))) {
-            log.info("Login check Fail. Not includes GrantedAuthority");
+            log.info("Login check fail. Not includes granted-authority: {}", authentication.getAuthorities());
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         ImcUserDetails details = (ImcUserDetails) authentication.getPrincipal();
-        ImcLoginUserDto loginUser = new ImcLoginUserDto().convertDto(details);
+        ImcLoginUser loginUser = new ImcLoginUserConverter().toDto(details);
 
-        log.info("Login check success. login-id: {}, granted-authorities: {}", loginUser.getUser().getUserLogin(), loginUser.getAuthorities());
+        log.info("Login check success. username: {}, granted-authorities: {}", loginUser.getUser().getUserLogin(), loginUser.getAuthorities());
         return new ResponseEntity<>(loginUser, HttpStatus.OK);
+    }
+
+    // 내 정보 수정
+    @Secured("ROLE_USER")
+    @PostMapping("/myinfo/{id}")
+    public ResponseEntity<?> modifyMyInfo(@RequestBody WebAdminUserDto dto, @PathVariable long id) throws Exception {
+        // TODO:
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 관리자 목록 조회
     @Secured("ROLE_MANAGE")
     @GetMapping("/admin")
-    public ResponseEntity<List<WebAdminUser>> getWebAdminUserList() throws Exception {
-        List<WebAdminUser> admins = imcUserDetailsService.selectAllWebAdminUser();
-        admins.forEach(admin -> admin.setPassword(""));
+    public ResponseEntity<List<WebAdminUserDto>> getWebAdminUserList() throws Exception {
+        List<WebAdminUserDto> admins = imcUserDetailsService.selectAllWebAdminUser();
 
         return new ResponseEntity<>(admins, HttpStatus.OK);
     }
@@ -71,9 +80,8 @@ public class ImcAdminUserController {
     // 관리자 추가
     @Secured("ROLE_MANAGE")
     @PostMapping("/admin")
-    public ResponseEntity<WebAdminUser> addWebAdminUser(@RequestBody WebAdminUser user, UriComponentsBuilder uriBuilder) throws Exception {
-        WebAdminUser created = imcUserDetailsService.insertWebAdminUser(user);
-        created.setPassword("");
+    public ResponseEntity<WebAdminUserDto> addWebAdminUser(@RequestBody WebAdminUserDto user, UriComponentsBuilder uriBuilder) throws Exception {
+        WebAdminUserDto created = imcUserDetailsService.insertWebAdminUser(user);
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setLocation(uriBuilder.path("/admin/{id}").buildAndExpand(created.getId()).toUri());
@@ -84,9 +92,8 @@ public class ImcAdminUserController {
     // 관리자 수정
     @Secured("ROLE_MANAGE")
     @PutMapping("/admin/{id}")
-    public ResponseEntity<WebAdminUser> modifyWebAdminUser(@RequestBody WebAdminUser webAdminUser, @PathVariable Long id) throws Exception {
-        WebAdminUser updated = imcUserDetailsService.updateWebAdminUser(webAdminUser, id);
-        updated.setPassword("");
+    public ResponseEntity<WebAdminUserDto> modifyWebAdminUser(@RequestBody WebAdminUserDto webAdminUser, @PathVariable Long id) throws Exception {
+        WebAdminUserDto updated = imcUserDetailsService.updateWebAdminUser(webAdminUser, id);
 
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

@@ -95,6 +95,7 @@ export default {
   },
 
   created() {
+    axios.post('/')
   },
 
   methods: {

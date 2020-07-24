@@ -1,10 +1,10 @@
-package com.humuson.imc.admin.domain.convertor;
+package com.humuson.imc.admin.web.domain.convertor;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter
-public class BooleanTFYNConverter implements AttributeConverter<Boolean, String> {
+public class BooleanYNConverter implements AttributeConverter<Boolean, String> {
 
     @Override
     public String convertToDatabaseColumn(Boolean attribute) {

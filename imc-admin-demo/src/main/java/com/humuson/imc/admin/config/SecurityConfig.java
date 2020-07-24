@@ -1,14 +1,14 @@
 package com.humuson.imc.admin.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.humuson.imc.admin.security.ImcInvalidSessionStrategy;
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.security.ImcUserDetailsService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import com.humuson.imc.admin.security.ImcInvalidSessionStrategy;
 import com.humuson.imc.admin.security.handler.LoginFailureHandler;
 import com.humuson.imc.admin.security.handler.LoginSuccessHandler;
 import com.humuson.imc.admin.security.handler.LogoutSuccessHandlerImpl;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -85,7 +85,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.logout()
             .logoutUrl(config.getSecurity().getLogoutUrl()).permitAll()
-//                .deleteCookies("IMC-SESSION-ID")
             .deleteCookies("JSESSIONID")
             .invalidateHttpSession(true)
             .logoutSuccessHandler(logoutSuccessHandler)
@@ -97,7 +96,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .maximumSessions(1)
             .maxSessionsPreventsLogin(false)
             .expiredUrl(config.getSecurity().getDefaultViewUrl())
-            .and().invalidSessionUrl(config.getSecurity().getDefaultViewUrl());
+            .and().invalidSessionUrl(config.getSecurity().getDefaultViewUrl())
+            ;
     }
 
     @Bean

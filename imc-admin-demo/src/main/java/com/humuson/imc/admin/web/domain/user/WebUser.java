@@ -1,16 +1,17 @@
-package com.humuson.imc.admin.domain;
+package com.humuson.imc.admin.web.domain.user;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
-import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
 @Entity
 @Table(name = "TB_WEB_USER", indexes = {
-        @Index(name = "idx_web_user_01", columnList = "USER_LOGIN", unique = true),
-        @Index(name = "idx_web_user_02", columnList = "COMPANY"),
-        @Index(name = "idx_web_user_03", columnList = "AUTH_ID")})
+    @Index(name = "idx_web_user_01", columnList = "USER_LOGIN", unique = true),
+    @Index(name = "idx_web_user_02", columnList = "COMPANY"),
+    @Index(name = "idx_web_user_03", columnList = "AUTH_ID")}
+)
 public class WebUser extends BaseTimeEntity {
 
     @Id

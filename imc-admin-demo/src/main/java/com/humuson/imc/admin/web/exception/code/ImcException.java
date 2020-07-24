@@ -13,8 +13,10 @@ public enum ImcException {
     
     // ADMIN USER 관련된 에러는 700 번대
     , USER_INVALID_SESSION (700, "INVALID SESSION")
-    , USER_LOGIN_FAIL (701, "BAD CREDENTIALS")
+    , USER_EXPIRED_SESSION (701, "EXPIRED SESSION")
+    , USER_LOGIN_FAIL (702, "BAD CREDENTIALS")
     , USER_IS_NOT_LOGIN (707, "IS NOT LOGIN")
+
     
     // 나머지는 개발하면서 추가
     ;

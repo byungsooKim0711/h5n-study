@@ -1,13 +1,16 @@
-package com.humuson.imc.admin.domain;
+package com.humuson.imc.admin.web.domain.user;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
-import com.humuson.imc.admin.domain.code.ImcAuthLevel;
-import lombok.Data;
+import com.humuson.imc.admin.web.domain.code.ImcAuthLevel;
+import com.humuson.imc.admin.web.domain.convertor.BooleanYNConverter;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "TB_WEB_USER_AUTHOR")
 public class WebUserAuthor extends BaseTimeEntity {
@@ -25,19 +28,23 @@ public class WebUserAuthor extends BaseTimeEntity {
     @Column(name = "AUTH_NAME", nullable = false, length = 20)
     private String authName;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "AUTH_BILL", nullable = false, length = 1)
     @ColumnDefault(value = "'N'")
-    private String authBill = "N";
+    private boolean authBill = false;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "AUTH_OPERATION", nullable = false, length = 1)
     @ColumnDefault(value = "'N'")
-    private String authOperation = "N";
+    private boolean authOperation = false;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "AUTH_USER", nullable = false, length = 1)
     @ColumnDefault(value = "'N'")
-    private String authUser = "N";
+    private boolean authUser = false;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "AUTH_MANAGE", nullable = false, length = 1)
     @ColumnDefault(value = "'N'")
-    private String authManage = "N";
+    private boolean authManage = false;
 }

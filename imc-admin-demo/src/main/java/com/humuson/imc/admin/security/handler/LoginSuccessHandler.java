@@ -1,10 +1,12 @@
 package com.humuson.imc.admin.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.humuson.imc.admin.domain.WebAdminUser;
 import com.humuson.imc.admin.security.ImcUserDetails;
-import com.humuson.imc.admin.security.ImcUserDetailsService;
-import com.humuson.imc.admin.web.dto.ImcLoginUserDto;
+import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
+import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUserRepository;
+import com.humuson.imc.admin.web.dto.ImcLoginUser;
+import com.humuson.imc.admin.web.dto.converter.ImcLoginUserConverter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -17,8 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@Component
+@RequiredArgsConstructor
 @Slf4j
+@Component
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements RemoteIpHandler {
 
     private static final String REQUEST_PARAM_NAME = "remember_username";
@@ -26,12 +29,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     private static final int DEFAULT_MAX_AGE = 60 * 60 * 24 * 7;
 
     private final ObjectMapper mapper;
-    private final ImcUserDetailsService imcUserDetailsService;
-
-    public LoginSuccessHandler(ObjectMapper mapper, ImcUserDetailsService imcUserDetailsService) {
-        this.mapper = mapper;
-        this.imcUserDetailsService = imcUserDetailsService;
-    }
+    private final WebAdminUserRepository adminUserRepository;
+    private final ImcLoginUserConverter loginUserConverter;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -70,29 +69,17 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
             // Set login failure count to zero.
             try {
-                user.getUser().setFailCount(0);
-                imcUserDetailsService.updateWebAdminUser(successUser, successUser.getId());
+                successUser.initializeFailCount();
+                adminUserRepository.save(successUser);
             } catch (Exception exception) {
                 log.warn("Login failed count update error. username: {}, cause: {}", successUser.getUserLogin(), exception.getMessage());
             }
 
-            // 비밀번호 수정 필요시 Redirect
-//            ImcUserDetails adminUser = (ImcUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            if("Y".equals(adminUser.getDefaultPassYn())) {
-//                response.sendRedirect(request.getContextPath() + "/myInfo/admin?type=d");
-//            } else if("Y".equals(adminUser.getModifyDiffYn())) {
-//                response.sendRedirect(request.getContextPath() + "/myInfo/admin?type=m");
-//            } else {
-//            response.sendRedirect(request.getContextPath() + "/dashboard");
-//            }
-
             log.info("Login Success. remote-ip: {}, username: {}, granted-authorities: {}", remoteIp, user.getUsername(), user.getAuthorities());
 
             response.setCharacterEncoding("UTF-8");
-            ImcLoginUserDto loginUser = new ImcLoginUserDto().convertDto(user);
+            ImcLoginUser loginUser = loginUserConverter.toDto(user);
             response.getWriter().write(mapper.writeValueAsString(loginUser));
         }
-
-//        httpServletResponse.getWriter().write(authentication.);
     }
 }

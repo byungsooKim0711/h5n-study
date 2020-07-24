@@ -1,10 +1,12 @@
 package com.humuson.imc.admin.security;
 
-import com.humuson.imc.admin.domain.WebAdminUser;
-import com.humuson.imc.admin.domain.WebAdminUserRepository;
-import com.humuson.imc.admin.domain.WebUserAuthor;
+import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
+import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUserRepository;
+import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
+import com.humuson.imc.admin.web.dto.WebAdminUserDto;
+import com.humuson.imc.admin.web.dto.converter.WebAdminUserConverter;
 import lombok.RequiredArgsConstructor;
-import com.humuson.imc.admin.domain.WebUserAuthorRepository;
+import com.humuson.imc.admin.web.domain.admin.repository.WebUserAuthorRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,18 +27,21 @@ public class ImcUserDetailsService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<WebAdminUser> user = adminUserRepository.findByUserLogin(s);
+    private final WebAdminUserConverter adminUserConverter;
 
-        user.orElseThrow(() -> new UsernameNotFoundException("User not exist with name: " + s));
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<WebAdminUser> user = adminUserRepository.findByUserLogin(username);
+
+        user.orElseThrow(() -> new UsernameNotFoundException("User not exist with name: " + username));
 
         return user.map(ImcUserDetails::new).get();
     }
 
-    public List<WebAdminUser> selectAllWebAdminUser() {
+    public List<WebAdminUserDto> selectAllWebAdminUser() {
         List<WebAdminUser> adminList = adminUserRepository.findAll();
-        return adminList;
+
+        return adminUserConverter.toDto(adminList);
     }
 
     public List<WebUserAuthor> selectAllWebUserAuthor() {
@@ -45,49 +50,35 @@ public class ImcUserDetailsService implements UserDetailsService {
         return authorList;
     }
 
-    // 권한(1, 2, 3), 아이디, 카카오 아이디, 이름, 전화번호, 이메일 입력
-    /*  Json Format
-        {
-            "userLogin": "test",
-            "password": "test",
-            "kakaoBizCenterId": "test@test.test",
-            "infoCp": "test",
-            "infoEm": "test@test.test",
-            "infoNa": "test",
-            "webUserAuthor": {
-                "id": 2
-            }
-        }
-    */
-    public WebAdminUser insertWebAdminUser(WebAdminUser webAdminUser) throws Exception {
-        webAdminUser.setPassword(passwordEncoder.encode(webAdminUser.getUserLogin() + "!@#$"));
+    public WebAdminUserDto insertWebAdminUser(WebAdminUserDto dto) throws Exception {
+        WebAdminUser created = WebAdminUser.builder()
+            .kakaoBizCenterId(dto.getKakaoBizCenterId())
+            .infoNa(dto.getInfoNa())
+            .infoEm(dto.getInfoEm())
+            .infoCp(dto.getInfoCp())
+            .userLogin(dto.getUserLogin())
+            .password(passwordEncoder.encode(dto.getUserLogin() + "!@#$"))
+            .build();
 
-        int authId = webAdminUser.getWebUserAuthor().getId();
+        int authId = dto.getAuthId();
         Optional<WebUserAuthor> author = webUserAuthorRepository.findById(authId);
 
-        webAdminUser.setWebUserAuthor(author.orElseThrow(() -> new Exception("Unknown authority id: " + authId)));
+        created.setWebUserAuthor(author.orElseThrow(() -> new Exception("Unknown authority id: " + authId)));
 
-        return adminUserRepository.save(webAdminUser);
+        return adminUserConverter.toDto(adminUserRepository.save(created));
     }
 
+    public WebAdminUserDto updateWebAdminUser(WebAdminUserDto dto, Long id) throws Exception {
+        WebAdminUser updated = adminUserRepository.findById(id).orElseThrow(() -> new Exception("Unknown admin user id: " + id));
+        WebUserAuthor author = webUserAuthorRepository.findById(dto.getAuthId()).orElseGet(updated::getWebUserAuthor);
 
-    /*  Json Format
-        {
-            "userLogin": "test",
-            "password": "test",
-            "kakaoBizCenterId": "test@test.test",
-            "infoCp": "test",
-            "activeYn": "Y",
-            "infoEm": "test@test.test",
-            "infoNa": "test",
-            "webUserAuthor": {
-                "id": 3 // 권한 변경
-            }
+        updated.setWebUserAuthor(author);
+        if (dto.isActiveYn()) {
+            updated.enableUser();
+        } else if (!dto.isActiveYn()) {
+            updated.disableUser();
         }
-    */
-    public WebAdminUser updateWebAdminUser(WebAdminUser webAdminUser, Long id) throws Exception {
-        long l = adminUserRepository.updateWebAdminUser(webAdminUser, id);
 
-        return adminUserRepository.findById(id).orElseThrow(() -> new Exception("Unknown admin user id: " + id));
+        return adminUserConverter.toDto(updated);
     }
 }

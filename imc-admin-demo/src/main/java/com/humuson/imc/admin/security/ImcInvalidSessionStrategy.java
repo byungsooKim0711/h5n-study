@@ -2,6 +2,8 @@ package com.humuson.imc.admin.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.humuson.imc.admin.web.exception.code.ImcException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 
 import javax.servlet.ServletException;
@@ -12,7 +14,7 @@ import java.time.LocalDateTime;
 
 public class ImcInvalidSessionStrategy implements InvalidSessionStrategy {
 
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     public ImcInvalidSessionStrategy(ObjectMapper mapper) {
         this.mapper = mapper;
@@ -25,6 +27,7 @@ public class ImcInvalidSessionStrategy implements InvalidSessionStrategy {
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.getWriter().write(mapper.writeValueAsString(exceptionObject));
         response.sendRedirect("/");
 //        response.sendRedirect("/#/");

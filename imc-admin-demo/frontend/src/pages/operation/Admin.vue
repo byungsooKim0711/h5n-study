@@ -44,9 +44,9 @@
                   <v-row>
                     <v-col cols="6" sm="6" md="4">
                       <v-select
-                        v-model="editedItem.webUserAuthor"
-                        :items="webUserAuthor"
-                        :hint="`${editedItem.webUserAuthor.id} ${editedItem.webUserAuthor.authLevel} ${editedItem.webUserAuthor.authName}`"
+                        v-model="selectAuthor"
+                        :items="webUserAuthors"
+                        :hint="`${editedItem.authId} ${editedItem.authLevel} ${editedItem.authName}`"
                         item-text="id"
                         item-value="authLevel"
                         label="어드민 권한"
@@ -112,12 +112,12 @@ export default {
     adminList: [],
 
     // 권한 리스트
-    webUserAuthor: [],
+    webUserAuthors: [],
 
     // 테이블 헤더
     headers: [
       { text: '순번', align: 'start', sortable: false, value: 'index' },
-      { text: '권한 레벨', value: 'webUserAuthor.authName' },
+      { text: '권한 레벨', value: 'authName' },
       { text: '아이디', value: 'userLogin' },
       { text: '카카오 ID', value: 'kakaoBizCenterId' },
       { text: '사용여부', value: 'activeYn' },
@@ -133,9 +133,12 @@ export default {
     // 수정인지, 추가인지
     editedIndex: -1,
     editedItem: {
-      "webUserAuthor": {
+      // 권한 정보
+      "authId": "",
+      "authLevel": "",
+      "authName": "",
 
-      },
+      // 유저 정보
       "userLogin": "",
       "kakaoBizCenterId": "",
       "infoNa": "",
@@ -143,15 +146,20 @@ export default {
       "infoEm": ""
     },
     defaultItem: {
-      "webUserAuthor": {
-
-      },
+      // 권한 정보
+      "authId": "",
+      "authLevel": "",
+      "authName": "",
+      
+      // 유저 정보
       "userLogin": "",
       "kakaoBizCenterId": "",
       "infoNa": "",
       "infoCp": "",
       "infoEm": ""
     },
+
+    selectAuthor: {}
   }),
 
   computed: {
@@ -170,10 +178,12 @@ export default {
 
   filters: {
     activeYnFilter(x) {
-      if (x === "Y") {
+      if (x === true) {
         return "사용";
-      } else {
+      } else if (x === false) {
         return "미사용";
+      } else {
+        return x;
       }
     }
   },
@@ -182,6 +192,11 @@ export default {
     dialog (val) {
       val || this.close()
     },
+    selectAuthor (author) {
+      this.editedItem.authId = author.id;
+      this.editedItem.authName = author.authName;
+      this.editedItem.authLevel = author.authLevel;
+    }
   },
 
   mounted () {
@@ -198,14 +213,14 @@ export default {
 
     deleteItem (item) {
       let admin = this.adminList[this.adminList.findIndex(a => a.id === item.id)];
-      if (admin.activeYn === "Y") {
+      if (admin.activeYn === true) {
         if (confirm('관리자를 미사용처리 하시겠습니까?')) {
-          admin.activeYn = "N";
+          admin.activeYn = false;
           this.updateAdminUserActiveYn(admin);
         }
       } else {
         if (confirm('관리자를 사용처리 하시겠습니까?')) {
-          admin.activeYn = "Y";
+          admin.activeYn = true;
           this.updateAdminUserActiveYn(admin);
         }
       }
@@ -216,6 +231,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.selectAuthor = {};
       })
     },
 
@@ -233,7 +249,6 @@ export default {
       } else {
         axios.post('/admin', this.editedItem, {})
           .then(response => {
-            console.log(response);
             this.adminList.push(response.data);
           })
           .catch(error => {
@@ -249,7 +264,7 @@ export default {
 
       })
       .then(response => {
-        this.webUserAuthor = response.data;
+        this.webUserAuthors = response.data;
       })
       .catch(error => {
         console.log(error);

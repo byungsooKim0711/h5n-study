@@ -1,7 +1,7 @@
 package com.humuson.imc.admin.web.user;
 
-import com.humuson.imc.admin.domain.ApiInfoRepository;
-import com.humuson.imc.admin.domain.ApiInfo;
+import com.humuson.imc.admin.web.domain.user.ApiInfoRepository;
+import com.humuson.imc.admin.web.domain.user.ApiInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

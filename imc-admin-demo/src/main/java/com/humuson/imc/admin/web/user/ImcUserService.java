@@ -1,7 +1,7 @@
 package com.humuson.imc.admin.web.user;
 
-import com.humuson.imc.admin.domain.WebUser;
-import com.humuson.imc.admin.domain.WebUserRepository;
+import com.humuson.imc.admin.web.domain.user.WebUser;
+import com.humuson.imc.admin.web.domain.user.WebUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.humuson.imc.admin.web.user;
 
 import lombok.RequiredArgsConstructor;
-import com.humuson.imc.admin.domain.WebUser;
+import com.humuson.imc.admin.web.domain.user.WebUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

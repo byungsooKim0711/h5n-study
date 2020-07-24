@@ -1,16 +1,17 @@
 package com.humuson.imc.admin.security;
 
 import com.google.common.collect.Sets;
-import com.humuson.imc.admin.domain.WebAdminUser;
-import com.humuson.imc.admin.domain.WebUserAuthor;
-import com.humuson.imc.admin.domain.code.ImcGrantedAuthority;
+import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
+import com.humuson.imc.admin.web.domain.code.ImcGrantedAuthority;
+import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,19 +35,19 @@ public class ImcUserDetails implements UserDetails {
 
         WebUserAuthor author = user.getWebUserAuthor();
 
-        if ("Y".equals(author.getAuthBill())) {
+        if (author.isAuthBill()) {
             authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.BILL.getRole()));
         }
 
-        if ("Y".equals(author.getAuthManage())) {
+        if (author.isAuthManage()) {
             authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.MANAGE.getRole()));
         }
 
-        if ("Y".equals(author.getAuthOperation())) {
+        if (author.isAuthOperation()) {
             authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.OPERATION.getRole()));
         }
 
-        if ("Y".equals(author.getAuthUser())) {
+        if (author.isAuthUser()) {
             authList.add(new SimpleGrantedAuthority(ImcGrantedAuthority.USER.getRole()));
         }
 
@@ -80,6 +81,6 @@ public class ImcUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return "Y".equals(user.getActiveYn()) && user.getFailCount() < 5;
+        return user.isActiveYn() && user.getFailCount() < 5;
     }
 }

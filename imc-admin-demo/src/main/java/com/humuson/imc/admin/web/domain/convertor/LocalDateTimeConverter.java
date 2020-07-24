@@ -1,4 +1,4 @@
-package com.humuson.imc.admin.domain.convertor;
+package com.humuson.imc.admin.web.domain.convertor;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
