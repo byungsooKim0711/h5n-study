@@ -10,26 +10,26 @@ public interface RemoteIpHandler {
 
         String remoteIp = request.getHeader("X-Forwarded-For");
 
-        if (checkRemoteIp(remoteIp)) {
+        if (retryCheckRemoteIp(remoteIp)) {
             remoteIp = request.getHeader("Proxy-Client-IP");
         }
-        if (checkRemoteIp(remoteIp)) {
+        if (retryCheckRemoteIp(remoteIp)) {
             remoteIp = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (checkRemoteIp(remoteIp)) {
+        if (retryCheckRemoteIp(remoteIp)) {
             remoteIp = request.getHeader("HTTP_CLIENT_IP");
         }
-        if (checkRemoteIp(remoteIp)) {
+        if (retryCheckRemoteIp(remoteIp)) {
             remoteIp = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
-        if (checkRemoteIp(remoteIp)) {
+        if (retryCheckRemoteIp(remoteIp)) {
             remoteIp = request.getRemoteAddr();
         }
 
         return remoteIp;
     }
 
-    default boolean checkRemoteIp(String remoteIp) {
+    default boolean retryCheckRemoteIp(String remoteIp) {
         return StringUtils.isEmpty(remoteIp) || "unknown".equalsIgnoreCase(remoteIp);
     }
 }

@@ -1,13 +1,12 @@
 package com.humuson.imc.admin.web.domain.admin.controller;
 
-import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
-import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
-import com.humuson.imc.admin.web.domain.code.ImcGrantedAuthority;
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.security.ImcUserDetailsService;
+import com.humuson.imc.admin.web.domain.code.ImcGrantedAuthority;
+import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
 import com.humuson.imc.admin.web.dto.ImcLoginUser;
-import com.humuson.imc.admin.web.dto.converter.ImcLoginUserConverter;
 import com.humuson.imc.admin.web.dto.WebAdminUserDto;
+import com.humuson.imc.admin.web.dto.converter.ImcLoginUserConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -48,8 +47,8 @@ public class ImcAdminUserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority(ImcGrantedAuthority.USER.getRole()))) {
-            log.info("Login check fail. Not includes granted-authority: {}", authentication.getAuthorities());
+        if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority(ImcGrantedAuthority.DASHBOARD.getRole()))) {
+//            log.info("Login check fail. Not includes granted-authority: {}", authentication.getAuthorities());
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 

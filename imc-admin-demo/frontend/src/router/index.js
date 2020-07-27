@@ -66,7 +66,7 @@ const router = new VueRouter({
       path: '/dashboard',
       name: 'Dashboard',
       component: () => import('@/pages/Dashboard'),
-      beforeEnter: checkAuth("ROLE_USER")
+      beforeEnter: checkAuth("ROLE_DASHBOARD")
     },
     {
       path: '/user/list',

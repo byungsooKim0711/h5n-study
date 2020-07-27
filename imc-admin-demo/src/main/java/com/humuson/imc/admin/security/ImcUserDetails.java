@@ -5,6 +5,7 @@ import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
 import com.humuson.imc.admin.web.domain.code.ImcGrantedAuthority;
 import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,14 +16,13 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ImcUserDetails implements UserDetails {
 
     private WebAdminUser user;
 
     public ImcUserDetails(WebAdminUser user) {
         this.user = user;
-    }
-    public ImcUserDetails() {
     }
 
     @Override

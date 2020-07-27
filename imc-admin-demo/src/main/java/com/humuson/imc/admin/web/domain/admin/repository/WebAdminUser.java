@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -67,7 +68,7 @@ public class WebAdminUser extends BaseTimeEntity {
     private String authority;
 
     @Builder
-    public WebAdminUser(String userLogin, String password, String kakaoBizCenterId, String infoNa, String infoCp, String infoEm) throws IllegalArgumentException {
+    public WebAdminUser(String userLogin, String password, String kakaoBizCenterId, String infoNa, String infoCp, String infoEm) throws InvalidParameterException {
         if (StringUtils.isEmpty(userLogin) || StringUtils.isEmpty(password)) {
             throw new InvalidParameterException();
         }
@@ -90,8 +91,12 @@ public class WebAdminUser extends BaseTimeEntity {
         this.failCount = 0;
     }
 
-    public void changePassword(String oldPassword, String newPassword) {
-        // TODO:
+    public boolean changePassword(PasswordEncoder passwordEncoder, String newPassword) {
+        if (!passwordEncoder.matches(newPassword, this.password)) {
+            return false;
+        }
+        this.password = passwordEncoder.encode(newPassword);
+        return true;
     }
 
     public void enableUser() {

@@ -11,6 +11,9 @@ public enum ImcGrantedAuthority {
     MANAGE,
     OPERATION,
     USER,
+
+    @Deprecated
+    ANONYMOUS,
     ;
 
     private static final String PREFIX = "ROLE_";
