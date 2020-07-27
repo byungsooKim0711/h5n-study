@@ -71,7 +71,7 @@ public class ImcUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.getFailCount() < 5;
     }
 
     @Override
@@ -81,6 +81,6 @@ public class ImcUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.isActiveYn() && user.getFailCount() < 5;
+        return user.isActiveYn();
     }
 }

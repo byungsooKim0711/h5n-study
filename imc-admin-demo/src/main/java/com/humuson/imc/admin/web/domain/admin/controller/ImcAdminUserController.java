@@ -2,7 +2,6 @@ package com.humuson.imc.admin.web.domain.admin.controller;
 
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.security.ImcUserDetailsService;
-import com.humuson.imc.admin.web.domain.code.ImcGrantedAuthority;
 import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
 import com.humuson.imc.admin.web.dto.ImcLoginUser;
 import com.humuson.imc.admin.web.dto.WebAdminUserDto;
@@ -13,14 +12,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -35,25 +30,16 @@ public class ImcAdminUserController {
 
     private final ImcUserDetailsService imcUserDetailsService;
 
+    private final ImcLoginUserConverter loginUserConverter;
+
     // 로그인 유저인지 세션 체크
     @GetMapping("/login/check")
-    public ResponseEntity<ImcLoginUser> checkLoginSession(HttpServletRequest request) throws Exception {
-        HttpSession session = request.getSession(false);
-
-        if (session == null) {
-//            log.info("Login check Fail. Session is null");
+    public ResponseEntity<ImcLoginUser> checkLoginSession(@AuthenticationPrincipal ImcUserDetails principal) throws Exception {
+        if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority(ImcGrantedAuthority.DASHBOARD.getRole()))) {
-//            log.info("Login check fail. Not includes granted-authority: {}", authentication.getAuthorities());
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        ImcUserDetails details = (ImcUserDetails) authentication.getPrincipal();
-        ImcLoginUser loginUser = new ImcLoginUserConverter().toDto(details);
+        ImcLoginUser loginUser = loginUserConverter.toDto(principal);
 
         log.info("Login check success. username: {}, granted-authorities: {}", loginUser.getUser().getUserLogin(), loginUser.getAuthorities());
         return new ResponseEntity<>(loginUser, HttpStatus.OK);

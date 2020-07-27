@@ -67,13 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.authorizeRequests()
+        http.authorizeRequests(request -> request
             .antMatchers(config.getSecurity().getPermitAllUrl()).permitAll()
-//                .antMatchers(config.getSecurity().getRoleManageUrl()).hasRole(ImcGrantedAuthority.MANAGE.name())
+//            .antMatchers(config.getSecurity().getRoleManageUrl()).hasRole(ImcGrantedAuthority.MANAGE.name())
             .anyRequest().authenticated()
-            ;
+        );
 
-        http.formLogin()
+        http.formLogin(login -> login
             .usernameParameter("username")
             .passwordParameter("password")
             .loginPage(config.getSecurity().getDefaultViewUrl())
@@ -81,23 +81,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .successHandler(loginSuccessHandler)
             .failureHandler(loginFailureHandler)
             .permitAll()
-            ;
+        );
 
-        http.logout()
+        http.logout(logout -> logout
             .logoutUrl(config.getSecurity().getLogoutUrl()).permitAll()
             .deleteCookies("JSESSIONID")
             .invalidateHttpSession(true)
             .logoutSuccessHandler(logoutSuccessHandler)
-            ;
+        );
 
-        http.sessionManagement()
+        http.sessionManagement(session -> session
             .invalidSessionStrategy(new ImcInvalidSessionStrategy(mapper))
             .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
             .maximumSessions(1)
-            .maxSessionsPreventsLogin(false)
+            .maxSessionsPreventsLogin(true)
             .expiredUrl(config.getSecurity().getDefaultViewUrl())
-            .and().invalidSessionUrl(config.getSecurity().getDefaultViewUrl())
-            ;
+            .and()
+            .invalidSessionUrl(config.getSecurity().getDefaultViewUrl())
+        );
     }
 
     @Bean
