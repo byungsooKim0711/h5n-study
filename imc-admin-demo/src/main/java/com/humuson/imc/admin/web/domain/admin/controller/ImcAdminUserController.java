@@ -2,6 +2,7 @@ package com.humuson.imc.admin.web.domain.admin.controller;
 
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.security.ImcUserDetailsService;
+import com.humuson.imc.admin.web.domain.admin.dto.PasswordChangeRequest;
 import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
 import com.humuson.imc.admin.web.dto.ImcLoginUser;
 import com.humuson.imc.admin.web.dto.WebAdminUserDto;
@@ -47,10 +48,27 @@ public class ImcAdminUserController {
 
     // 내 정보 수정
     @Secured("ROLE_USER")
+    @PutMapping("/myinfo/{id}")
+    public ResponseEntity<WebAdminUserDto> modifyMyInfo(@RequestBody WebAdminUserDto dto, @PathVariable long id) throws Exception {
+        WebAdminUserDto updated = imcUserDetailsService.updateWebAdminUser(dto, id);
+
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+
+    // 비밀번호 변경
+    @Secured("ROLE_USER")
     @PostMapping("/myinfo/{id}")
-    public ResponseEntity<?> modifyMyInfo(@RequestBody WebAdminUserDto dto, @PathVariable long id) throws Exception {
-        // TODO:
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<WebAdminUserDto> modifyMyInfoPassword(@RequestBody PasswordChangeRequest request, @PathVariable long id) throws Exception {
+        return null;
+    }
+
+    // 내 정보 조회
+    @Secured("ROLE_USER")
+    @GetMapping("/myinfo/{id}")
+    public ResponseEntity<WebAdminUserDto> myInfo(@PathVariable long id) throws Exception {
+        WebAdminUserDto myInfo = imcUserDetailsService.selectWebAdminUserById(id);
+
+        return new ResponseEntity<>(myInfo, HttpStatus.OK);
     }
 
     // 관리자 목록 조회

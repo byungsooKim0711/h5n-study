@@ -56,19 +56,19 @@
                       ></v-select>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.userLogin" label="아이디" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.userLogin" label="아이디" counter="45" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.kakaoBizCenterId" label="카카오아이디" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.kakaoBizCenterId" label="카카오아이디" counter="128" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.infoNa" label="이름" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.infoNa" label="이름" counter="45" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.infoCp" label="전화번호" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.infoCp" label="전화번호" counter="45" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.infoEm" label="이메일" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.infoEm" label="이메일" counter="45" :disabled="editedIndex !== -1"></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>

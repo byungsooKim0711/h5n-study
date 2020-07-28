@@ -45,6 +45,12 @@ public class ImcUserDetailsService implements UserDetailsService {
         return adminUserConverter.toDto(adminList);
     }
 
+    public WebAdminUserDto selectWebAdminUserById(long id) throws Exception {
+        WebAdminUser myInfo = adminUserRepository.findById(id).orElseThrow(() -> new Exception("Unknown admin user id: " + id));
+
+        return adminUserConverter.toDto(myInfo);
+    }
+
     public List<WebUserAuthor> selectAllWebUserAuthor() {
         List<WebUserAuthor> authorList = webUserAuthorRepository.findAll();
 
@@ -74,6 +80,8 @@ public class ImcUserDetailsService implements UserDetailsService {
     public WebAdminUserDto updateWebAdminUser(WebAdminUserDto dto, Long id) throws Exception {
         WebAdminUser updated = adminUserRepository.findById(id).orElseThrow(() -> new Exception("Unknown admin user id: " + id));
         WebUserAuthor author = webUserAuthorRepository.findById(dto.getAuthId()).orElseGet(updated::getWebUserAuthor);
+
+        updated.updateBasicInfo(dto.getKakaoBizCenterId(), dto.getInfoNa(), dto.getInfoCp(), dto.getInfoEm());
 
         updated.setWebUserAuthor(author);
         if (dto.isActiveYn()) {

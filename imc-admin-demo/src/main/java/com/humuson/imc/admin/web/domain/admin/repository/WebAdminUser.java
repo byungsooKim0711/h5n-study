@@ -81,6 +81,13 @@ public class WebAdminUser extends BaseTimeEntity {
         this.infoEm = infoEm;
     }
 
+    public void updateBasicInfo(String kakaoBizCenterId, String infoNa, String infoCp, String infoEm) {
+        this.kakaoBizCenterId = kakaoBizCenterId;
+        this.infoNa = infoNa;
+        this.infoCp = infoCp;
+        this.infoEm = infoEm;
+    }
+
     public void addFailCount() {
         if (this.failCount < Integer.MAX_VALUE) {
             this.failCount++;
