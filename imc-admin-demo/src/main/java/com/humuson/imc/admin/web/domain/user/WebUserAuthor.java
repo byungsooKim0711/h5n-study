@@ -11,8 +11,8 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity
 @Table(name = "TB_WEB_USER_AUTHOR")
+@Entity
 public class WebUserAuthor extends BaseTimeEntity {
 
     @Id

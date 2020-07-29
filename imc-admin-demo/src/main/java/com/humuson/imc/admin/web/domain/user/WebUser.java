@@ -1,17 +1,18 @@
 package com.humuson.imc.admin.web.domain.user;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
+import com.humuson.imc.admin.web.domain.convertor.BooleanYNConverter;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Getter
-@Entity
 @Table(name = "TB_WEB_USER", indexes = {
     @Index(name = "idx_web_user_01", columnList = "USER_LOGIN", unique = true),
     @Index(name = "idx_web_user_02", columnList = "COMPANY"),
     @Index(name = "idx_web_user_03", columnList = "AUTH_ID")}
 )
+@Entity
 public class WebUser extends BaseTimeEntity {
 
     @Id
@@ -42,8 +43,9 @@ public class WebUser extends BaseTimeEntity {
     @Column(name = "AUTH_ID", nullable = false)
     private long authId;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "ACTIVE_YN", columnDefinition = "VARCHAR(1) DEFAULT 'Y'", nullable = false)
-    private String activeYn = "Y";
+    private boolean activeYn = true;
 
     @Column(name = "CONTRACT_AT", nullable = false, length = 8)
     private String contractAt;
@@ -84,17 +86,21 @@ public class WebUser extends BaseTimeEntity {
     @Column(name = "PARENT_ID", nullable = false)
     private long parentId;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "USE_AT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
-    private String useAt = "N";
+    private boolean useAt = false;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "USE_FT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
-    private String useFt = "N";
+    private boolean useFt = false;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "USE_RMT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
-    private String useRmt = "N";
+    private boolean useRmt = false;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "USE_NMT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
-    private String useNmt = "N";
+    private boolean useNmt = false;
 
     @Column(name = "MONTHLY_BASE_FEE", columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0", nullable = false)
     private double monthlyBaseFee;
@@ -192,8 +198,9 @@ public class WebUser extends BaseTimeEntity {
     @Column(name = "PUBLICATION_DATE", length = 100)
     private String publicationDate;
 
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "MAJOR_YN", length = 1)
-    private String majorYn = "N";
+    private boolean majorYn = false;
 
     @Column(name = "REMARK", length = 256)
     private String remark;

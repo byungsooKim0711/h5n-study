@@ -11,8 +11,8 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity
 @Table(name = "TB_API_INFO")
+@Entity
 public class ApiInfo extends BaseTimeEntity {
 
     @Id
