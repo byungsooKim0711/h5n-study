@@ -11,7 +11,9 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @DynamicUpdate
-@Table(name = "TB_BIZ_SEND_STAT")
+@Table(name = "TB_BIZ_SEND_STAT", indexes = {
+    @Index(name = "idx_biz_send_stat_01", columnList = "SEND_DATE,PROFILE_NAME,SEND_TYPE")}
+)
 @Entity
 public class ImcBizSendStat extends BaseTimeEntity {
 

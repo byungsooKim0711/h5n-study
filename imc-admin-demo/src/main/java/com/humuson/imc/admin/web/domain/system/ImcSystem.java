@@ -12,7 +12,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @DynamicUpdate
-@Table(name = "TB_IMC_SYSTEM")
+@Table(name = "TB_IMC_SYSTEM", indexes = {
+    @Index(name = "idx_imc_system_01", columnList = "IMC_SYS_CODE")}
+)
 @Entity
 public class ImcSystem extends BaseTimeEntity {
 

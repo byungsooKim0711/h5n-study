@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.envers.AuditJoinTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 
@@ -17,9 +21,10 @@ import javax.persistence.*;
 
 
 @Getter
-@NoArgsConstructor
-@DynamicUpdate
 @ToString
+@NoArgsConstructor
+@Audited(targetAuditMode = RelationTargetAuditMode.AUDITED)
+@DynamicUpdate
 @Table(name = "TB_WEB_ADMIN_USER",
     uniqueConstraints = {
         @UniqueConstraint(name = "IDX_WEB_ADMIN_USER_01", columnNames = {"USER_LOGIN"})
@@ -33,6 +38,7 @@ public class WebAdminUser extends BaseTimeEntity {
     @Column(name = "ID")
     private Long id;
 
+    @AuditJoinTable
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "AUTH_ID", referencedColumnName = "ID")
     private WebUserAuthor webUserAuthor;
@@ -60,10 +66,12 @@ public class WebAdminUser extends BaseTimeEntity {
     @Column(name = "INFO_NA", length = 64)
     private String infoNa;
 
+    @NotAudited
     @Column(name = "FAIL_COUNT")
     @ColumnDefault("0")
     private int failCount = 0;
 
+    @NotAudited
     @Column(name = "AUTHORITY", length = 1)
     private String authority;
 

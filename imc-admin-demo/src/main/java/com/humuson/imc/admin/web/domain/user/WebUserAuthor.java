@@ -6,11 +6,14 @@ import com.humuson.imc.admin.web.domain.convertor.BooleanYNConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@Audited(targetAuditMode = RelationTargetAuditMode.AUDITED)
 @Table(name = "TB_WEB_USER_AUTHOR")
 @Entity
 public class WebUserAuthor extends BaseTimeEntity {

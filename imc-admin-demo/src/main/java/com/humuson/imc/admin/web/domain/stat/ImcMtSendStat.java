@@ -12,7 +12,9 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @DynamicUpdate
-@Table(name = "TB_MT_SEND_STAT")
+@Table(name = "TB_MT_SEND_STAT", indexes = {
+    @Index(name = "idx_mt_send_stat_01", columnList = "SEND_DATE,SEND_TYPE,RESEND_YN")}
+)
 @Entity
 public class ImcMtSendStat extends BaseTimeEntity {
 
@@ -44,9 +46,9 @@ public class ImcMtSendStat extends BaseTimeEntity {
     @Column(name = "RESULT_CODE", length = 4)
     private String resultCode;
 
-    @Column(name = "PRODUCT_TYPE", length = 1)
-    private String productType;
-
     @Column(name = "SEND_COUNT")
     private int sendCount;
+
+    @Column(name = "PARTNER_TYPE", length = 10)
+    private String partnerType;
 }

@@ -3,7 +3,9 @@ package com.humuson.imc.admin.config;
 import com.humuson.imc.admin.web.domain.convertor.LocalDateTimeConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -25,4 +27,10 @@ public abstract class BaseTimeEntity {
     @LastModifiedDate
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime modifiedAt;
+
+    @CreatedBy
+    private Long createBy;
+
+    @LastModifiedBy
+    private Long modifiedBy;
 }
