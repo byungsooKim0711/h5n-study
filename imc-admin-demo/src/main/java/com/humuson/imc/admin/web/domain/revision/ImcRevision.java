@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
-@RevisionEntity
+@RevisionEntity(ImcRevisionListener.class)
 @Entity
 @Table(name = "TB_IMC_REV_INFO")
 public class ImcRevision implements Serializable {
@@ -34,4 +34,11 @@ public class ImcRevision implements Serializable {
     @RevisionTimestamp
     @Column(name = "TIMESTAMP")
     private Long timestamp;
+
+    @Column(name = "MODIFIED_BY", length = 45)
+    private String modifiedBy;
+
+    public void setModifiedBy(String username) {
+        this.modifiedBy = username;
+    }
 }
