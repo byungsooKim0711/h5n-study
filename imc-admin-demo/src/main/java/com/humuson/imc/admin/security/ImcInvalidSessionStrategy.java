@@ -1,9 +1,8 @@
 package com.humuson.imc.admin.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.humuson.imc.admin.web.exception.code.ImcException;
+import com.humuson.imc.admin.web.common.code.ImcCommonCode;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 
 import javax.servlet.ServletException;
@@ -22,7 +21,7 @@ public class ImcInvalidSessionStrategy implements InvalidSessionStrategy {
 
     @Override
     public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        ImcException exception = ImcException.USER_INVALID_SESSION;
+        ImcCommonCode exception = ImcCommonCode.USER_INVALID_SESSION;
         Object exceptionObject = exception.toBody(LocalDateTime.now(), exception);
 
         response.setCharacterEncoding("UTF-8");

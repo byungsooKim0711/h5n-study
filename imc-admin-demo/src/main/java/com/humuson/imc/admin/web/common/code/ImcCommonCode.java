@@ -1,12 +1,11 @@
-package com.humuson.imc.admin.web.exception.code;
+package com.humuson.imc.admin.web.common.code;
 
+import com.humuson.imc.admin.web.common.ImcCommonResponse;
 import lombok.Getter;
-import com.humuson.imc.admin.web.exception.ImcErrorMessage;
-
 import java.time.LocalDateTime;
 
 @Getter
-public enum ImcException {
+public enum ImcCommonCode {
     
     // 서버 에러는 500 번대
       SERVER_ERROR (500, "INTERVAL SERVER ERROR")
@@ -21,24 +20,25 @@ public enum ImcException {
     // 나머지는 개발하면서 추가
     ;
 
-    // 에러 코드
+    // 코드
     private final int code;
-    // 에러 메시지
+
+    // 메시지
     private final String message;
 
-    ImcException(int code, String message) {
+    ImcCommonCode(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
     // 에러 내용을 공통 무언가로 convert
-    public ImcErrorMessage toBody(LocalDateTime timestamp, Object data) {
-        return ImcErrorMessage.builder()
+    public ImcCommonResponse toBody(LocalDateTime timestamp, Object data) {
+        return ImcCommonResponse.builder()
+                .timestamp(timestamp)
                 .status(code)
                 .message(message)
-                .timestamp(timestamp)
                 .data(data)
-                //.error()
+                .error(message)
                 .build();
     }
 }
