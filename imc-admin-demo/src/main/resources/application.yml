@@ -12,8 +12,6 @@ server:
       charset: UTF-8
     session:
       timeout: 60m
-#      cookie:
-#        name: 'IMC-SESSION-ID'
 
 spring:
   mvc:
@@ -69,6 +67,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: none
+#      use-new-id-generator-mappings: false
     generate-ddl: false
     properties:
       hibernate.format_sql: true
@@ -77,6 +76,14 @@ spring:
 #      hibernate.order_insert: true
 #      hibernate.order_update: true
 #      hibernate.enable_lazy_load_no_trans: true
+
+      # 설정 정보는 여기 링크 (https://docs.jboss.org/envers/docs/)
+      org:
+        hibernate:
+          envers:
+            audit_table_suffix: "_HISTORY"
+            revision_field_name: "REVISION_ID"
+            revision_type_field_name: "REVISION_TYPE"
   security:
     user:
       name: kimbs

@@ -1,5 +1,6 @@
 package com.humuson.imc.admin.web.domain.revision;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
+@AllArgsConstructor
 public enum ImcRevisionType {
 
     INSERT(0),
@@ -19,10 +21,6 @@ public enum ImcRevisionType {
     ;
 
     int code;
-
-    ImcRevisionType(int code) {
-        this.code = code;
-    }
 
     private static final Map<Integer, ImcRevisionType> typeMap = Arrays.stream(values()).collect(Collectors.toMap(ImcRevisionType::getCode, Function.identity()));
 
