@@ -5,7 +5,7 @@
     <v-row justify="center">
       <v-col cols="12" md="12">
         <v-card>
-          <v-form>
+          <v-form ref="form">
             <v-container class="py-0">
               <v-row>
                 <v-col cols="12" dense>
@@ -13,23 +13,46 @@
                 </v-col>
 
                 <v-col cols="12" dense>
-                  <v-text-field label="이름" v-model="myInfo.infoNa" counter="64" required/>
-                  <!-- <v-text-field label="이름" v-model="myInfo.infoNa" counter="64"
-                  :rules="[() => !!myInfo.infoNa && myInfo.infoNa.length <= 64]"
-                  /> -->
+                  <v-text-field label="이름" v-model="myInfo.infoNa" counter="64" required
+                    ref="infoNa"
+                    :rules="[
+                      () => !!myInfo.infoNa || 'This field is required.',
+                      () => !!myInfo.infoNa && myInfo.infoNa.length <= 64 || 'Name must be less than 64 characters.'
+                    ]"
+                  />
                 </v-col>
 
                 <v-col cols="12" dense>
-                  <v-text-field label="연락처" v-model="myInfo.infoCp" class="purple-input" counter="64" required/>
+                  <v-text-field label="연락처" v-model="myInfo.infoCp" class="purple-input" counter="64" required
+                    ref="infoCp"
+                    :rules="[
+                      () => !!myInfo.infoCp || 'This field is required.',
+                      () => !!myInfo.infoCp && myInfo.infoCp.length <= 64 || 'Phone number must be less than 64 characters.'
+                    ]"
+                  />
                 </v-col>
 
                 <v-col cols="12" dense>
-                  <v-text-field label="이메일" v-model="myInfo.infoEm" class="purple-input" counter="64" required/>
+                  <v-text-field label="이메일" v-model="myInfo.infoEm" class="purple-input" counter="64" required type="email"
+                    ref="infoEm"
+                    :rules="[
+                      () => !!myInfo.infoEm || 'This field is required.',
+                      () => validateEmailFormat(myInfo.infoEm) || 'Malformed email address',
+                      () => !!myInfo.infoEm && myInfo.infoEm.length <= 64 || 'Email must be less than 64 characters.'
+                    ]"
+                  />
                 </v-col>
 
                 <!-- <v-col cols="12" md="6"> -->
                 <v-col cols="12" dense>
-                  <v-text-field label="카카오 비즈센터 아이디" v-model="myInfo.kakaoBizCenterId" class="purple-input"  counter="128" required/>
+                  <v-text-field label="카카오 비즈센터 아이디" v-model="myInfo.kakaoBizCenterId" class="purple-input"  counter="128" required
+                    ref="kakaoBizCenterId"
+                    :rules="[
+                      () => !!myInfo.kakaoBizCenterId || 'This field is required.',
+                      () => validateEmailFormat(myInfo.kakaoBizCenterId) || 'Malformed email address',
+                      () => !!myInfo.kakaoBizCenterId && myInfo.kakaoBizCenterId.length <= 128 || 'Kakao biz center id must be less than 45 characters.'
+                    ]"
+                  />
                 </v-col>
 
                 <v-col cols="12" class="text-right">
@@ -91,7 +114,16 @@ export default {
   computed: {
     ...mapGetters({
       currentAccount: 'getCurrentAccount'
-    })
+    }),
+
+    form() {
+      return {
+        kakaoBizCenterId: this.myInfo.kakaoBizCenterId,
+        infoNa: this.myInfo.infoNa,
+        infoCp: this.myInfo.infoCp,
+        infoEm: this.myInfo.infoEm
+      }
+    }
   },
 
   mounted() {
@@ -104,7 +136,6 @@ export default {
 
       })
       .then(response => {
-        console.log(response);
         this.myInfo = response.data;
       })
       .catch(error => {
@@ -113,6 +144,19 @@ export default {
     },
 
     updateMyInfo() {
+      let isValid = true;
+
+      // Check Validation
+      Object.keys(this.form).forEach(f => {
+        isValid = (this.form[f] && this.$refs[f].valid) ? isValid : false;
+        this.$refs[f].validate(true);
+      })
+
+      if (!isValid) {
+        alert("필수항목 및 유효성검사를 확인하세요.");
+        return;
+      }
+
       axios.put("/myinfo/" + this.myInfo.id, this.myInfo, {
 
       })
@@ -126,6 +170,21 @@ export default {
 
     changePassword() {
 
+    },
+
+    // validate function
+    validateEmailFormat(email) {
+      // return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)
+      return /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,}$/.test(email)
+        ? true
+        : false;
+    },
+
+    // 패스워드는 공백 없이 영문, 숫자, 특수문자를 모두 포함하여 8자 이상 작성
+    validatePasswordFormat(password) {
+      return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/.test(password)
+        ? true
+        : false;
     }
   }
 }

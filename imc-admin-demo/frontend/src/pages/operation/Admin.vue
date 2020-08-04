@@ -24,7 +24,7 @@
             vertical
           ></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="800px">
+          <v-dialog v-model="dialog" max-width="800px" ref="form">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="primary"
@@ -46,7 +46,7 @@
                       <v-select
                         v-model="selectAuthor"
                         :items="webUserAuthors"
-                        :hint="`${editedItem.authId} ${editedItem.authLevel} ${editedItem.authName}`"
+                        :hint="`${editedItem.authId || ''} ${editedItem.authLevel || ''} ${editedItem.authName || ''}`"
                         item-text="id"
                         item-value="authLevel"
                         label="어드민 권한"
@@ -56,19 +56,51 @@
                       ></v-select>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.userLogin" label="아이디" counter="45" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.userLogin" label="아이디" counter="45" :disabled="editedIndex !== -1"
+                        ref="userLogin"
+                        :rules="[
+                          () => !!editedItem.userLogin || 'This field is required.',
+                          () => !!editedItem.userLogin && editedItem.userLogin.length <= 45 || 'Login id must be less than 45 characters.'
+                        ]"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.kakaoBizCenterId" label="카카오아이디" counter="128" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.kakaoBizCenterId" label="카카오아이디" counter="128" :disabled="editedIndex !== -1" type="email"
+                        ref="kakaoBizCenterId"
+                        :rules="[
+                          () => !!editedItem.kakaoBizCenterId || 'This field is required.',
+                          () => validateEmailFormat(editedItem.kakaoBizCenterId) || 'Malformed email address',
+                          () => !!editedItem.kakaoBizCenterId && editedItem.kakaoBizCenterId.length <= 128 || 'Kakao biz center id must be less than 128 characters.'
+                        ]"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.infoNa" label="이름" counter="45" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.infoNa" label="이름" counter="64" :disabled="editedIndex !== -1"
+                        ref="infoNa"
+                        :rules="[
+                          () => !!editedItem.infoNa || 'This field is required.',
+                          () => !!editedItem.infoNa && editedItem.infoNa.length <= 64 || 'Name must be less than 64 characters.'
+                        ]"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.infoCp" label="전화번호" counter="45" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.infoCp" label="전화번호" counter="64" :disabled="editedIndex !== -1"
+                        ref="infoCp"
+                        :rules="[
+                          () => !!editedItem.infoCp || 'This field is required.',
+                          () => !!editedItem.infoCp && editedItem.infoCp.length <= 64 || 'Phone number must be less than 64 characters.'
+                        ]"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="4">
-                      <v-text-field v-model="editedItem.infoEm" label="이메일" counter="45" :disabled="editedIndex !== -1"></v-text-field>
+                      <v-text-field v-model="editedItem.infoEm" label="이메일" counter="64" :disabled="editedIndex !== -1" type="email"
+                        ref="infoEm"
+                        :rules="[
+                          () => !!editedItem.infoEm || 'This field is required.',
+                          () => validateEmailFormat(editedItem.infoEm) || 'Malformed email address',
+                          () => !!editedItem.infoEm && editedItem.infoEm.length <= 64 || 'Email must be less than 64 characters.'
+                        ]"
+                      ></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -150,7 +182,7 @@ export default {
       "authId": "",
       "authLevel": "",
       "authName": "",
-      
+
       // 유저 정보
       "userLogin": "",
       "kakaoBizCenterId": "",
@@ -173,6 +205,16 @@ export default {
           ...adminList,
           index: index + 1
         }))
+    },
+
+    form() {
+      return {
+        userLogin: this.editedItem.userLogin,
+        kakaoBizCenterId: this.editedItem.kakaoBizCenterId,
+        infoNa: this.editedItem.infoNa,
+        infoCp: this.editedItem.infoCp,
+        infoEm: this.editedItem.infoEm
+      }
     }
   },
 
@@ -232,14 +274,32 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
         this.selectAuthor = {};
+
+        // validation message off
+        Object.keys(this.form).forEach(f => {
+          this.$refs[f].reset();
+        })
       })
     },
 
     save () {
+      let isValid = true;
+
+      // Check Validation
+      Object.keys(this.form).forEach(f => {
+        isValid = (this.form[f] && this.$refs[f].valid) ? isValid : false;
+        this.$refs[f].validate(true);
+      })
+
+      if (!isValid) {
+        alert("필수항목 및 유효성검사를 확인하세요.");
+        return;
+      }
+
+
       if (this.editedIndex > -1) {
         axios.put("/admin/" + this.adminList[this.editedIndex].id, this.editedItem, {})
         .then(response => {
-          console.log(response);
           Vue.set(this.adminList, this.adminList.findIndex(a => a.id === response.data.id), response.data);
         })
         .catch(error => {
@@ -293,6 +353,15 @@ export default {
         console.error(error);
         // alert("관리자 권한을 수정하는데 실패하였습니다.");
       });
+    },
+
+
+    // validate function
+    validateEmailFormat(email) {
+      // return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)
+      return /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,}$/.test(email)
+        ? true
+        : false;
     }
   }
 }
