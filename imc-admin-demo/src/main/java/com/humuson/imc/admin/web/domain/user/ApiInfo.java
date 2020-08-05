@@ -23,17 +23,22 @@ public class ApiInfo extends BaseTimeEntity {
     @Column(name = "API_KEY", length = 32)
     private String apiKey;
 
-    private Long webUserId;
-
     @Convert(converter = BooleanYNConverter.class)
     @Column(name = "USE_YN", length = 1)
     @ColumnDefault("'Y'")
     private boolean useYn = true;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WEB_USER_ID", foreignKey = @ForeignKey(name = "FK_WEB_USER_API_INFO"))
+    private WebUser webUser;
+
+    public void setWebUser(WebUser webUser) {
+        this.webUser = webUser;
+    }
+
     @Builder
-    public ApiInfo(String apiKey, Long webUserId) {
+    public ApiInfo(String apiKey) {
         this.apiKey = apiKey;
-        this.webUserId = webUserId;
     }
 
     public void disableApiKey() {

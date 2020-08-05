@@ -5,6 +5,8 @@ import com.humuson.imc.admin.web.domain.convertor.BooleanYNConverter;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Table(name = "TB_WEB_USER", indexes = {
@@ -204,4 +206,16 @@ public class WebUser extends BaseTimeEntity {
 
     @Column(name = "REMARK", length = 256)
     private String remark;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "webUser")
+    private List<ApiInfo> apiInfos = new ArrayList<>();
+
+    public void addApiKey(List<ApiInfo> apiInfos) {
+        apiInfos.forEach(this::addApiKey);
+    }
+
+    public void addApiKey(ApiInfo apiInfo) {
+        this.apiInfos.add(apiInfo);
+        apiInfo.setWebUser(this);
+    }
 }
