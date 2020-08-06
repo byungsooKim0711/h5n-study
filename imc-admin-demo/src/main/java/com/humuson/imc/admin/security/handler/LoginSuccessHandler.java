@@ -49,8 +49,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             // L4를 거쳐올 경우를 고려하여 IP를 얻어냄
             String remoteIp = this.getRemoteIp(request);
 
-            // TODO: 나중에 기존 설정 따라가야한다.
-            if (remoteIp.indexOf("xxx.xxx.xxx.") == 0 || remoteIp.indexOf("0:0:0:0:0:0:0:1") == 0) {
+            if (remoteIp.indexOf("0:0:0:0:0:0:0:1") == 0) {
                 session.setAttribute("SUPER_ADMIN", "Y");
             } else {
                 session.setAttribute("SUPER_ADMIN", "N");

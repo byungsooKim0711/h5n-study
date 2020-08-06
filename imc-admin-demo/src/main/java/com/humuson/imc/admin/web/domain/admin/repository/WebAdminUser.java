@@ -1,6 +1,7 @@
 package com.humuson.imc.admin.web.domain.admin.repository;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
+import com.humuson.imc.admin.web.domain.admin.dto.PasswordChangeRequest;
 import com.humuson.imc.admin.web.domain.convertor.BooleanYNConverter;
 import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
 import com.humuson.imc.admin.web.common.Exception.InvalidParameterException;
@@ -106,12 +107,24 @@ public class WebAdminUser extends BaseTimeEntity {
         this.failCount = 0;
     }
 
-    public boolean changePassword(PasswordEncoder passwordEncoder, String newPassword) {
-        if (!passwordEncoder.matches(newPassword, this.password)) {
-            return false;
+    public void changePassword(PasswordEncoder passwordEncoder, PasswordChangeRequest request) {
+        String oldPassword = request.getOldPassword();
+        String newPassword = request.getNewPassword();
+        String checkNewPassword = request.getCheckNewPassword();
+
+        if (StringUtils.isEmpty(newPassword) || StringUtils.isEmpty(checkNewPassword) || StringUtils.isEmpty(oldPassword)) {
+            throw new ChangePasswordException("비밀번호가 비어있습니다.");
         }
+
+        if (!newPassword.equals(checkNewPassword)) {
+            throw new ChangePasswordException("비밀번호 확인이 일치하지 않습니다.");
+        }
+
+        if (!passwordEncoder.matches(oldPassword, this.password)) {
+            throw new ChangePasswordException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
         this.password = passwordEncoder.encode(newPassword);
-        return true;
     }
 
     public void enableUser() {

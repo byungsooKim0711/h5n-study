@@ -2,13 +2,16 @@ package com.humuson.imc.admin.web.domain.user;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
 import com.humuson.imc.admin.web.domain.convertor.BooleanYNConverter;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TB_WEB_USER", indexes = {
     @Index(name = "idx_web_user_01", columnList = "USER_LOGIN", unique = true),
     @Index(name = "idx_web_user_02", columnList = "COMPANY"),
@@ -218,4 +221,22 @@ public class WebUser extends BaseTimeEntity {
         this.apiInfos.add(apiInfo);
         apiInfo.setWebUser(this);
     }
+
+    /* Map으로도 받을 수 있구나... */
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "webUser")
+//    @MapKey(name = "apiKey")
+//    private Map<String, ApiInfo> apiInfos = new HashMap<>();
+//
+//    public void addApiKey(ApiInfo apiInfo) {
+//        this.apiInfos.put(apiInfo.getApiKey(), apiInfo);
+//        apiInfo.setWebUser(this);
+//    }
+//
+//    public void addApiKey(List<ApiInfo> apiInfos) {
+//        apiInfos.forEach(this::addApiKey);
+//    }
+//
+//    public void addApiKey(Map<Long, ApiInfo> apiInfoMap) {
+//        apiInfoMap.forEach((key, value) -> this.addApiKey(value));
+//    }
 }

@@ -1,5 +1,6 @@
 package com.humuson.imc.admin.security;
 
+import com.humuson.imc.admin.web.domain.admin.dto.PasswordChangeRequest;
 import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
 import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUserRepository;
 import com.humuson.imc.admin.web.domain.admin.repository.WebUserAuthorRepository;
@@ -89,6 +90,15 @@ public class ImcUserDetailsService implements UserDetailsService {
         } else if (!dto.isActiveYn()) {
             updated.disableUser();
         }
+
+        return adminUserConverter.toDto(updated);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public WebAdminUserDto updatePassword(PasswordChangeRequest request, Long id) throws Exception {
+        WebAdminUser updated = adminUserRepository.findById(id).orElseThrow(() -> new Exception("Unknown admin user id : " + id));
+
+        updated.changePassword(passwordEncoder, request);
 
         return adminUserConverter.toDto(updated);
     }

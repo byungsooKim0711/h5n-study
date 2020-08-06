@@ -2,6 +2,7 @@ package com.humuson.imc.admin.web.domain.user;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
 import com.humuson.imc.admin.web.domain.convertor.BooleanYNConverter;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TB_API_INFO")
 @Entity
 public class ApiInfo extends BaseTimeEntity {

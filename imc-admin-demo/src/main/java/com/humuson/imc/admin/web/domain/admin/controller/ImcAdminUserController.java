@@ -59,7 +59,9 @@ public class ImcAdminUserController {
     @Secured("ROLE_USER")
     @PostMapping("/myinfo/{id}")
     public ResponseEntity<WebAdminUserDto> modifyMyInfoPassword(@RequestBody PasswordChangeRequest request, @PathVariable long id) throws Exception {
-        return null;
+        WebAdminUserDto updated = imcUserDetailsService.updatePassword(request, id);
+
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     // 내 정보 조회
