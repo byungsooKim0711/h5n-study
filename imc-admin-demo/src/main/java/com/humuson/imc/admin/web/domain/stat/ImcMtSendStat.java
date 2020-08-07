@@ -1,7 +1,7 @@
 package com.humuson.imc.admin.web.domain.stat;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
-import com.humuson.imc.admin.web.domain.convertor.BooleanYNConverter;
+import com.humuson.imc.admin.web.common.converter.BooleanYNConverter;
 import com.humuson.imc.admin.web.domain.system.ImcSystemCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.humuson.imc.admin.web.dto;
+package com.humuson.imc.admin.web.domain.admin.dto;
 
 import com.humuson.imc.admin.web.domain.code.ImcAuthLevel;
 import lombok.Builder;

@@ -1,17 +1,17 @@
-package com.humuson.imc.admin.web.dto.converter;
+package com.humuson.imc.admin.web.domain.admin.dto;
 
 import com.humuson.imc.admin.security.ImcUserDetails;
+import com.humuson.imc.admin.web.common.converter.Converter;
 import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
-import com.humuson.imc.admin.web.dto.ImcLoginUser;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.humuson.imc.admin.web.dto.ImcLoginUser.User;
+import static com.humuson.imc.admin.web.domain.admin.dto.ImcLoginUser.User;
 
 @Component
-public class ImcLoginUserConverter implements Converter<ImcUserDetails, ImcLoginUser> {
+public final class ImcLoginUserConverter implements Converter<ImcUserDetails, ImcLoginUser> {
 
     @Override
     public ImcLoginUser toDto(ImcUserDetails entity) {

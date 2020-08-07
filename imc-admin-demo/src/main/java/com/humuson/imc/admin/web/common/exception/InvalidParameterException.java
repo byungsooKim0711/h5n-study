@@ -1,4 +1,4 @@
-package com.humuson.imc.admin.web.common.Exception;
+package com.humuson.imc.admin.web.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

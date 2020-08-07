@@ -1,4 +1,4 @@
-package com.humuson.imc.admin.web.dto;
+package com.humuson.imc.admin.web.domain.admin.dto;
 
 import lombok.Builder;
 import lombok.Getter;

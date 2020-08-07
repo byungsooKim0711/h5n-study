@@ -1,6 +1,6 @@
 package com.humuson.imc.admin.config;
 
-import com.humuson.imc.admin.web.domain.convertor.LocalDateTimeConverter;
+import com.humuson.imc.admin.web.common.converter.LocalDateTimeConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;

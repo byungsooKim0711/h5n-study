@@ -1,7 +1,7 @@
-package com.humuson.imc.admin.web.dto.converter;
+package com.humuson.imc.admin.web.domain.admin.dto;
 
+import com.humuson.imc.admin.web.common.converter.Converter;
 import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
-import com.humuson.imc.admin.web.dto.WebAdminUserDto;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;

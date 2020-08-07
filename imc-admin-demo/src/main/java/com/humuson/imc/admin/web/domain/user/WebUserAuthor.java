@@ -2,7 +2,7 @@ package com.humuson.imc.admin.web.domain.user;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
 import com.humuson.imc.admin.web.domain.code.ImcAuthLevel;
-import com.humuson.imc.admin.web.domain.convertor.BooleanYNConverter;
+import com.humuson.imc.admin.web.common.converter.BooleanYNConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
