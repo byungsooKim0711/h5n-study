@@ -75,6 +75,12 @@ const router = new VueRouter({
       beforeEnter: checkAuth("ROLE_USER")
     },
     {
+      path: '/user/:id',
+      name: 'UserDetail',
+      component: () => import('@/page/user/UserDetail'),
+      beforeEnter: checkAuth("ROLE_USER")
+    },
+    {
       path: '/user/api',
       name: 'ApiList',
       component: () => import('@/pages/user/ApiList'),
