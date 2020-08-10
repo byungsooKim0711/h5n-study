@@ -18,10 +18,10 @@
       class="elevation-1"
       @page-count="pageCount = $event"
     >
-      <template v-slot:item.createAt="{item}">
+      <template v-slot:[`item.createAt`]="{item}">
         <span>{{item.createAt | moment('YYYY-MM-DD HH:mm:ss')}}</span>
       </template>
-      <template v-slot:item.modifiedAt="{item}">
+      <template v-slot:[`item.modifiedAt`]="{item}">
         <span>{{item.modifiedAt | moment('YYYY-MM-DD HH:mm:ss')}}</span>
       </template>
 
@@ -61,7 +61,7 @@
 
         headers: [
           { text: '순번', value: 'index', sortable: false, align: 'start' },
-          { text: '회사명', value: 'webUserId' },
+          { text: '회사명', value: 'company' },
           { text: 'API KEY', value: 'apiKey' },
           { text: '생성일', value: 'createAt' },
           { text: '수정일', value: 'modifiedAt' },
@@ -71,7 +71,7 @@
       }
     },
 
-    mounted() {
+    created() {
       axios.get("/user/api", {})
       .then(response => {
         this.apiList = response.data;

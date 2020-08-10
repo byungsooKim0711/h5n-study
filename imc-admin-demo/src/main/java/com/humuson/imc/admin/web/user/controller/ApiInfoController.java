@@ -1,6 +1,7 @@
-package com.humuson.imc.admin.web.user;
+package com.humuson.imc.admin.web.user.controller;
 
-import com.humuson.imc.admin.web.domain.user.ApiInfo;
+import com.humuson.imc.admin.web.user.dto.ApiInfoResponse;
+import com.humuson.imc.admin.web.user.service.ApiInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,9 @@ public class ApiInfoController {
 
     private final ApiInfoService apiInfoService;
 
-
     @GetMapping("/user/api")
-    public ResponseEntity<List<ApiInfo>> getApiInfoList() throws Exception {
-        List<ApiInfo> apiInfoList = apiInfoService.getApiInfoList();
+    public ResponseEntity<List<ApiInfoResponse>> getApiInfoList() throws Exception {
+        List<ApiInfoResponse> apiInfoList = apiInfoService.getApiInfoList();
 
         return new ResponseEntity<>(apiInfoList, HttpStatus.OK);
     }

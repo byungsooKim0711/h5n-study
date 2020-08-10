@@ -18,11 +18,20 @@
       class="elevation-1"
       @page-count="pageCount = $event"
     >
-      <template v-slot:item.createAt="{item}">
+      <template v-slot:[`item.createAt`]="{item}">
         <span>{{item.createAt | moment('YYYY-MM-DD HH:mm:ss')}}</span>
       </template>
-      <template v-slot:item.modifiedAt="{item}">
+      <template v-slot:[`item.modifiedAt`]="{item}">
         <span>{{item.modifiedAt | moment('YYYY-MM-DD HH:mm:ss')}}</span>
+      </template>
+
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon
+          small
+          @click="showDetails(item)"
+        >
+          mdi-pencil
+        </v-icon>
       </template>
 
     </v-data-table>
@@ -68,7 +77,7 @@
           { text: '이메일', value: 'infoEm' },
           { text: '생성일', value: 'createAt' },
           { text: '수정일', value: 'modifiedAt' },
-          { text: '상세보기', value: '', sortable: false },
+          { text: '상세보기', value: 'actions', sortable: false, align: 'center' },
         ],
         userList: [],
       }
@@ -82,6 +91,13 @@
       .catch(error => {
         console.error(error);
       });
+    },
+
+    methods: {
+      showDetails(item) {
+        // this.$router.push({name: "UserDetail", params: {id : item.id}});
+        this.$router.push("/user/" + item.id + "/detail");
+      }
     }
   }
 </script>

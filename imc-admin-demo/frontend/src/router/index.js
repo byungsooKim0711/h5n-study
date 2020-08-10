@@ -68,6 +68,28 @@ const router = new VueRouter({
       component: () => import('@/pages/Dashboard'),
       beforeEnter: checkAuth("ROLE_DASHBOARD")
     },
+    // {
+    //   path: '/user/',
+    //   children: [
+    //     {
+    //       path: 'list',
+    //       name: 'UserList',
+    //       component: () => import('@/pages/user/UserList'),
+    //       beforeEnter: checkAuth("ROLE_USER")
+    //     },
+    //     {
+    //       path: '/user/:id',
+    //       name: 'UserDetail',
+    //       component: () => import('@/pages/user/UserDetail'),
+
+    //       // UserDetail component에 id prop 전달.
+    //       props: (route) => ({
+    //         id: Number.parseInt(route.params.id) || 0
+    //       }),
+    //       beforeEnter: checkAuth("ROLE_USER")
+    //     }
+    //   ]
+    // },
     {
       path: '/user/list',
       name: 'UserList',
@@ -75,15 +97,21 @@ const router = new VueRouter({
       beforeEnter: checkAuth("ROLE_USER")
     },
     {
-      path: '/user/:id',
-      name: 'UserDetail',
-      component: () => import('@/page/user/UserDetail'),
-      beforeEnter: checkAuth("ROLE_USER")
-    },
-    {
       path: '/user/api',
       name: 'ApiList',
       component: () => import('@/pages/user/ApiList'),
+      beforeEnter: checkAuth("ROLE_USER")
+    },
+    {
+      // path: '/user/detail',
+      path: '/user/:id/detail',
+      name: 'UserDetail',
+      component: () => import('@/pages/user/UserDetail'),
+
+      // UserDetail component에 id prop 전달.
+      props: (route) => ({
+        id: Number.parseInt(route.params.id) || 0
+      }),
       beforeEnter: checkAuth("ROLE_USER")
     },
     {

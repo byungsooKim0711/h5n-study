@@ -5,13 +5,13 @@
       :items="adminListWithIndex"
       class="elevation-1"
     >
-      <template v-slot:item.activeYn="{item}">
+      <template v-slot:[`item.activeYn`]="{item}">
         <span>{{item.activeYn | activeYnFilter}}</span>
       </template>
-      <template v-slot:item.createAt="{item}">
+      <template v-slot:[`item.createAt`]="{item}">
         <span>{{item.createAt | moment('YYYY-MM-DD HH:mm:ss')}}</span>
       </template>
-      <template v-slot:item.modifiedAt="{item}">
+      <template v-slot:[`item.modifiedAt`]="{item}">
         <span>{{item.modifiedAt | moment('YYYY-MM-DD HH:mm:ss')}}</span>
       </template>
 
@@ -115,7 +115,7 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-icon
           small
           class="mr-2"
