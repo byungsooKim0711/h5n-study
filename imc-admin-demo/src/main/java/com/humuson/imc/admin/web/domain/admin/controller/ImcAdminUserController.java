@@ -3,7 +3,7 @@ package com.humuson.imc.admin.web.domain.admin.controller;
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.security.ImcUserDetailsService;
 import com.humuson.imc.admin.web.domain.admin.dto.PasswordChangeRequest;
-import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
+import com.humuson.imc.admin.web.domain.user.repository.WebUserAuthor;
 import com.humuson.imc.admin.web.domain.admin.dto.ImcLoginUser;
 import com.humuson.imc.admin.web.domain.admin.dto.WebAdminUserDto;
 import com.humuson.imc.admin.web.domain.admin.dto.ImcLoginUserConverter;

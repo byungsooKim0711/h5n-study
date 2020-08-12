@@ -1,7 +1,7 @@
-package com.humuson.imc.admin.web.user.controller;
+package com.humuson.imc.admin.web.domain.user.controller;
 
-import com.humuson.imc.admin.web.user.dto.ApiInfoResponse;
-import com.humuson.imc.admin.web.user.service.ApiInfoService;
+import com.humuson.imc.admin.web.domain.user.dto.ApiInfoResponse;
+import com.humuson.imc.admin.web.domain.user.service.ApiInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

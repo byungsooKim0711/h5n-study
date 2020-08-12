@@ -1,4 +1,4 @@
-package com.humuson.imc.admin.web.domain.user;
+package com.humuson.imc.admin.web.domain.user.repository;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
 import com.humuson.imc.admin.web.common.converter.BooleanYNConverter;

@@ -3,7 +3,7 @@ package com.humuson.imc.admin.web.domain.admin.repository;
 import com.humuson.imc.admin.config.BaseTimeEntity;
 import com.humuson.imc.admin.web.domain.admin.dto.PasswordChangeRequest;
 import com.humuson.imc.admin.web.common.converter.BooleanYNConverter;
-import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
+import com.humuson.imc.admin.web.domain.user.repository.WebUserAuthor;
 import com.humuson.imc.admin.web.common.exception.InvalidParameterException;
 import lombok.Builder;
 import lombok.Getter;

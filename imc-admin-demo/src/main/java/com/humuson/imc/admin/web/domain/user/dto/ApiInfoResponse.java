@@ -1,4 +1,4 @@
-package com.humuson.imc.admin.web.user.dto;
+package com.humuson.imc.admin.web.domain.user.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,14 +9,13 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @ToString
-public class WebUserResponse {
-
+public class ApiInfoResponse {
     private final long id;
-    private final String company;
-    private final String bizNum;
-    private final String infoNa;
-    private final String infoCp;
-    private final String infoEm;
+    private final String apiKey;
+    private final boolean useYn;
     private final LocalDateTime createAt;
     private final LocalDateTime modifiedAt;
+
+    private final Long webUserId;
+    private final String company;
 }

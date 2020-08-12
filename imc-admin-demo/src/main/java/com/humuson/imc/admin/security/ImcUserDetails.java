@@ -3,7 +3,7 @@ package com.humuson.imc.admin.security;
 import com.google.common.collect.Sets;
 import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
 import com.humuson.imc.admin.web.domain.code.ImcGrantedAuthority;
-import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
+import com.humuson.imc.admin.web.domain.user.repository.WebUserAuthor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

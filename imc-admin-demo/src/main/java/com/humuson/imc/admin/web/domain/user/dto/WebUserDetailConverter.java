@@ -1,7 +1,7 @@
-package com.humuson.imc.admin.web.user.dto;
+package com.humuson.imc.admin.web.domain.user.dto;
 
 import com.humuson.imc.admin.web.common.converter.Converter;
-import com.humuson.imc.admin.web.domain.user.WebUser;
+import com.humuson.imc.admin.web.domain.user.repository.WebUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

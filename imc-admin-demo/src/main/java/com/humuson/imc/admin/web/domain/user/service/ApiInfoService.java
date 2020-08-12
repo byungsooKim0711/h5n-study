@@ -1,9 +1,8 @@
-package com.humuson.imc.admin.web.user.service;
+package com.humuson.imc.admin.web.domain.user.service;
 
-import com.humuson.imc.admin.web.domain.user.ApiInfoRepository;
-import com.humuson.imc.admin.web.domain.user.ApiInfo;
-import com.humuson.imc.admin.web.user.dto.ApiInfoConverter;
-import com.humuson.imc.admin.web.user.dto.ApiInfoResponse;
+import com.humuson.imc.admin.web.domain.user.repository.ApiInfoRepository;
+import com.humuson.imc.admin.web.domain.user.dto.ApiInfoConverter;
+import com.humuson.imc.admin.web.domain.user.dto.ApiInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

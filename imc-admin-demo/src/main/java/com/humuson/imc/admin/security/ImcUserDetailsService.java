@@ -4,7 +4,7 @@ import com.humuson.imc.admin.web.domain.admin.dto.PasswordChangeRequest;
 import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
 import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUserRepository;
 import com.humuson.imc.admin.web.domain.admin.repository.WebUserAuthorRepository;
-import com.humuson.imc.admin.web.domain.user.WebUserAuthor;
+import com.humuson.imc.admin.web.domain.user.repository.WebUserAuthor;
 import com.humuson.imc.admin.web.domain.admin.dto.WebAdminUserDto;
 import com.humuson.imc.admin.web.domain.admin.dto.WebAdminUserConverter;
 import lombok.RequiredArgsConstructor;

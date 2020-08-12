@@ -1,11 +1,11 @@
-package com.humuson.imc.admin.web.user.service;
+package com.humuson.imc.admin.web.domain.user.service;
 
-import com.humuson.imc.admin.web.domain.user.WebUser;
-import com.humuson.imc.admin.web.domain.user.WebUserRepository;
-import com.humuson.imc.admin.web.user.dto.WebUserConverter;
-import com.humuson.imc.admin.web.user.dto.WebUserDetailConverter;
-import com.humuson.imc.admin.web.user.dto.WebUserDetailResponse;
-import com.humuson.imc.admin.web.user.dto.WebUserResponse;
+import com.humuson.imc.admin.web.domain.user.repository.WebUser;
+import com.humuson.imc.admin.web.domain.user.repository.WebUserRepository;
+import com.humuson.imc.admin.web.domain.user.dto.WebUserConverter;
+import com.humuson.imc.admin.web.domain.user.dto.WebUserDetailConverter;
+import com.humuson.imc.admin.web.domain.user.dto.WebUserDetailResponse;
+import com.humuson.imc.admin.web.domain.user.dto.WebUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
