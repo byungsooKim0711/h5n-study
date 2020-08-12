@@ -1,6 +1,7 @@
 package com.humuson.imc.admin.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.humuson.imc.admin.config.ImcAdminConfig;
 import com.humuson.imc.admin.security.ImcUserDetails;
 import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUser;
 import com.humuson.imc.admin.web.domain.admin.repository.WebAdminUserRepository;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +35,9 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     private final ObjectMapper mapper;
     private final WebAdminUserRepository adminUserRepository;
     private final ImcLoginUserConverter loginUserConverter;
+
+    // configuration
+    private final ImcAdminConfig config;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @Override
@@ -49,7 +54,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             // L4를 거쳐올 경우를 고려하여 IP를 얻어냄
             String remoteIp = this.getRemoteIp(request);
 
-            if (remoteIp.indexOf("0:0:0:0:0:0:0:1") == 0) {
+            if (this.checkSuperAdmin(remoteIp, config.getSuperAdminIpList())) {
                 session.setAttribute("SUPER_ADMIN", "Y");
             } else {
                 session.setAttribute("SUPER_ADMIN", "N");
@@ -83,5 +88,13 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
             ImcLoginUser loginUser = loginUserConverter.toDto(user);
             response.getWriter().write(mapper.writeValueAsString(loginUser));
         }
+    }
+
+    private boolean checkSuperAdmin(String remoteIp, List<String> ipList) {
+        return ipList.stream().anyMatch(ip -> this.checkSuperAdmin(remoteIp, ip));
+    }
+
+    private boolean checkSuperAdmin(String remoteIp, String ip) {
+        return ip.indexOf(remoteIp) == 0;
     }
 }

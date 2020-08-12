@@ -6,12 +6,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
+
 @Getter
 @Validated
 @ConstructorBinding
 @AllArgsConstructor
 @ConfigurationProperties(prefix = "imc.admin")
 public class ImcAdminConfig {
+
+    private final List<String> superAdminIpList;
 
     private final Security security;
 

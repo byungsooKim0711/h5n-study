@@ -104,6 +104,10 @@ logging:
 
 imc:
   admin:
+    # super admin ip list
+    super-admin-ip-list:
+      - "0:0:0:0:0:0:0:1"
+      -
     security:
       default-view-url: "/index.html"
       permit-all-url:
