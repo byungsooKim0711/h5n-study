@@ -21,8 +21,9 @@ public class PicInfo extends BaseTimeEntity {
     @Column(name = "NAME", length = 45)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "PIC_TYPE", length = 3)
-    private String picType;
+    private PicType picType;
 
     // web_user_id
 }
