@@ -20,11 +20,11 @@ public class MonthDiffUtil {
     }
 
     public static int getMonthDiff(LocalDate startDate, LocalDate endDate) {
-        Period diff1 = Period.between(startDate, endDate.plusDays(1));
+        Period period = Period.between(startDate, endDate.plusDays(1));
 
-        int year = diff1.getYears();
-        int month = diff1.getMonths();
-        int day = diff1.getDays();
+        int year = period.getYears();
+        int month = period.getMonths();
+        int day = period.getDays();
 
         return (year * 12) + (month) + (day > 0 ? 1 : 0);
     }
