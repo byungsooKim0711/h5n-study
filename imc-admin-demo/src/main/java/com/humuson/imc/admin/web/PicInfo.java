@@ -1,9 +1,14 @@
 package com.humuson.imc.admin.web;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
+import com.humuson.imc.admin.web.domain.user.repository.WebUser;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "TB_PIC_INFO")
 public class PicInfo extends BaseTimeEntity {
@@ -25,5 +30,11 @@ public class PicInfo extends BaseTimeEntity {
     @Column(name = "PIC_TYPE", length = 3)
     private PicType picType;
 
-    // web_user_id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WEB_USER_ID", foreignKey = @ForeignKey(name = "FK_WEB_USER_PIC_INFO"))
+    private WebUser webUser;
+
+    public void setWebUser(WebUser webUser) {
+        this.webUser = webUser;
+    }
 }
