@@ -2,6 +2,7 @@ package com.humuson.imc.admin.web;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
 import com.humuson.imc.admin.web.domain.user.repository.WebUser;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,5 +37,13 @@ public class PicInfo extends BaseTimeEntity {
 
     public void setWebUser(WebUser webUser) {
         this.webUser = webUser;
+    }
+
+    @Builder
+    public PicInfo(String name, String email, String phone, PicType picType) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.picType = picType;
     }
 }

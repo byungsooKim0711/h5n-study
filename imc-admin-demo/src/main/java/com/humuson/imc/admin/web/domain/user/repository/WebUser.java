@@ -1,6 +1,9 @@
 package com.humuson.imc.admin.web.domain.user.repository;
 
 import com.humuson.imc.admin.config.BaseTimeEntity;
+import com.humuson.imc.admin.web.PicInfo;
+import com.humuson.imc.admin.web.ServiceKey;
+import com.humuson.imc.admin.web.UnitPrice;
 import com.humuson.imc.admin.web.common.converter.BooleanYNConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,6 +27,7 @@ public class WebUser extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    // 회사정보
     @Column(name = "USER_LOGIN", unique = true, nullable = false, length = 45)
     private String userLogin;
 
@@ -33,17 +37,8 @@ public class WebUser extends BaseTimeEntity {
     @Column(name = "BIZ_NUM", nullable = false, length = 20)
     private String bizNum;
 
-    @Column(name = "INFO_NA", nullable = false, length = 64)
-    private String infoNa;
-
-    @Column(name = "INFO_CP", nullable = false, length = 64)
-    private String infoCp;
-
-    @Column(name = "INFO_EM", nullable = false, length = 64)
-    private String infoEm;
-
-    @Column(name = "ENC_2_PA", nullable = false, length = 128)
-    private String enc2Pa;
+    @Column(name = "password", nullable = false, length = 128)
+    private String password;
 
     @Column(name = "AUTH_ID", nullable = false)
     private long authId;
@@ -54,6 +49,48 @@ public class WebUser extends BaseTimeEntity {
 
     @Column(name = "CONTRACT_AT", nullable = false, length = 8)
     private String contractAt;
+
+    @Column(name = "COMPANY_SCALE", length = 1)
+    private String companyScale;
+
+    @Column(name = "CALC_BASE_DATE", length = 2)
+    private String calcBaseDate;
+
+    @Column(name = "PUBLICATION_DATE", length = 100)
+    private String publicationDate;
+
+    @Convert(converter = BooleanYNConverter.class)
+    @Column(name = "MAJOR_YN", length = 1)
+    private boolean majorYn = false;
+
+    @Column(name = "STATUS", columnDefinition = "CHAR(1) DEFAULT '0'", nullable = false)
+    private String status = "0";
+
+    @Convert(converter = BooleanYNConverter.class)
+    @Column(name = "USE_AT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
+    private boolean useAt = false;
+
+    @Convert(converter = BooleanYNConverter.class)
+    @Column(name = "USE_FT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
+    private boolean useFt = false;
+
+    @Convert(converter = BooleanYNConverter.class)
+    @Column(name = "USE_RMT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
+    private boolean useRmt = false;
+
+    @Convert(converter = BooleanYNConverter.class)
+    @Column(name = "USE_NMT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
+    private boolean useNmt = false;
+
+    @Column(name = "MONTHLY_BASE_FEE", columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0", nullable = false)
+    private double monthlyBaseFee;
+
+    @Column(name = "REMARK", length = 256)
+    private String remark;
+
+    /* 고객사 별 단가 정보 */
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "webUser")
+//    private List<UnitPrice> unitPriceList = new ArrayList<>();
 
     @Column(name = "SEC_10", columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0", nullable = false)
     private double sec10;
@@ -84,31 +121,6 @@ public class WebUser extends BaseTimeEntity {
 
     @Column(name = "SEC_50", columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0", nullable = false)
     private double sec50;
-
-    @Column(name = "STATUS", columnDefinition = "CHAR(1) DEFAULT '0'", nullable = false)
-    private String status = "0";
-
-    @Column(name = "PARENT_ID", nullable = false)
-    private long parentId;
-
-    @Convert(converter = BooleanYNConverter.class)
-    @Column(name = "USE_AT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
-    private boolean useAt = false;
-
-    @Convert(converter = BooleanYNConverter.class)
-    @Column(name = "USE_FT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
-    private boolean useFt = false;
-
-    @Convert(converter = BooleanYNConverter.class)
-    @Column(name = "USE_RMT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
-    private boolean useRmt = false;
-
-    @Convert(converter = BooleanYNConverter.class)
-    @Column(name = "USE_NMT", columnDefinition = "CHAR(1) DEFAULT 'N'", nullable = false)
-    private boolean useNmt = false;
-
-    @Column(name = "MONTHLY_BASE_FEE", columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0", nullable = false)
-    private double monthlyBaseFee;
 
     @Column(name = "AT_SECTION1", nullable = false, length = 20)
     private String atSection1;
@@ -194,21 +206,45 @@ public class WebUser extends BaseTimeEntity {
     @Column(name = "NMT_MMS_FEE", columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0", nullable = false)
     private double nmtMmsFee;
 
-    @Column(name = "COMPANY_SCALE", length = 1)
-    private String companyScale;
 
-    @Column(name = "CALC_BASE_DATE", length = 2)
-    private String calcBaseDate;
+    /* 자기참조 특정 업체 하위에 다른 업체가 있을 수 있다. */
+//    @Column(name = "PARENT_ID", nullable = false)
+//    private long parentId;
 
-    @Column(name = "PUBLICATION_DATE", length = 100)
-    private String publicationDate;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "PARENT_ID", foreignKey = @ForeignKey(name = "FK_WEB_USER_PARENT"))
+    private WebUser parent;
 
-    @Convert(converter = BooleanYNConverter.class)
-    @Column(name = "MAJOR_YN", length = 1)
-    private boolean majorYn = false;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parent")
+    private List<WebUser> children = new ArrayList<>();
 
-    @Column(name = "REMARK", length = 256)
-    private String remark;
+//    public void setChildren(WebUser children) {
+//        this.children.add(children);
+//        setParent(this);
+//    }
+//
+//    public void setChildren(List<WebUser> childrenList) {
+//        childrenList.forEach(this::setChildren);
+//    }
+//
+//    public void setParent(WebUser webUser) {
+//        this.parent = webUser;
+//        this.setChildren(this);
+//    }
+
+
+    /* 서비스 키 정보: ApiInfo -> ServiceKey */
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "webUser")
+//    private List<ServiceKey> serviceKeyList = new ArrayList<>();
+//
+//    public void addServiceKey(List<ServiceKey> serviceKeyList) {
+//        serviceKeyList.forEach(this::addServiceKey);
+//    }
+//
+//    public void addServiceKey(ServiceKey serviceKey) {
+//        this.serviceKeyList.add(serviceKey);
+//        serviceKey.setWebUser(this);
+//    }
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "webUser")
     private List<ApiInfo> apiInfos = new ArrayList<>();
@@ -222,7 +258,21 @@ public class WebUser extends BaseTimeEntity {
         apiInfo.setWebUser(this);
     }
 
-    /* Map으로도 받을 수 있구나... */
+    /* 고객사 담당자 정보 */
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "webUser")
+//    private List<PicInfo> picInfoList = new ArrayList<>();
+
+    @Column(name = "INFO_NA", nullable = false, length = 64)
+    private String infoNa;
+
+    @Column(name = "INFO_CP", nullable = false, length = 64)
+    private String infoCp;
+
+    @Column(name = "INFO_EM", nullable = false, length = 64)
+    private String infoEm;
+}
+
+      /* Map으로도 받을 수 있구나... */
 //    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "webUser")
 //    @MapKey(name = "apiKey")
 //    private Map<String, ApiInfo> apiInfos = new HashMap<>();
@@ -239,4 +289,3 @@ public class WebUser extends BaseTimeEntity {
 //    public void addApiKey(Map<Long, ApiInfo> apiInfoMap) {
 //        apiInfoMap.forEach((key, value) -> this.addApiKey(value));
 //    }
-}
