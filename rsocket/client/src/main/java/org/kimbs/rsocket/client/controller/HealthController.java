@@ -2,13 +2,13 @@ package org.kimbs.rsocket.client.controller;
 
 import org.kimbs.rsocket.protocol.ClientHealthState;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.stream.Stream;
 
-@Controller
+@RestController
 public class HealthController {
 
     @MessageMapping("health")
