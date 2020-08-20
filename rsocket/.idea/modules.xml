@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/client/rsocket.iml" filepath="$PROJECT_DIR$/client/rsocket.iml" />
       <module fileurl="file://$PROJECT_DIR$/server/rsocket (1).iml" filepath="$PROJECT_DIR$/server/rsocket (1).iml" />
       <module fileurl="file://$PROJECT_DIR$/client/rsocket-client.iml" filepath="$PROJECT_DIR$/client/rsocket-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/integration/rsocket-integration.iml" filepath="$PROJECT_DIR$/integration/rsocket-integration.iml" />
       <module fileurl="file://$PROJECT_DIR$/server/rsocket-server.iml" filepath="$PROJECT_DIR$/server/rsocket-server.iml" />
     </modules>
   </component>

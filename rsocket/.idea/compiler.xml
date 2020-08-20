@@ -12,6 +12,7 @@
         <module name="rsocket (1)" />
         <module name="rsocket-client" />
         <module name="rsocket-server" />
+        <module name="rsocket-integration" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +20,7 @@
       <module name="rsocket" target="1.8" />
       <module name="rsocket (1)" target="1.8" />
       <module name="rsocket-client" target="1.8" />
+      <module name="rsocket-integration" target="1.8" />
       <module name="rsocket-protocol" target="1.8" />
       <module name="rsocket-server" target="1.8" />
     </bytecodeTargetLevel>
@@ -28,6 +30,7 @@
       <module name="rsocket" options="-parameters" />
       <module name="rsocket (1)" options="-parameters" />
       <module name="rsocket-client" options="-parameters" />
+      <module name="rsocket-integration" options="-parameters" />
       <module name="rsocket-protocol" options="-parameters" />
       <module name="rsocket-server" options="-parameters" />
     </option>
